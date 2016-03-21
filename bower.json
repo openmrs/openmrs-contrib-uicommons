@@ -4,9 +4,13 @@
     "rkorytkowski",
     "pgutkowski"
   ],
+   "main": [
+    "./dist/css/openmrs-refapp.css",
+    "./src/scss/sass/openmrs-refapp.scss"
+  ],
   "description": "Reference Application CSS, JS, and HTML library",
   "license": "MPL-2.0",
-  "private": true,
+  "private": false,
   "ignore": [
     "**/.*",
     "node_modules",

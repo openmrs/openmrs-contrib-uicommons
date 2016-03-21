@@ -22,8 +22,7 @@ var wiredep = require('wiredep').stream;
 
 var plugins = gulpLoadPlugins();
 
-var LOCAL_OWA_FOLDER = '/Users/djazayer/openmrs/oneeleven/owa';
-var THIS_APP_ID = 'uicommons';
+var THIS_APP_ID = 'openmrs-contrib-refapp-ui-lib';
 
 var htmlGlob = ['app/**/*.html'];
 var resourcesGlob = ['app/**/*.{png,svg,jpg,gif,eot,ttf,woff}', 'app/**/*.{css,less}',
@@ -77,11 +76,6 @@ gulp.task('compass', function() {
 gulp.task('resources', ['compass'], function() {
   return gulp.src(resourcesGlob)
     .pipe(gulp.dest('dist'));
-});
-
-gulp.task('deploy-local', ['build'], function() {
-  return gulp.src(['dist/**/*', '!*.zip'])
-    .pipe(gulp.dest(LOCAL_OWA_FOLDER + '/' + THIS_APP_ID));
 });
 
 gulp.task('build', ['resources', 'html'], function() {
