@@ -1,0 +1,40 @@
+{
+  "name": "openmrs-contrib-refapp-ui-lib",
+  "version": "0.1.0",
+  "description": "Common CSS, JS, and HTML snippets",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PawelGutkowski/openmrs-contrib-refapp-ui-lib.git"
+  },
+  "dependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-zip": "^3.0.2",
+    "main-bower-files": "^2.11.1",
+    "wiredep": "^3.0.0"
+  },
+  "devDependencies": {
+    "compass": "^0.1.1",
+    "compass-importer": "^0.2.3",
+    "compass-mixins": "^0.12.7",
+    "gulp-compass": "^2.1.0",
+    "gulp-plumber": "^1.1.0",
+    "node-sass": "^3.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "OpenMRS",
+    "Open",
+    "Web",
+    "App",
+    "Reference Application"
+  ],
+  "authors": [
+    "rkorytkowski",
+    "pgutkowski"
+  ],
+  "license": "MPL-2.0"
+}

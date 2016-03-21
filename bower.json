@@ -1,0 +1,20 @@
+{
+  "name": "openmrs-contrib-refapp-ui-lib",
+  "authors": [
+    "rkorytkowski",
+    "pgutkowski"
+  ],
+  "description": "Reference Application CSS, JS, and HTML library",
+  "license": "MPL-2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  	
+  }
+}
