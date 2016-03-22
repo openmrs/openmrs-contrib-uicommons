@@ -25,8 +25,8 @@ var plugins = gulpLoadPlugins();
 var THIS_APP_ID = 'openmrs-contrib-refapp-ui-lib';
 
 var htmlGlob = ['app/**/*.html'];
-var resourcesGlob = ['app/**/*.{png,svg,jpg,gif,eot,ttf,woff}', 'app/**/*.{css,less}',
-  'app/**/*.js', 'app/manifest.webapp', /* list extra resources here */ ];
+var resourcesGlob = ['resources/**/*.{png,svg,jpg,gif,eot,ttf,woff}', 'resources/**/*.{css,less}',
+  'resources/**/*.js', /* list extra resources here */ ];
 
 gulp.task('copy-bower-packages', function() {
   try {
@@ -80,7 +80,6 @@ gulp.task('resources', ['compass'], function() {
 
 gulp.task('build', ['resources', 'html'], function() {
   return gulp.src('dist/**/*')
-    .pipe(plugins.zip(THIS_APP_ID + '.zip'))
     .pipe(gulp.dest('dist'));
 });
 
