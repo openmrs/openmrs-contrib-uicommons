@@ -1,0 +1,8 @@
+<div>
+	<ul id="breadcrumbs">
+		<li><a href="#"><i class="icon-home smal"></i></a></li>
+		<li ng-repeat="(key, value) in $ctrl.links">
+			<a href="#/{{value}}"><i class="icon-chevron-right link"></i>{{key}}</a>
+		</li>
+	</ul>
+</div>

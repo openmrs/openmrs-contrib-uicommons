@@ -26,7 +26,7 @@ var THIS_APP_ID = 'openmrs-contrib-refapp-ui-lib';
 
 var htmlGlob = ['app/**/*.html'];
 var resourcesGlob = ['resources/**/*.{png,svg,jpg,gif,eot,ttf,woff}', 'resources/**/*.{css,less}',
-  'resources/**/*.js', /* list extra resources here */ ];
+  '**/*.js', /* list extra resources here */ ];
 
 gulp.task('copy-bower-packages', function() {
   try {
