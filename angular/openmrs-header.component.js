@@ -1,9 +1,10 @@
 var template = require('../partials/angular/openmrs-header.html');
-var openmrs = require('./../src/scss/images/openmrs-with-title-small.png');
+var openmrs = require('../src/scss/images/openmrs-with-title-small.png');
 
-export default angular.module('openmrs-contrib-refapp-ui-lib.header', []).component('openmrsHeader', {
+export default angular.module('openmrs-contrib-uicommons.header', []).component('openmrsHeader', {
   template: template,
   controller: OpenmrsHeaderController,
+  controllerAs: 'vm',
   bindings: {
     title : '<'
   }
@@ -11,7 +12,7 @@ export default angular.module('openmrs-contrib-refapp-ui-lib.header', []).compon
 
 OpenmrsHeaderController.$inject=[];
 
-function OpenmrsHeaderController() {	
+function OpenmrsHeaderController() {
 	var vm = this;
 	vm.logo = openmrs;
 }

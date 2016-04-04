@@ -7,8 +7,8 @@ const env = require('yargs').argv.mode;
 const target = require('yargs').argv.target;
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
 
-const libraryName = 'OpenMRS';
-const fileName = 'openmrs-contrib-refapp-ui';
+const libraryName = 'OpenMRS contrib uicommons library';
+const fileName = 'openmrs-contrib-uicommons';
 
 const plugins = [];
 const nodeModules = {};
@@ -45,7 +45,7 @@ if (env === 'production') {
 
 /** Inject version number */
 plugins.push(new webpack.DefinePlugin({
-  __OPENMRS_JS_VERSION__: JSON.stringify(require('./package.json').version),
+  __OPENMRS_CONTRIB_UICOMMONS_VERSION__: JSON.stringify(require('./package.json').version),
 }));
 
 const config = {
@@ -69,19 +69,19 @@ const config = {
 	    loader: ['css', 'style']
 	}, {
 	    test: /\.(png|jpg|jpeg|gif|svg)$/,
-	    loader: 'url?limit=100000'
+	    loader: 'url'
 	}, {
 	    test: /\.html$/,
-	    loader: 'raw'
+	    loader: 'html'
 	},{
         test: /\.scss$/,
         loader: "style!css!sass?outputStyle=expanded&includePaths[]=" 
         		+ path.resolve(__dirname, "./node_modules/compass-mixins/lib")
       },
-        {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
-        {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
-        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
-        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},],
+        {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url'},
+        {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url'},
+        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url'},
+        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url'},],
   },
   resolve: {
     root: path.resolve('./src'),
