@@ -1,10 +1,12 @@
-angular.module('openmrs-ui-commons').component('openmrsBreadcrumbs', {
-  templateUrl: '../uicommons/partials/angular/breadcrumbs.html',
+var template = require('../partials/angular/breadcrumbs.html');
+
+export default angular.module('openmrs-contrib-refapp-ui-lib.breadcrumbs', []).component('openmrsBreadcrumbs', {
+  template: template,
   controller: OpenmrsBreadcrumbsController,
   bindings: {
     links : '<'
   }
-});
+}).name;
 
 OpenmrsBreadcrumbsController.$inject=[];
 
