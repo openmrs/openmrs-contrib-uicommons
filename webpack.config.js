@@ -69,19 +69,19 @@ const config = {
 	    loader: ['css', 'style']
 	}, {
 	    test: /\.(png|jpg|jpeg|gif|svg)$/,
-	    loader: 'file'
+	    loader: 'url?limit=100000'
 	}, {
 	    test: /\.html$/,
-	    loader: 'raw'
+	    loader: 'url?limit=100000'
 	},{
         test: /\.scss$/,
         loader: "style!css!sass?outputStyle=expanded&includePaths[]=" 
         		+ path.resolve(__dirname, "./node_modules/compass-mixins/lib")
       },
-        {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},
-        {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},
-        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/octet-stream"},
-        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader"},],
+        {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
+        {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
+        {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},
+        {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=100000'},],
   },
   resolve: {
     root: path.resolve('./src'),
