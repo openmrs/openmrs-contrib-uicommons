@@ -6,8 +6,7 @@
   ],
    "main": [
     "./dist/css/openmrs-refapp.css",
-    "./dist/fonts/*",
-    "./lib/*"
+    "./dist/fonts/*"
   ],
   "description": "Reference Application CSS, JS, and HTML library",
   "license": "MPL-2.0",
