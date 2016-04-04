@@ -72,7 +72,7 @@ const config = {
 	    loader: 'url?limit=100000'
 	}, {
 	    test: /\.html$/,
-	    loader: 'url?limit=100000'
+	    loader: 'raw'
 	},{
         test: /\.scss$/,
         loader: "style!css!sass?outputStyle=expanded&includePaths[]=" 
