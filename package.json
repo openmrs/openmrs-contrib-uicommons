@@ -4,7 +4,7 @@
   "description": "Common CSS, JS, and HTML snippets",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PawelGutkowski/openmrs-contrib-refapp-ui-lib.git"
+    "url": "https://github.com/PawelGutkowski/openmrs-contrib-uicommons.git"
   },
   "main": "./lib/openmrs-contrib-refapp-ui.bundle.min.js",
   "sass": "./src/scss/sass/openmrs-refapp.scss",
