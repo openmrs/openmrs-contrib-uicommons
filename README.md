@@ -37,7 +37,7 @@ angular.module('YourAngularModule',['openmrs-contrib-uicommons.header']);
 create variable in Your controller, which will hold title of Your application:
 
 ````
-angular.module(YourAngularModule').controller('controller', controller);
+angular.module('YourAngularModule').controller('controller', controller);
 
 function controller() {
 	var vm = this;
@@ -66,7 +66,7 @@ angular.module('YourAngularModule',['openmrs-contrib-uicommons.breadcrumbs']);
 create variable in Your controller, which will hold map of Your links and labels:
 
 ````
-angular.module(YourAngularModule').controller('controller', controller);
+angular.module('YourAngularModule').controller('controller', controller);
 
 function controller() {
 	var vm = this;
@@ -76,7 +76,7 @@ function controller() {
 }
 ````
 
-And insert component in html file, binding appTitle variable to it:
+And insert component in html file, binding links variable to it:
 
 ````
 <html ng-app="conceptDictionaryApp">
