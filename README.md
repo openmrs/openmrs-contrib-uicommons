@@ -1,6 +1,8 @@
 <img src="https://cloud.githubusercontent.com/assets/668093/12567089/0ac42774-c372-11e5-97eb-00baf0fccc37.jpg" alt="OpenMRS"/>
 # OpenMRS Reference Application UI Library
 
+[![Build Status](https://travis-ci.org/PawelGutkowski/openmrs-contrib-uicommons.svg?branch=master)](https://travis-ci.org/PawelGutkowski/openmrs-contrib-uicommons)[![Codacy Badge](https://api.codacy.com/project/badge/grade/29072e64c3ca4a9c9b0338c3cb5b272a)](https://www.codacy.com/app/pawel-gutkowski-1993/openmrs-contrib-uicommons)
+
 This repository contains the Reference Application UI library.
 
 It contains common utilities for developing OpenMRS UI. 
