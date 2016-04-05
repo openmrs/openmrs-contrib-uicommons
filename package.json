@@ -1,6 +1,6 @@
 {
   "name": "openmrs-contrib-uicommons",
-  "version": "0.3.1",
+  "version": "0.3.5",
   "description": "Common CSS, JS, and HTML snippets",
   "repository": {
     "type": "git",
@@ -73,7 +73,7 @@
     "build:web:prod": "webpack --progress --colors  --mode=production --target=web",
     "build:node": "webpack --progress --colors --mode=dev --target=node",
     "build:node:prod": "webpack --mode=production --target=node",
-    "build": "npm run clean && npm run build:web:prod && npm run build:node:prod",
+    "build": "npm run clean && npm run build:web:prod",
     "dev:web": "npm run clean && webpack --progress --colors --watch --mode=dev --target=web",
     "dev:node": "npm run clean && webpack --progress --colors --watch --mode=dev --target=node",
     "lint": "eslint ./",

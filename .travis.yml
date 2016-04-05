@@ -13,5 +13,4 @@ deploy:
     tags: true
   skip_cleanup: true
   email : pawel.gutkowski.1993@gmail.com
-  api_key:
-    secure: LwnLfvm/M8UV4rwsbYt3s3SA5u4mXSnDZ/FJyDfQVpfpow5PkjK0MSv8rhh7tKLAozs84tVjPUKW9lDIElgO/05L1Dz/6tfdt7nsAuJ6aAKhozktQ4DEoltP6NL+KDFZQB5C1v2/MMw+cnHnGsAmqtBAwxwSjqRfgUFyuP45qvmBvntOF62qoESQWbgCo+GI6mza84ML4cZmWOqWwg0VSxPy+3jnCnt7HTbIga1a4+qd8A4sbZ530xewMzFksffOjXBKPDyVdAZ1mltVNRhk9vMolg+gFmiXBtzgBHA1fu96jyJbTz24TycQwLaDrBWbaTERnFRZNuHdJCbWLHTc4SnPxCfVFvYtu6rZ+Ch4jEyPakT1awx+KVwOW+dpBGELJQxqwY+TnTnEIRoNYLM3xHBbCgUg1Ks0HhtYYFUJUmTJf8CU76wV6N4w3UgCYVk6O+7L79BPIb12wkRMs6ZVPZZpVZHXXaoDYVU/KaRrANzoAvGAaRlENMN0Cz42lITYBOyqrPu4LlKYKsLWSsaJQjOI58bBjcX0sq6eJwwg4qLRL/K0Z8muSAwi2dN1XW3ZhYINL+JBJ+x5VTca0WhebFGQevjT+AVcVuB89LTRLcLJeAVKBmUNFRL4yIHwGgMjZmm/Tjgl6DcKeQe0RdjbCrgoDgF396/aGe4J/NlhS/I=
+  api_key: $NPM_API_KEY

@@ -37,6 +37,7 @@ if (env === 'production') {
       comments: false,
     },
     minimize: true,
+    sourceMap: false
   }));
   outputFile = `${outputFile}.min.js`;
 } else if (env === 'dev') {
