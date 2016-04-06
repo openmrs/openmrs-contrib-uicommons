@@ -13,4 +13,5 @@ deploy:
     tags: true
   skip_cleanup: true
   email : pawel.gutkowski.1993@gmail.com
-  api_key: $NPM_API_KEY
+  api_key:
+    secure: $API_KEY
