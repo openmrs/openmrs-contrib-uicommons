@@ -11,8 +11,8 @@ It contains common utilities for developing OpenMRS UI.
 
 To get this library You can: 
 - Clone the repo: `git clone https://github.com/PawelGutkowski/openmrs-contrib-refapp-ui-lib/tree/v0.1.5`.
-- Install with Bower: `bower install openmrs-contrib-refapp-ui-lib --save`.
-- Install with npm: `npm install openmrs-contrib-refapp-ui-lib`.
+- Install with Bower: `bower install openmrs-contrib-uicommons --save`.
+- Install with npm: `npm install openmrs-contrib-uicommons --save`.
 
 ## What's included
 
@@ -50,7 +50,7 @@ function controller() {
 And insert component in html file, binding appTitle variable to it:
 
 ````
-<html ng-app="conceptDictionaryApp">
+<html ng-app="YourAngularModule">
   	<div ng-controller="controller as vm">
 		<openmrs-header title="vm.appTitle"></openmrs-header>
 	</div>
@@ -81,7 +81,7 @@ function controller() {
 And insert component in html file, binding links variable to it:
 
 ````
-<html ng-app="conceptDictionaryApp">
+<html ng-app="YourAngularModule">
   	<div ng-controller="controller as vm">
 		<openmrs-breadcrumbs links="vm.links"></openmrs-breadcrumbs>
 	</div>
