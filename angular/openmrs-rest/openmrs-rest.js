@@ -26,7 +26,14 @@ function openmrsApi($resource, $window) {
 		defaultConfig: {
 			uuid: '@uuid'
 		},
-		extraMethods: {},
+		extraActions: {
+			get: {
+				method: 'GET',
+				headers: {
+					'Disable-WWW-Authenticate': 'true'
+				}
+			}
+		},
 		add: add
 	};
 
@@ -58,9 +65,9 @@ function openmrsApi($resource, $window) {
 		}
 
 		// If we supply a method configuration, use that instead of the default extra.
-		var methods = config.methods || openmrsApi.extraMethods;
+		var actions = config.actions || openmrsApi.extraActions;
 
-		openmrsApi[config.resource] = $resource(url, params, methods);
+		openmrsApi[config.resource] = $resource(url, params, actions);
 	}
 
 	function getOpenmrsContextPath() {
@@ -68,8 +75,6 @@ function openmrsApi($resource, $window) {
 		return pathname.substring(0, pathname.indexOf('/owa/'));
 	}
 }
-
-
 
 
 function openmrsRest() {
@@ -90,9 +95,9 @@ function openmrsRest() {
 			return openmrsRest.get(resource, query);
 		}]
 	}
-	
-	provideOpenmrsRest.$inject = ['$document'];
-	function provideOpenmrsRest(openmrsApi, $document) {
+
+	provideOpenmrsRest.$inject = ['$document', '$location', '$window'];
+	function provideOpenmrsRest(openmrsApi, $document, $location, $window) {
 		var openmrsRest = {
 			list: list,
 			listFull: listFull,
@@ -114,6 +119,8 @@ function openmrsRest() {
 			openmrsApi.add(resource);
 			return openmrsApi[resource].get(query).$promise.then(function (response) {
 				return new PartialList(response, $document);
+			}, function(error){
+				return redirectToLogin(error)
 			});
 		}
 
@@ -122,6 +129,8 @@ function openmrsRest() {
 			query = addMode(query, 'full');
 			return openmrsApi[resource].get(query).$promise.then(function (response) {
 				return new PartialList(response, $document);
+			}, function(error){
+				return redirectToLogin(error)
 			});
 		}
 
@@ -130,6 +139,8 @@ function openmrsRest() {
 			query = addMode(query, 'ref');
 			return openmrsApi[resource].get(query).$promise.then(function (response) {
 				return new PartialList(response, $document);
+			}, function(error){
+				return redirectToLogin(error)
 			});
 		}
 
@@ -185,6 +196,19 @@ function openmrsRest() {
 				return {v: type};
 			} else {
 				return angular.extend(query, {v: type});
+			}
+		}
+
+		function getOpenmrsContextPath() {
+			var pathname = $window.location.pathname;
+			return pathname.substring(0, pathname.indexOf('/owa/'));
+		}
+
+		function redirectToLogin(error){
+			if(error.status === 401 || error.status === 404){
+				var url = getOpenmrsContextPath() + '/login.htm?referer_url=' + $window.location.href
+				$window.location.href = url
+				return {results: []}
 			}
 		}
 	}
