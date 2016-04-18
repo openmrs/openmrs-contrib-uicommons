@@ -4,6 +4,17 @@ header {
   color: #CCC;
   line-height: 1em;
   @include border-radius(5px);
+  
+  	.app-title {
+    display: block;
+    float: right;
+    color: #eeeeee;
+    font-size: 32px;
+    margin: 4px;
+    height: 100%;
+    padding-top: 12px;
+    padding-right: 5px;
+	}
 
   &:before,
   &:after {

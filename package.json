@@ -11,7 +11,6 @@
   "dependencies": {
     "angular": "1.5.x",
     "angular-resource": "1.5.x",
-    "compass-mixins": "^0.12.7",
     "del": "^2.2.0",
     "wiredep": "^3.0.0"
   },
@@ -57,9 +56,10 @@
   },
   "scripts": {
     "clean": "rimraf lib && rimraf coverage*",
-    "build:web:dev": "webpack --progress --colors --mode=dev --target=web",
-    "build:web:prod": "webpack --progress --colors  --mode=production --target=web",
-    "build": "npm run clean && npm run build:web:prod",
+    "build:dev": "webpack --progress --colors --mode=dev --target=web",
+    "build:prod": "webpack --progress --colors  --mode=production --target=web",
+    "build:test": "npm run clean && npm run test && npm run build:prod",
+    "build": "npm run clean && npm run build:prod",
     "test": "karma start --singleRun=true",
     "test:debug": "karma start",
     "lint": "eslint ./",
