@@ -7,7 +7,7 @@ const env = require('yargs').argv.mode;
 const target = require('yargs').argv.target;
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
 
-const libraryName = 'OpenMRS contrib uicommons library';
+const libraryName = 'openmrs-contrib-uicommons';
 const fileName = 'openmrs-contrib-uicommons';
 
 const plugins = [];
@@ -18,16 +18,6 @@ let outputFile;
 /** Don't bundle dependencies for node module */
 if (target === 'web') {
   outputFile = `${fileName}.bundle`;
-} else if (target === 'node') {
-  outputFile = fileName;
-
-  fs.readdirSync('node_modules')
-    .filter(x =>
-      ['.bin'].indexOf(x) === -1
-    )
-    .forEach(mod => {
-      nodeModules[mod] = `commonjs ${mod}`;
-    });
 }
 
 /** Minify for production */
@@ -36,8 +26,12 @@ if (env === 'production') {
     output: {
       comments: false,
     },
+    mangle: false,
     minimize: true,
-    sourceMap: false
+    sourceMap: false,
+    compress: {
+        warnings: false
+    }
   }));
   outputFile = `${outputFile}.min.js`;
 } else if (env === 'dev') {
@@ -50,7 +44,9 @@ plugins.push(new webpack.DefinePlugin({
 }));
 
 const config = {
-  entry: `${__dirname}/index.js`,
+  entry: {
+	  app : `${__dirname}/openmrs-contrib-uicommons.js`
+  },
   devtool: 'source-map',
   target,
   output: {
