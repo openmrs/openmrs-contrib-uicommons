@@ -66,7 +66,8 @@ const config = {
 	    loader: ['css', 'style']
 	}, {
 	    test: /\.(png|jpg|jpeg|gif|svg)$/,
-	    loader: 'url'
+	    loaders: ['url', 
+	              'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false']
 	}, {
 	    test: /\.html$/,
 	    loader: 'html'
