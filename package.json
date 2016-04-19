@@ -35,6 +35,7 @@
     "faux-jax": "^5.0.1",
     "file-loader": "^0.8.5",
     "html-loader": "^0.4.3",
+    "image-webpack-loader": "^1.7.0",
     "imports-loader": "^0.6.5",
     "jasmine": "^2.4.1",
     "json-loader": "^0.5.4",
