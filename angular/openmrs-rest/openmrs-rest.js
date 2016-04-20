@@ -32,6 +32,18 @@ function openmrsApi($resource, $window) {
 				headers: {
 					'Disable-WWW-Authenticate': 'true'
 				}
+			},
+			save: {
+				method: 'POST',
+				headers: {
+					'Disable-WWW-Authenticate': 'true'
+				}
+			},
+			remove: {
+				method: 'DELETE',
+				headers: {
+					'Disable-WWW-Authenticate': 'true'
+				}
 			}
 		},
 		add: add
@@ -96,8 +108,8 @@ function openmrsRest() {
 		}]
 	}
 
-	provideOpenmrsRest.$inject = ['$document', '$location', '$window'];
-	function provideOpenmrsRest(openmrsApi, $document, $location, $window) {
+	provideOpenmrsRest.$inject = ['$document', '$window'];
+	function provideOpenmrsRest(openmrsApi, $document, $window) {
 		var openmrsRest = {
 			list: list,
 			listFull: listFull,
@@ -146,39 +158,67 @@ function openmrsRest() {
 
 		function get(resource, query) {
 			openmrsApi.add(resource);
-			return openmrsApi[resource].get(query).$promise;
+			return openmrsApi[resource].get(query).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function getFull(resource, query) {
 			openmrsApi.add(resource);
 			query = addMode(query, 'full');
-			return openmrsApi[resource].get(query).$promise;
+			return openmrsApi[resource].get(query).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function getRef(resource, query) {
 			openmrsApi.add(resource);
 			query = addMode(query, 'ref');
-			return openmrsApi[resource].get(query).$promise;
+			return openmrsApi[resource].get(query).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function create(resource, model) {
 			openmrsApi.add(resource);
-			return openmrsApi[resource].save(model).$promise;
+			return openmrsApi[resource].save(model).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function update(resource, query, model) {
 			openmrsApi.add(resource);
-			return openmrsApi[resource].save(query, model).$promise;
+			return openmrsApi[resource].save(query, model).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function remove(resource, query) {
 			openmrsApi.add(resource);
-			return openmrsApi[resource].remove(query).$promise;
+			return openmrsApi[resource].remove(query).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function unretire(resource, query) {
 			openmrsApi.add(resource);
-			return openmrsApi[resource].save(query, {retired: false}).$promise;
+			return openmrsApi[resource].save(query, {retired: false}).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function purge(resource, query) {
@@ -188,7 +228,11 @@ function openmrsRest() {
 			} else {
 				angular.extend(query, {purge: true});
 			}
-			return openmrsApi[resource].remove(query).$promise;
+			return openmrsApi[resource].remove(query).$promise.then(function (response) {
+				return response;
+			}, function(error){
+				return redirectToLogin(error)
+			});
 		}
 
 		function addMode(query, type) {
@@ -208,7 +252,7 @@ function openmrsRest() {
 			if(error.status === 401 || error.status === 404){
 				var url = getOpenmrsContextPath() + '/login.htm?referer_url=' + $window.location.href
 				$window.location.href = url
-				return {results: []}
+				return error
 			}
 		}
 	}
