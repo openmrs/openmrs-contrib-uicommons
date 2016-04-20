@@ -1,0 +1,68 @@
+<div align="center" ng-show="vm.isInitialLoaderImageNotificationVisible()">
+    <!--TODO: Doesnt work on uicommons, insert *.png logo image here-->
+    <!--<img ng-src="{{vm.logo}}" width="64" height="64">-->
+    <br>
+    <span><b>Loading...</b></span>
+</div>
+<table ng-show="!vm.deleteClicked && !vm.isInitialLoaderImageNotificationVisible()">
+    <thead>
+    <tr>
+        <th ng-repeat="column in vm.columns">
+            {{column.label}}
+        </th>
+        <th ng-show="vm.actions.length">
+            Actions
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="data in vm.data.slice(vm.sliceFrom(),vm.sliceTo()) | orderBy: 'retired'">
+        <th ng-repeat="column in vm.columns">
+            {{data[column.property]}}
+        </th>
+        <th ng-show="vm.actions.length">
+            <a ng-repeat="action in vm.actions" ng-show="vm.resolveRetireButtons(data, action.action)">
+                <i class="{{action.icon}}" title="{{action.label}}" ng-click="vm.performAction(data, action.action)">
+                </i>
+            </a>
+        </th>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<div ng-show="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible() && !vm.deleteClicked" align="center">
+    <button ng-disabled="!vm.isFirstPagePossible()" ng-click="vm.firstPage()">First Page</button>
+    <button ng-disabled="!vm.isPrevPagePossible()" ng-click="vm.prevPage()">Previous Page</button>
+    <button ng-disabled="!vm.isNextPagePossible()" ng-click="vm.nextPage()">Next Page</button>
+    <button ng-disabled="!vm.isLastPagePossible()" ng-click="vm.lastPage()">Last Page</button>
+
+    <div align="center">
+        Page <b>{{vm.page}}/{{vm.totalPages()}}</b>
+        <br>
+        Found <b>{{vm.data.length}}</b> entries
+        <br>
+        Displaying <b>{{vm.limit}}</b> entries per page
+    </div>
+
+</div>
+<div align="center" ng-show="vm.isSecondLoaderNotificationVisible() && !vm.deleteClicked">
+    <b>Loading more pages...</b>
+</div>
+
+<div class="dialog" ng-show="vm.deleteClicked">
+    <div class="dialog-header">
+        <h3>Delete confirmation</h3>
+    </div>
+    <div class="dialog-content">
+        <p>Do You want to delete this forever?</p>
+        <br>
+        <button class="cancel" ng-click="vm.updateDeleteConfirmation(false)">
+            Cancel
+        </button>
+        <button class="confirm right" ng-click="vm.updateDeleteConfirmation(true)">
+            Delete
+        </button>
+    </div>
+</div>
