@@ -22,7 +22,7 @@
         </th>
         <th ng-show="vm.actions.length">
             <a ng-repeat="action in vm.actions" ng-show="vm.resolveRetireButtons(data, action.action)">
-                <i class="{{action.icon}}" title="{{action.label}}" ng-click="vm.performAction(data, action.action)">
+                <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action.action)">
                 </i>
             </a>
         </th>

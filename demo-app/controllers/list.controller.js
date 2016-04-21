@@ -11,29 +11,24 @@ export default function ListController(){
             "label": "Name"
         },
         {
-            "property": "description",
-            "label":"Description"
+            "property": "description"
         }];
     vm.actions = [
         {
             "action":"edit",
-            "label":"Edit",
-            "icon":"icon-pencil edit-action left"
+            "label":"Edit"
         },
         {
             "action":"retire",
-            "label":"Retire",
-            "icon":"icon-remove delete-action"
+            "label":"Retire"
         },
         {
             "action":"unretire",
-            "label":"unretire",
-            "icon":"icon-reply edit-action"
+            "label":"unretire"
         },
         {
             "action":"purge",
-            "label":"Delete",
-            "icon":"icon-trash delete-action right"
+            "label":"Delete"
         }
     ];
 }

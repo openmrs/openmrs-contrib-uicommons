@@ -12,7 +12,7 @@ var template = require('./openmrs-list.html');
 //var openmrs = require('../../src/scss/images/inprogress.gif'); //TODO: *.png logo image here
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
 
-export default angular.module('openmrs-contrib-uicommons.openmrs-list', ['openmrs-contrib-uicommons.rest'])
+export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contrib-uicommons.rest'])
     .component('openmrsList', {
         template: template,
         controller: openmrsList,
@@ -39,6 +39,37 @@ function openmrsList(openmrsRest, $location) {
     vm.retireItem ='';
     vm.isThisOnePageSet = false; //Default
 
+    //Default values
+    vm.icon =
+        {
+            edit : "icon-pencil edit-action",
+            retire : "icon-remove delete-action",
+            unretire : "icon-reply edit-action",
+            purge  : "icon-trash delete-action"
+        };
+
+    //Manage custom icons and labels values
+    function resolveCustomIcons() {
+        if (angular.isDefined(vm.actions)) {
+            for (var i = 0; i < vm.actions.length; i++) {
+                if (angular.isDefined(vm.actions[i].icon)) {
+                    vm.icon[vm.actions[i].action] = vm.actions[i].icon;
+                }
+            }
+        }
+    }
+    function resolveCustomLabels() {
+        if (angular.isDefined(vm.columns)) {
+            for (var i = 0; i < vm.columns.length; i++) {
+                if (angular.isUndefined(vm.columns[i].label)) {
+                    vm.columns[i].label = vm.columns[i].property;
+                }
+            }
+        }
+    }
+    resolveCustomIcons();
+    resolveCustomLabels();
+    
     vm.resolveRetireButtons = function(object, activity) {
         return !((object.retired && activity === 'retire')
         || (!object.retired && activity === 'unretire'));
@@ -69,6 +100,8 @@ function openmrsList(openmrsRest, $location) {
         }
         vm.deleteClicked = false;
     };
+    
+    vm.getData = getData;
 
     vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
         if (isConfirmed) {

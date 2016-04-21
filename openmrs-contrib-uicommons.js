@@ -14,9 +14,9 @@ var lib = angular.module('openmrs-contrib-uicommons',
 					'openmrs-contrib-uicommons.breadcrumbs', 
 					'openmrs-contrib-uicommons.rest',
 					'openmrs-contrib-uicommons.concept-autoComplete',
-					'openmrs-contrib-uicommons.openmrs-list',
 					'openmrs-contrib-uicommons.delete-alert',
-					'openmrs-contrib-uicommons.retire-alert'
+					'openmrs-contrib-uicommons.retire-alert',
+					'openmrs-contrib-uicommons.list'
                 ]);
 
 module.exports = {
