@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="DemoApp">
+	<head>
+	    <title>OpenMRS uicommons library DemoApp</title>
+	</head>
+	<header>
+	  	<div ng-controller="HeaderController as vm">
+			<openmrs-header title="vm.appTitle"></openmrs-header>
+		</div>
+	</header>
+	<body>	
+		<div class="dashboard clear">
+			<div class = "info-section">
+				<div class = "info-header"><h2>Header</h2></div>
+			  	<div class="example" ng-controller="HeaderController as vm" style="padding: 20px; border: 1px solid">
+					<openmrs-header title="vm.appTitle"></openmrs-header>
+				</div>
+				<div class = "info-body">
+					<p>description</p>
+				</div>
+			</div>
+			
+			<div class = "info-section">
+				<div class = "info-header"><h2>Breadcrumbs</h2></div>
+				<div ng-controller="BreadcrumbsController as vm" style="padding: 20px; border: 1px solid">	
+					<openmrs-breadcrumbs links="vm.links"></openmrs-breadcrumbs>
+				</div>
+				<div class = "info-body">
+					<p>description</p>
+				</div>
+			</div>
+			
+			<div class = "info-section">
+				<div class = "info-header"><h2>Autocomplete</h2></div>
+				<div ng-controller="AutocompleteController as vm" style="padding: 20px; border: 1px solid">
+					<concept-auto-complete required='false' concept='vm.item' limit-to-drugs='false' on-update='vm.updateConcept(isCorrect, concept)'></concept-auto-complete>
+				</div>
+				<div class = "info-body">
+					<p>description</p>
+				</div>
+			</div>
+			
+			<div class = "info-section">
+				<div class = "info-header"><h2>List</h2></div>
+			<div ng-controller="ListController as vm" style="padding: 20px; border: 1px solid">
+				<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" redirection-param="vm.redirectionParam" limit="vm.limit"></openmrs-list>
+			</div>
+				<div class = "info-body">
+					<p>description</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

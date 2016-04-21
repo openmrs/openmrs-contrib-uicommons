@@ -6,6 +6,8 @@ const fs = require('fs');
 const env = require('yargs').argv.mode;
 const target = require('yargs').argv.target;
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
 const libraryName = 'openmrs-contrib-uicommons';
 const fileName = 'openmrs-contrib-uicommons';
@@ -14,6 +16,21 @@ const plugins = [];
 const nodeModules = {};
 
 let outputFile;
+let outputDir;
+let entry;
+
+var configJson;
+let appEntryPoint;
+let localOwaFolder;
+
+try{
+	configJson = require('./config.json');
+	appEntryPoint = configJson.APP_ENTRY_POINT;
+	localOwaFolder = configJson.LOCAL_OWA_FOLDER;
+} catch(err){
+	appEntryPoint = "http://localhost:8080//openmrs//owa//openmrs-contrib-uicommons//index.html";
+	localOwaFolder = `${__dirname}/dist/`;	
+}
 
 /** Don't bundle dependencies for node module */
 if (target === 'web') {
@@ -22,6 +39,7 @@ if (target === 'web') {
 
 /** Minify for production */
 if (env === 'production') {
+	
   plugins.push(new UglifyPlugin({
     output: {
       comments: false,
@@ -33,9 +51,35 @@ if (env === 'production') {
         warnings: false
     }
   }));
+  
   outputFile = `${outputFile}.min.js`;
+  outputDir = `${__dirname}/lib`;
+  entry = `${__dirname}/openmrs-contrib-uicommons.js`;
 } else if (env === 'dev') {
   outputFile = `${outputFile}.js`;
+  outputDir = `${__dirname}/dist`;
+  entry = `${__dirname}/demo-app/app.module.js`;
+  
+  plugins.push(new HtmlWebpackPlugin({
+	    template: './demo-app/app.html',
+	    inject: 'body'
+	}));
+} else if (env === 'deploy'){
+	outputFile = `${outputFile}.js`;
+	  outputDir = `${localOwaFolder}${libraryName}`;
+	  entry = `${__dirname}/demo-app/app.module.js`;
+	  
+	  plugins.push(new HtmlWebpackPlugin({
+		    template: './demo-app/app.html',
+		    inject: 'body'
+		}));
+	  plugins.push(new BrowserSyncPlugin({
+		    host: 'localhost',
+		    port: 3000,
+		    proxy: {
+		    	target : appEntryPoint
+		    }
+	}));
 }
 
 /** Inject version number */
@@ -44,13 +88,11 @@ plugins.push(new webpack.DefinePlugin({
 }));
 
 const config = {
-  entry: {
-	  app : `${__dirname}/openmrs-contrib-uicommons.js`
-  },
+  entry: entry,
   devtool: 'source-map',
   target,
   output: {
-    path: `${__dirname}/lib`,
+    path: outputDir,
     filename: outputFile,
     library: libraryName,
     libraryTarget: 'umd',
