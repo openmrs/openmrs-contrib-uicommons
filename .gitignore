@@ -7,3 +7,4 @@ bower_components
 .project
 *~
 dist/
+config.json
