@@ -1,4 +1,0 @@
-{
-  "LOCAL_OWA_FOLDER": "/home/user/openmrs/conceptdictionary/owa/",
-  "APP_ENTRY_POINT":"http://localhost:8080/openmrs/owa/openmrs-contrib-uicommons/index.html"
-}
