@@ -11,6 +11,7 @@
   "dependencies": {
     "angular": "1.5.x",
     "angular-resource": "1.5.x",
+    "angular-strap": "^2.3.8",
     "compass-mixins": "^0.12.7",
     "del": "^2.2.0",
     "wiredep": "^3.0.0"
