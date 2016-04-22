@@ -5,9 +5,10 @@ const path = require('path');
 const fs = require('fs');
 const env = require('yargs').argv.mode;
 const target = require('yargs').argv.target;
+
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const libraryName = 'openmrs-contrib-uicommons';
 const fileName = 'openmrs-contrib-uicommons';

@@ -9,8 +9,10 @@
  */
 var template = require('./openmrs-conceptAutocomplete.html');
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
+import templateUrlLoader from 'template-url-loader';
+import angularStrap from 'template-url-loader?path=../src/!angular-strap';
 
-export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', ['openmrs-contrib-uicommons.rest'])
+export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', ['openmrs-contrib-uicommons.rest', 'mgcrea.ngStrap.typeahead'])
 						.component('conceptAutoComplete', {
 							  template: template,
 							  controller: conceptAutoComplete,
