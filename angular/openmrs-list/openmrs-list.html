@@ -51,18 +51,4 @@
     <b>Loading more pages...</b>
 </div>
 
-<div class="dialog" ng-show="vm.deleteClicked">
-    <div class="dialog-header">
-        <h3>Delete confirmation</h3>
-    </div>
-    <div class="dialog-content">
-        <p>Do You want to delete this forever?</p>
-        <br>
-        <button class="cancel" ng-click="vm.updateDeleteConfirmation(false)">
-            Cancel
-        </button>
-        <button class="confirm right" ng-click="vm.updateDeleteConfirmation(true)">
-            Delete
-        </button>
-    </div>
-</div>
+<delete-alert ng-show="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)"></delete-alert>
