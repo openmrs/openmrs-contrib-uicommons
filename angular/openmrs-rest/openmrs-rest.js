@@ -93,7 +93,9 @@ function openmrsRest() {
 	return {
 		list: provideList,
 		get: provideGet,
-		$get: provideOpenmrsRest,
+		$get: ['openmrsApi', '$document', '$window', function(openmrsApi, $document, $window){
+			return provideOpenmrsRest(openmrsApi, $document, $window);
+		}]
 	};
 
 	function provideList(resource, query) {
@@ -108,7 +110,6 @@ function openmrsRest() {
 		}]
 	}
 
-	provideOpenmrsRest.$inject = ['$document', '$window'];
 	function provideOpenmrsRest(openmrsApi, $document, $window) {
 		var openmrsRest = {
 			list: list,

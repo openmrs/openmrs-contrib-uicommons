@@ -45,7 +45,6 @@ if (env === 'production') {
     output: {
       comments: false,
     },
-    mangle: false,
     minimize: true,
     sourceMap: false,
     compress: {
