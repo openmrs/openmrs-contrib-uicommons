@@ -1,0 +1,22 @@
+<div class="dialog">
+    <div class="dialog-header">
+        <h3>Delete confirmation</h3>
+    </div>
+    <div class="dialog-content">
+        <p align="center">Do You want to retire this?</p>
+        <br>
+
+        <div align="center">
+            <textarea ng-model="vm.retireReason"></textarea>
+        </div>
+
+        <br>
+
+        <button class="cancel" ng-click="vm.confirm(false)">
+            Cancel
+        </button>
+        <button class="confirm right" ng-disabled="!vm.retireReason" ng-click="vm.confirm(true)">
+            Retire
+        </button>
+    </div>
+</div>

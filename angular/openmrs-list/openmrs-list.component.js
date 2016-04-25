@@ -35,6 +35,8 @@ function openmrsList(openmrsRest, $location) {
     vm.data = [];
     vm.deleteClicked = false;
     vm.deleteItem = '';
+    vm.retireClicked = false;
+    vm.retireItem ='';
     vm.isThisOnePageSet = false; //Default
 
     vm.resolveRetireButtons = function(object, activity) {
@@ -48,13 +50,13 @@ function openmrsList(openmrsRest, $location) {
             edit(object);
         }
         else if (activity === 'retire') {
-            retire(object);
+            showRetireAlert(object);
         }
         else if (activity === 'unretire') {
             unretire(object);
         }
         else if (activity === 'purge') {
-            showAlert(object);
+            showDeleteAlert(object);
         }
         else {
             console.log('There is no action for activity  \"' + activity + '\"')
@@ -66,6 +68,14 @@ function openmrsList(openmrsRest, $location) {
             purge(vm.deleteItem);
         }
         vm.deleteClicked = false;
+    };
+
+    vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
+        if (isConfirmed) {
+            //TODO: Do something with reason and retire
+            retire(vm.retireItem);
+        }
+        vm.retireClicked = false;
     };
 
     function getData(listAll) {
@@ -131,9 +141,14 @@ function openmrsList(openmrsRest, $location) {
         $location.path(vm.redirectionParam + '/' + item.uuid);
     }
 
-    function showAlert(item) {
+    function showDeleteAlert(item) {
         vm.deleteItem = item;
         vm.deleteClicked = true;
+    }
+
+    function showRetireAlert(item) {
+        vm.retireItem = item;
+        vm.retireClicked = true;
     }
 
     //Paging logic:
