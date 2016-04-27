@@ -12,7 +12,7 @@ var template = require('./openmrs-list.html');
 //var openmrs = require('../../src/scss/images/inprogress.gif'); //TODO: *.png logo image here
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
 
-export default angular.module('openmrs-contrib-uicommons.openmrs-list', ['openmrs-contrib-uicommons.rest'])
+export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contrib-uicommons.rest'])
     .component('openmrsList', {
         template: template,
         controller: openmrsList,
@@ -35,8 +35,41 @@ function openmrsList(openmrsRest, $location) {
     vm.data = [];
     vm.deleteClicked = false;
     vm.deleteItem = '';
+    vm.retireClicked = false;
+    vm.retireItem ='';
     vm.isThisOnePageSet = false; //Default
 
+    //Default values
+    vm.icon =
+        {
+            edit : "icon-pencil edit-action",
+            retire : "icon-remove delete-action",
+            unretire : "icon-reply edit-action",
+            purge  : "icon-trash delete-action"
+        };
+
+    //Manage custom icons and labels values
+    function resolveCustomIcons() {
+        if (angular.isDefined(vm.actions)) {
+            for (var i = 0; i < vm.actions.length; i++) {
+                if (angular.isDefined(vm.actions[i].icon)) {
+                    vm.icon[vm.actions[i].action] = vm.actions[i].icon;
+                }
+            }
+        }
+    }
+    function resolveCustomLabels() {
+        if (angular.isDefined(vm.columns)) {
+            for (var i = 0; i < vm.columns.length; i++) {
+                if (angular.isUndefined(vm.columns[i].label)) {
+                    vm.columns[i].label = vm.columns[i].property;
+                }
+            }
+        }
+    }
+    resolveCustomIcons();
+    resolveCustomLabels();
+    
     vm.resolveRetireButtons = function(object, activity) {
         return !((object.retired && activity === 'retire')
         || (!object.retired && activity === 'unretire'));
@@ -48,13 +81,13 @@ function openmrsList(openmrsRest, $location) {
             edit(object);
         }
         else if (activity === 'retire') {
-            retire(object);
+            showRetireAlert(object);
         }
         else if (activity === 'unretire') {
             unretire(object);
         }
         else if (activity === 'purge') {
-            showAlert(object);
+            showDeleteAlert(object);
         }
         else {
             console.log('There is no action for activity  \"' + activity + '\"')
@@ -66,6 +99,16 @@ function openmrsList(openmrsRest, $location) {
             purge(vm.deleteItem);
         }
         vm.deleteClicked = false;
+    };
+    
+    vm.getData = getData;
+
+    vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
+        if (isConfirmed) {
+            //TODO: Do something with reason and retire
+            retire(vm.retireItem);
+        }
+        vm.retireClicked = false;
     };
 
     function getData(listAll) {
@@ -131,9 +174,14 @@ function openmrsList(openmrsRest, $location) {
         $location.path(vm.redirectionParam + '/' + item.uuid);
     }
 
-    function showAlert(item) {
+    function showDeleteAlert(item) {
         vm.deleteItem = item;
         vm.deleteClicked = true;
+    }
+
+    function showRetireAlert(item) {
+        vm.retireItem = item;
+        vm.retireClicked = true;
     }
 
     //Paging logic:

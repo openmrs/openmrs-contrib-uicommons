@@ -4,7 +4,7 @@
     <br>
     <span><b>Loading...</b></span>
 </div>
-<table ng-show="!vm.deleteClicked && !vm.isInitialLoaderImageNotificationVisible()">
+<table ng-show="!vm.deleteClicked && !vm.retireClicked && !vm.isInitialLoaderImageNotificationVisible()">
     <thead>
     <tr>
         <th ng-repeat="column in vm.columns">
@@ -22,7 +22,7 @@
         </th>
         <th ng-show="vm.actions.length">
             <a ng-repeat="action in vm.actions" ng-show="vm.resolveRetireButtons(data, action.action)">
-                <i class="{{action.icon}}" title="{{action.label}}" ng-click="vm.performAction(data, action.action)">
+                <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action.action)">
                 </i>
             </a>
         </th>
@@ -52,3 +52,4 @@
 </div>
 
 <delete-alert ng-show="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)"></delete-alert>
+<retire-alert ng-show="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)"></retire-alert>
