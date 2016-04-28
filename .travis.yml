@@ -12,10 +12,10 @@ install:
 script:
 - npm run build:test
 deploy:
+  skip_cleanup: true
   provider: npm
   on: 
     tags: true
-  skip_cleanup: true
   email : pawel.gutkowski.1993@gmail.com
   api_key:
     secure: $API_KEY
