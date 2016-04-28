@@ -212,10 +212,21 @@ function openmrsList(openmrsRest, $location) {
         vm.page = 1;
     }
     function lastPage() {
-        vm.page = Math.floor(vm.data.length / vm.limit) + 1;
+        if (vm.data.length % vm.limit == 0) {
+            vm.page = Math.floor(vm.data.length / vm.limit);
+        }
+        else {
+            vm.page = Math.floor(vm.data.length / vm.limit) + 1;
+        }
     }
     function totalPages() {
-        return Math.floor(vm.data.length / vm.limit) + 1;
+
+        if (vm.data.length % vm.limit == 0) {
+            return Math.floor(vm.data.length / vm.limit);
+        }
+        else {
+            return Math.floor(vm.data.length / vm.limit) + 1;
+        }
     }
 
     //ng-disabled logic
@@ -228,13 +239,18 @@ function openmrsList(openmrsRest, $location) {
         return vm.page > 1;
     }
     function isNextPagePossible() {
-        return vm.sliceTo() <= vm.data.length;
+        return vm.sliceTo() < vm.data.length;
     }
     function isFirstPagePossible() {
         return vm.page > 1
     }
     function isLastPagePossible() {
-        return vm.page < Math.floor(vm.data.length / vm.limit) + 1;
+        if (vm.data.length % vm.limit == 0) {
+            return vm.page < Math.floor(vm.data.length / vm.limit);
+        }
+        else {
+            return vm.page < Math.floor(vm.data.length / vm.limit) + 1;
+        }
     }
 
     //ng-show logic
