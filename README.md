@@ -20,6 +20,7 @@ It contains common utilities for developing OpenMRS UI.
 * [List Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#list-component)
 * [Production Build](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#production-build)
 * [Development](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#development)
+* [Release Procedure](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#release-procedure)
 * [License](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#license)
 
 ## Quick Start
@@ -259,6 +260,22 @@ npm run watch
 
 While it runs, it watches all files for changes and automatically updates your browser.
 
+##Release Procedure
+
+To release new version of Openmrs-contrib-uicommons, run from master branch:
+````sh
+npm version patch
+````
+It will automatically increment package version in package.json file, create git release commit and tag with names corresponding to current version. Then push tags:
+````sh
+git push --tags remote_repo_name
+````
+where 'remote_repo_name' refers to https://github.com/PawelGutkowski/openmrs-contrib-uicommons.git.
+
+Tag will be automatically built on Travis-CI and deployed to npm. To keep adequate package version on remote repository, push release commit to master branch.
+````sh
+git push remote_repo_name master
+````
 
 ## License
 
