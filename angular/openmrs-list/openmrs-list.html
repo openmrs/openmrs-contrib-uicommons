@@ -18,7 +18,10 @@
     <tbody>
     <tr ng-repeat="data in vm.data.slice(vm.sliceFrom(),vm.sliceTo()) | orderBy: 'retired'">
         <th ng-repeat="column in vm.columns">
-            {{data[column.property]}}
+
+            <span ng-show="data.retired"><del>{{data[column.property]}}</del></span>
+            <span ng-show="!data.retired">{{data[column.property]}}</span>
+
         </th>
         <th ng-show="vm.actions.length">
             <a ng-repeat="action in vm.actions" ng-show="vm.resolveRetireButtons(data, action.action)">
@@ -32,7 +35,7 @@
 
 <br>
 
-<div ng-show="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible() && !vm.deleteClicked" align="center">
+<div ng-show="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible() && !vm.deleteClicked && !vm.retireClicked" align="center">
     <button ng-disabled="!vm.isFirstPagePossible()" ng-click="vm.firstPage()">First Page</button>
     <button ng-disabled="!vm.isPrevPagePossible()" ng-click="vm.prevPage()">Previous Page</button>
     <button ng-disabled="!vm.isNextPagePossible()" ng-click="vm.nextPage()">Next Page</button>
