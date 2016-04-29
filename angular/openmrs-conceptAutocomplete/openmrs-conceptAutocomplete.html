@@ -3,5 +3,4 @@
 			class="form-control" ng-change="$ctrl.search()" bs-options="concept.display for concept in $ctrl.suggestions" 
 			data-watch-options="true" bs-typeahead ng-required='$ctrl.required'>
 	<span ng-show='!$ctrl.isCorrect'>This concept does not exist</span>
-	<span ng-show='conceptInput.$invalid'>This field is required</span>
 </form>

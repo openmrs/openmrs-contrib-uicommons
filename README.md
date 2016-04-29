@@ -146,7 +146,7 @@ angular.module('YourAngularModule').controller('controller', controller);
 function controller() {
 	var vm = this; 
 	vm.required = false; //if truthy, input box will be required
-	vm.limitToDrugs = false; //if truthy, component will search only drug concepts
+	vm.limitToClass = 'Drug'; //component will search only drug concepts
 	vm.isConceptCorrect;	//flag, if current query matches any concept name
 	vm.updateConcept = updateConcept;
 	//item is object with property "display", which is passed to component at activation (make it empty if there has to be no initial state)
@@ -166,7 +166,7 @@ And insert component in html file, binding variables to it:
 ````html
 <html ng-app="YourAngularModule">
   	<div ng-controller="controller as vm">
-		<concept-auto-complete required='vm.required' concept='vm.item' limit-to-drugs='vm.limitToDrugs' on-update='vm.updateConcept(isCorrect, concept)'>
+		<concept-auto-complete required='vm.required' concept='vm.item' limit-to-class='vm.limitToClass' on-update='vm.updateConcept(isCorrect, concept)'>
 		</concept-auto-complete>
 	</div>
 </html>
