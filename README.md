@@ -11,15 +11,17 @@ It contains common utilities for developing OpenMRS UI.
 
 * [Quick Start](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#quick-start)
 * [What's Included](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#whats-included)
-* [Stylesheets](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#stylesheets)
-* [Angular](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#angular)
-* [OpenMRS Rest Module](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#openmrs-rest-module)
-* [Header Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#header-component)
-* [Breadcrumbs Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#breadcrumbs-component)
-* [Concept Autocomplete Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#concept-autocomplete-component)
-* [List Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#list-component)
+	* [Stylesheets](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#stylesheets)
+	* [Angular](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#angular)
+		* [OpenMRS Rest Module](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#openmrs-rest-module)
+		* [Header Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#header-component)
+		* [Breadcrumbs Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#breadcrumbs-component)
+		* [Concept Autocomplete Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#concept-autocomplete-component)
+		* [List Component](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#list-component)
 * [Production Build](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#production-build)
 * [Development](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#development)
+	* [Demo Application](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#demo-application)
+	* [External Client Application](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#external-client-application)
 * [Release Procedure](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#release-procedure)
 * [License](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#license)
 
@@ -233,6 +235,8 @@ This will create a `lib` directory, which will contain Your bundled library file
 
 ##Development
 
+###Demo Application
+
 To create development environment, first You have to install dependencies as described in [Production Build](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#production-build). Project contains demo app, where You can see components and modules in action. To use it, You have to run OpenMRS server locally with Open Web Apps and Webservices modules. You can find how to do that [here](https://github.com/rkorytkowski/openmrs-owa-conceptdictionary#setup-openmrs-server).
 
 To deploy directly to your local Open Web Apps directory, run:
@@ -259,6 +263,25 @@ npm run watch
 ````
 
 While it runs, it watches all files for changes and automatically updates your browser.
+
+###External Client Application
+
+You can develop and test Openmrs-contrib-uicommons in other application, using npm [link feature](https://docs.npmjs.com/cli/link). In order to do this, You just need to run  
+````sh
+npm link
+````
+in Your openmrs-contrib-uicommons directory. Npm will add link to this package to its global node_modules. Then run
+````sh
+npm link openmrs-contrib-uicommons
+````
+in Your client application directory. From now on, every change You make in uicommons will be reflected in client application node_modules. To break the link, in client directory run
+````sh
+npm unlink openmrs-contrib-uicommons
+````
+To unlink openmrs-contrib uicommons, in its directory run
+````sh
+npm unlink
+````
 
 ##Release Procedure
 
