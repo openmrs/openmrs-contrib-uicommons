@@ -5,8 +5,10 @@ import breadcrumbs from './angular/openmrs-breadcrumbs/openmrs-breadcrumbs.compo
 import conceptAutocomplete from './angular/openmrs-conceptAutocomplete/openmrs-conceptAutocomplete.component.js';
 import openmrsRest from './angular/openmrs-rest/openmrs-rest.js';
 import openmrsList from './angular/openmrs-list/openmrs-list.component.js';
+import openmrsSearch from './angular/openmrs-search/openmrs-search.component.js';
 import deleteAlert from './angular/openmrs-deleteAlert/delete-alert.component.js';
 import retireAlert from './angular/openmrs-retireAlert/retire-alert.component';
+
 
 var lib = angular.module('openmrs-contrib-uicommons',
 				[
@@ -16,7 +18,8 @@ var lib = angular.module('openmrs-contrib-uicommons',
 					'openmrs-contrib-uicommons.concept-autoComplete',
 					'openmrs-contrib-uicommons.delete-alert',
 					'openmrs-contrib-uicommons.retire-alert',
-					'openmrs-contrib-uicommons.list'
+					'openmrs-contrib-uicommons.list',
+					'openmrs-contrib-uicommons.search'
                 ]);
 
 module.exports = {
@@ -26,6 +29,7 @@ module.exports = {
 	conceptautocomplete : conceptAutocomplete,
 	openmrsRest : openmrsRest,
 	openmrsList : openmrsList,
+	openmrsSearch : openmrsSearch,
 	deleteAlert : deleteAlert,
 	retireAlert : retireAlert,
 	lib : lib
