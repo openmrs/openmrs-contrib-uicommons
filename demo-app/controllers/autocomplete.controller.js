@@ -2,7 +2,8 @@ AutocompleteController.$inject = [];
 
 export default function AutocompleteController(){
 	var vm = this;
-	vm.isConceptCorrect;	
+	vm.isConceptCorrect;
+	vm.limitToClass = 'Drug';
 	vm.updateConcept = updateConcept;
 	
 	vm.item = {

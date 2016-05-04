@@ -33,7 +33,7 @@
 			<div class = "info-section">
 				<div class = "info-header"><h2>Autocomplete</h2></div>
 				<div ng-controller="AutocompleteController as vm" style="padding: 20px; border: 1px solid">
-					<concept-auto-complete required='false' concept='vm.item' limit-to-drugs='false' on-update='vm.updateConcept(isCorrect, concept)'></concept-auto-complete>
+					<concept-auto-complete required='false' concept='vm.item' limit-to-class='vm.limitToClass' on-update='vm.updateConcept(isCorrect, concept)'></concept-auto-complete>
 				</div>
 				<div class = "info-body">
 					<p>description</p>

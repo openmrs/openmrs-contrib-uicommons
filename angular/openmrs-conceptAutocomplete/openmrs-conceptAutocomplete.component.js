@@ -16,7 +16,7 @@ export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', 
 							  template: template,
 							  controller: conceptAutoComplete,
 							  bindings: {
-							    limitToDrugs: '<',
+							    limitToClass: '<',
 							    required: '<',
 							    concept: '<',
 							    onUpdate: '&' 
@@ -95,7 +95,7 @@ function conceptAutoComplete(openmrsRest){
 			openmrsRest.listFull('concept',{q: display, includeAll: true}).then(function (response){
 				vm.concepts = response.results;
 				for(var i=0; i<vm.concepts.length; i++){
-					if((!vm.limitToDrugs) || (vm.concepts[i].conceptClass.display === 'Drug' && vm.limitToDrugs)){
+					if((!vm.limitToClass) || (vm.concepts[i].conceptClass.display === vm.limitToClass && vm.limitToClass)){
 						vm.suggestions.push(vm.concepts[i]);
 						maxResults +=1;
 						if(maxResults == 5){
