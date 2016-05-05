@@ -43,7 +43,7 @@
 			<div class = "info-section">
 				<div class = "info-header"><h2>List</h2></div>
 			<div ng-controller="ListController as vm" style="padding: 20px; border: 1px solid">
-				<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" redirection-param="vm.redirectionParam" limit="vm.limit"></openmrs-list>
+				<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" list-all="true"></openmrs-list>
 			</div>
 				<div class = "info-body">
 					<p>description</p>
@@ -53,7 +53,7 @@
 			<div class = "info-section">
 				<div class = "info-header"><h2>Search</h2></div>
 				<div ng-controller="SearchController as vm" style="padding: 20px; border: 1px solid">
-					<openmrs-search resource="vm.resource" columns-main="vm.columnsMain" columns-details="vm.columnsDetails" type="vm.type" redirection-param="vm.redirectionParam"></openmrs-search>
+					<openmrs-list resource="vm.resource" columns="vm.columns" search-panel="true" list-all="true" type="vm.type" actions="vm.actions"></openmrs-list>
 				</div>
 				<div class = "info-body">
 					<p>description</p>
