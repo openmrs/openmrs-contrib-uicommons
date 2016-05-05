@@ -45,7 +45,8 @@ function openmrsList(openmrsRest, $location) {
             edit : "icon-pencil edit-action",
             retire : "icon-remove delete-action",
             unretire : "icon-reply edit-action",
-            purge  : "icon-trash delete-action"
+            purge  : "icon-trash delete-action",
+            view : "icon-eye-open edit-action"
         };
 
     //Manage custom icons and labels values
