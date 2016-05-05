@@ -49,6 +49,16 @@
 					<p>description</p>
 				</div>
 			</div>
+
+			<div class = "info-section">
+				<div class = "info-header"><h2>Search</h2></div>
+				<div ng-controller="SearchController as vm" style="padding: 20px; border: 1px solid">
+					<openmrs-search resource="vm.resource" columns-main="vm.columnsMain" columns-details="vm.columnsDetails" type="vm.type" redirection-param="vm.redirectionParam"></openmrs-search>
+				</div>
+				<div class = "info-body">
+					<p>description</p>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
