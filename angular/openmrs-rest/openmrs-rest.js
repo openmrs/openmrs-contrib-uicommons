@@ -251,8 +251,11 @@ function openmrsRest() {
 
 		function redirectToLogin(error){
 			if(error.status === 401 || error.status === 404){
-				var url = getOpenmrsContextPath() + '/login.htm?referer_url=' + $window.location.href
-				$window.location.href = url
+				var url = $window.location.href;
+				url = url.replace('#','_HASHTAG_');
+				url = url.slice(url.indexOf("/openmrs"));
+				url = getOpenmrsContextPath() + '/login.htm?redirect_url=' + url;
+				$window.location.href = url;
 				return error
 			}
 		}
