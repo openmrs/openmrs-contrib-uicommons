@@ -274,7 +274,10 @@ in Your openmrs-contrib-uicommons directory. Npm will add link to this package t
 ````sh
 npm link openmrs-contrib-uicommons
 ````
-in Your client application directory. From now on, every change You make in uicommons will be reflected in client application node_modules. To break the link, in client directory run
+in Your client application directory. From now on, every change You make in uicommons will be reflected in client application node_modules. Remember to build openmrs-contrib-uicommons, as client code use bundle from lib/ directory and then build Your application.
+
+
+To break the link, in client directory run
 ````sh
 npm unlink openmrs-contrib-uicommons
 ````
