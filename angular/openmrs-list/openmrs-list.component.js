@@ -22,7 +22,7 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             columns: '<',
             type: '<',
             actions: '<',
-            searchPanel: '<',
+            enableSearch: '<',
             limit: '<',
             listAll: '<',
             viewable: '<'
@@ -76,11 +76,11 @@ function openmrsList(openmrsRest, $scope, $location) {
         vm.actionsBackup = vm.getActions();
         vm.getSearchPanel = getSearchPanel;
         function getSearchPanel() {
-            if (angular.isUndefined(vm.searchPanel)) {
+            if (angular.isUndefined(vm.enableSearch)) {
                 return false;
             }
             else {
-                return vm.searchPanel;
+                return vm.enableSearch;
             }
         }
         vm.getViewable = getViewable;
