@@ -24,8 +24,7 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             actions: '<',
             enableSearch: '<',
             limit: '<',
-            listAll: '<',
-            viewable: '<'
+            listAll: '<'
         }
     }).name;
 
@@ -83,15 +82,6 @@ function openmrsList(openmrsRest, $scope, $location) {
                 return vm.enableSearch;
             }
         }
-        vm.getViewable = getViewable;
-        function getViewable() {
-            if (angular.isUndefined(vm.viewable)) {
-                return true;
-            }
-            else {
-                return vm.viewable;
-            }
-        }
         vm.getLimit = getLimit;
         function getLimit() {
             if (angular.isUndefined(vm.limit)) {
@@ -115,22 +105,37 @@ function openmrsList(openmrsRest, $scope, $location) {
     }
     resolveDefaultAttributes();
 
-    //Resolves default redirect links to edit/view pages
-    function findLink() {
-        if (angular.isDefined(vm.actions)) {
-            for (var i = 0; i < vm.actions.length; i++) {
-                if (angular.isDefined(vm.actions[i].link)) {
-                    vm.link = vm.actions[i].link;
-                    break;
+    vm.isTextClickable = false;
+    vm.resolveDefaultClickLink = resolveDefaultClickLink;
+
+    function resolveDefaultClickLink() {
+
+        var dataSet = vm.getActions();
+
+        for(var i = 0; i < dataSet.length; i++) {
+            if (dataSet[i].action === 'view') {
+                vm.isTextClickable = true;
+                if (angular.isDefined(dataSet[i].link)) {
+                    vm.link = dataSet[i].link;
+                }
+                else {
+                    vm.link = '#/' + vm.resource + '/';
+                }
+            }
+            else if (dataSet[i].action === 'edit') {
+                vm.isTextClickable = true;
+                if (angular.isDefined(dataSet[i].link)) {
+                    vm.link = dataSet[i].link;
+                }
+                else {
+                    vm.link = '#/' + vm.resource + '/edit/';
                 }
             }
         }
-        //Default
-        if (angular.isUndefined(vm.link)) {
-            vm.link = '#/' + vm.resource + '/';
-        }
     }
-    findLink();
+    resolveDefaultClickLink();
+
+    //Resolves default redirect links to edit/view pages
     vm.resolveRedirectLinks = resolveRedirectLinks;
     function resolveRedirectLinks(item) {
         if (vm.link.indexOf('{uuid}') > -1) {

@@ -21,12 +21,12 @@ export default function ListController(){
     vm.actions = [
         {
             "action":"edit",
-            "label":"Edit"
+            "label":"Edit",
+            "link" : "#/reference/{uuid}"
         },
         {
             "action":"retire",
-            "label":"Retire",
-            "link" : "#/reference/{uuid}"
+            "label":"Retire"
         },
         {
             "action":"unretire",

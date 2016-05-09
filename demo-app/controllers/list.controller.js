@@ -5,7 +5,6 @@ export default function ListController(){
 
     //Properties for list component
     vm.resource = "conceptsource";
-    vm.redirectionParam = "source";
     vm.columns= [
         {
             "property": "name",
@@ -22,7 +21,8 @@ export default function ListController(){
     vm.actions = [
         {
             "action":"edit",
-            "label":"Edit"
+            "label":"Edit",
+            "link":"#/source/{uuid}"
         },
         {
             "action":"retire",

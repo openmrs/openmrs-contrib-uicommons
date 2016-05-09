@@ -47,7 +47,7 @@
             <!--Main data-->
             <th ng-repeat="column in vm.columns">
 
-                <div ng-show="vm.getViewable()">
+                <div ng-show="vm.isTextClickable">
                     <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-show="data.retired">
                         <del>{{data[column.property]}}</del>
                     </a>
@@ -55,7 +55,7 @@
                         {{data[column.property]}}
                     </a>
                 </div>
-                <div ng-show="!vm.getViewable()">
+                <div ng-show="!vm.isTextClickable">
                     <div ng-show="data.retired">
                         <del>{{data[column.property]}}</del>
                     </div>
@@ -79,7 +79,7 @@
     <!--LIST TYPE-->
     <ul ng-show="vm.showList()">
         <li ng-repeat="data in vm.items.slice(vm.sliceFrom(),vm.sliceTo()) | orderBy:'retired'">
-            <div valign="top" ng-show="vm.getViewable()">
+            <div valign="top" ng-show="vm.isTextClickable">
                 <a ng-href="{{vm.resolveRedirectLinks(data)}}">
 
                     <!--Main data-->
@@ -91,7 +91,7 @@
                     </div>
                 </a>
             </div>
-            <div valign="top" ng-show="!vm.getViewable()">
+            <div valign="top" ng-show="!vm.isTextClickable">
                     <!--Main data-->
                     <div ng-repeat="column in vm.columns">
                         <strong>
