@@ -14,7 +14,8 @@ export default angular.module('openmrs-contrib-uicommons.retire-alert', []).comp
     controller: RetireAlertController,
     controllerAs: 'vm',
     bindings: {
-        onUpdate: '&'
+        onUpdate: '&',
+        itemName: '<'
     }
 }).name;
 
@@ -24,8 +25,18 @@ export default function RetireAlertController(){
     vm.isConfirmed = false;
     vm.retireReason ='';
 
-    vm.confirm = confirm;
 
+    vm.resolveNotification = resolveNotification;
+    function resolveNotification() {
+        if (angular.isDefined(vm.itemName)) {
+            return "Are you sure that you want to retire " + vm.itemName + "?";
+        }
+        else {
+            return "Are you sure that you want to retire this item?"
+        }
+    }
+
+    vm.confirm = confirm;
     function confirm(isConfirmed) {
         vm.isConfirmed = isConfirmed;
         vm.onUpdate(

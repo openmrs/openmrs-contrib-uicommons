@@ -14,7 +14,8 @@ export default angular.module('openmrs-contrib-uicommons.delete-alert', []).comp
 	controller: DeleteAlertController,
 	controllerAs: 'vm',
 	bindings: {
-		onUpdate: '&'
+		onUpdate: '&',
+		itemName: '<'
 	}
 }).name;
 
@@ -22,6 +23,16 @@ export default function DeleteAlertController(){
 	var vm = this;
 
 	vm.isConfirmed = false;
+
+	vm.resolveNotification = resolveNotification;
+	function resolveNotification() {
+		if (angular.isDefined(vm.itemName)) {
+			return "Are you sure that you want to delete " + vm.itemName + " forever?";
+		}
+		else {
+			return "Are you sure that you want to delete this item forever?"
+		}
+	}
 
 	vm.confirm = confirm;
 
