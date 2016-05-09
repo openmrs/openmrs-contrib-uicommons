@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "name": "Openmrs Contrib UICommons demo-app",
+  "description": "Lets you develop Openmrs Contrib UICommons Angular components",
+  "launch_path": "index.html",
+  "icons": {
+    "48": "/img/omrs-button.png"
+  },
+  "developer": {
+    "name": "sd",
+    "url": "https://github.com/rkorytkowski/openmrs-contrib-uicommons"
+  },
+  "default_locale": "en",
+    "activities": {
+      "openmrs": {
+        "href": "*"
+        "test": {
+        	"href":"localhost:8080/openmrs",
+        	"login": "admin",
+        	"password": "Admin123",
+        	"locale": "en"
+      }
+    }
+}
