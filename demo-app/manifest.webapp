@@ -11,14 +11,15 @@
     "url": "https://github.com/rkorytkowski/openmrs-contrib-uicommons"
   },
   "default_locale": "en",
-    "activities": {
-      "openmrs": {
-        "href": "*"
-        "test": {
-        	"href":"localhost:8080/openmrs",
-        	"login": "admin",
-        	"password": "Admin123",
-        	"locale": "en"
-      }
+  "activities": {
+	"openmrs": {
+        "href": "*",
+        "testConfig": {
+			"href":"http://localhost:8080/openmrs",
+			"username": "admin",
+			"password": "Admin123",
+			"sessionLocation": "0"
+	     }
+	  }
     }
 }

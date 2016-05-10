@@ -13,27 +13,42 @@
 import ngResource from 'angular-resource';
 
 angular.module('openmrsRest', ['ngResource'])
+	.factory("openmrsContext", openmrsContext)
 	.factory('openmrsApi', openmrsApi)
 	.factory('authInterceptor', authInterceptor)
 	.config(httpProviderConfig)
 	.provider('openmrsRest', openmrsRest).name;
 
+function openmrsContext(){
+	var config = {};
+	function getConfig(){
+		return config;
+	}
+	return {
+		getConfig: getConfig
+	}
+}
+
 export default angular.module('openmrs-contrib-uicommons.rest', ['openmrsRest']);
 
+authInterceptor.$inject = ['$q', '$window', 'openmrsContext'];
 
-authInterceptor.$inject = ['$q', '$window'];
-
-function authInterceptor($q, $window){
+function authInterceptor($q, $window, openmrsContext){
 	return {
 		responseError: function(response){
 			if(response.status === 401 || response.status === 403){
 				if($window.confirm("The operation cannot be completed, because you are no longer logged in. Do you want to go to login page?")){
-					var pathname = $window.location.pathname;
-					pathname = pathname.substring(0, pathname.indexOf('/owa/'));
-
+					var pathname;
 					var url = $window.location.href;
+					if(openmrsContext.getConfig().test){
+						pathname = openmrsContext.getConfig().href;
+						
+					} else{
+						pathname = $window.location.pathname;
+						pathname = pathname.substring(0, pathname.indexOf('/owa/'));
+						url = url.slice(url.indexOf("/openmrs"));
+					}
 					url = url.replace('#','_HASHTAG_');
-					url = url.slice(url.indexOf("/openmrs"));
 					url = pathname + '/login.htm?redirect_url=' + url;
 					$window.location.href = url;
 				}
@@ -50,52 +65,95 @@ function httpProviderConfig($httpProvider){
 	$httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = 'true';
 }
 
-openmrsApi.$inject = ['$resource', '$window'];
+openmrsApi.$inject = ['$resource', '$window', '$http', '$q', 'openmrsContext'];
 
-function openmrsApi($resource, $window) {
+
+function openmrsApi($resource, $window, $http, $q, openmrsContext) {
+	function getOpenmrsContextConfig () {
+		var openmrsContextConfig = openmrsContext.getConfig();
+		var deferred = $q.defer();
+		if(angular.isUndefined(openmrsContextConfig.href)){
+			$http.get('manifest.webapp').then(
+					function successCallback(response){
+						if(response.data.activities.openmrs.testConfig){
+							var config = response.data.activities.openmrs.testConfig
+						 	openmrsContextConfig.href = config.href;
+						 	openmrsContextConfig.username = config.username;
+						 	openmrsContextConfig.password = config.username;
+						 	openmrsContextConfig.sessionLocation = config.sessionLocation;
+						 	openmrsContextConfig.test = true;
+						 	
+						 	var credentials = "uname="+openmrsContextConfig.username+"&pw="+openmrsContextConfig.password;
+							$http.post(openmrsContextConfig.href+'/login.htm', credentials).then(function(){
+								$http.defaults.withCredentials = true;
+								deferred.resolve(openmrsContextConfig);								
+							})	
+						}
+						else{
+							var pathname = $window.location.pathname;
+							openmrsContextConfig.test = false;
+							openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
+							deferred.resolve(openmrsContextConfig);
+						}
+					}, 
+					function errorCallback(response){
+							var pathname = $window.location.pathname;
+							openmrsContextConfig.test = false;
+							openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
+							deferred.resolve(openmrsContextConfig);
+					});
+		}
+		else{
+			deferred.resolve(openmrsContextConfig);
+		}
+		return deferred.promise;
+
+	}
+	
 	var openmrsApi = {
 		defaultConfig: {
 			uuid: '@uuid'
 		},
-		add: add
+		add: add,
+		getOpenmrsContextConfig: getOpenmrsContextConfig
 	};
 
 	return openmrsApi;
 
 	function add(config) {
-		var params, url;
+		var deferred = $q.defer();
+		getOpenmrsContextConfig().then(function(openmrsContextConfig){
+			var params, url;
 
-		// If the add() function is called with a
-		// String, create the default configuration.
-		if (angular.isString(config)) {
-			var configObj = {
-				resource: config,
-				url: '/' + config
-			};
+			// If the add() function is called with a
+			// String, create the default configuration.
+			if (angular.isString(config)) {
+				var configObj = {
+					resource: config,
+					url: '/' + config
+				};
 
-			config = configObj;
-		}
+				config = configObj;
+			}
 
-		// If the url follows the expected pattern, we can set cool defaults.
-		if (!config.unnatural) {
-			var orig = angular.copy(openmrsApi.defaultConfig);
-			params = angular.extend(orig, config.params);
-			url = getOpenmrsContextPath() + '/ws/rest/v1' + config.url + '/:uuid';
-		} else {
-			// Otherwise we have to declare the entire configuration.
-			params = config.params;
-			url = getOpenmrsContextPath() + '/ws/rest/v1' + config.url + '/:uuid';
-		}
+			// If the url follows the expected pattern, we can set cool defaults.
+			if (!config.unnatural) {
+				var orig = angular.copy(openmrsApi.defaultConfig);
+				params = angular.extend(orig, config.params);
+				url = openmrsContextConfig.href + '/ws/rest/v1' + config.url + '/:uuid';
+			} else {
+				// Otherwise we have to declare the entire configuration.
+				params = config.params;
+				url = openmrsContextConfig.href + '/ws/rest/v1' + config.url + '/:uuid';
+			}
 
-		// If we supply a method configuration, use that instead of the default extra.
-		var actions = config.actions || openmrsApi.extraActions;
+			// If we supply a method configuration, use that instead of the default extra.
+			var actions = config.actions || openmrsApi.extraActions;
 
-		openmrsApi[config.resource] = $resource(url, params, actions);
-	}
-
-	function getOpenmrsContextPath() {
-		var pathname = $window.location.pathname;
-		return pathname.substring(0, pathname.indexOf('/owa/'));
+			openmrsApi[config.resource] = $resource(url, params, actions);
+			deferred.resolve(openmrsApi[config.resource]);
+		})
+		return deferred.promise;
 	}
 }
 
@@ -121,7 +179,7 @@ function openmrsRest() {
 		}]
 	}
 
-	function provideOpenmrsRest(openmrsApi, $document, $window) {
+	function provideOpenmrsRest(openmrsApi, $document, $window, $http) {
 		var openmrsRest = {
 			list: list,
 			listFull: listFull,
@@ -140,18 +198,16 @@ function openmrsRest() {
 		return openmrsRest;
 
 		function list(resource, query) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return new PartialList(response, $document);
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.get(query).$promise.then(function (response) {
+					return new PartialList(response, $document);
+				});
 			});
 		}
 
 		function listFull(resource, query) {
-			openmrsApi.add(resource);
 			query = addMode(query, 'full');
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return new PartialList(response, $document);
-			});
+			return list(resource, query);
 		}
 
 		function listRef(resource, query) {
