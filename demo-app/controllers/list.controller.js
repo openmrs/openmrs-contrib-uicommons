@@ -1,22 +1,28 @@
 ListController.$inject = [];
 
 export default function ListController(){
-	var vm= this;
-	vm.resource = "conceptclass";
-    vm.redirectionParam = "class";
-    vm.limit = 10; //Default value
+    var vm = this;
+
+    //Properties for list component
+    vm.resource = "conceptsource";
     vm.columns= [
         {
             "property": "name",
             "label": "Name"
         },
         {
-            "property": "description"
+            "property": "hl7Code",
+            "label":"HL7 Code"
+        },
+        {
+            "property": "description",
+            "label":"Description"
         }];
     vm.actions = [
         {
             "action":"edit",
-            "label":"Edit"
+            "label":"Edit",
+            "link":"#/source/{uuid}"
         },
         {
             "action":"retire",
