@@ -105,7 +105,7 @@ const config = {
       loader: 'babel-loader',
     },{
 	    test: /\.css$/,
-	    loader: ['css', 'style']
+	    loader: 'style-loader!css-loader'
 	}, {
 	    test: /\.(png|jpg|jpeg|gif|svg)$/,
 	    loaders: ['url', 
