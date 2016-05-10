@@ -6,6 +6,7 @@ import HeaderController from './controllers/header.controller.js';
 import BreadcrumbsController from './controllers/breadcrumbs.controller.js';
 import ListController from './controllers/list.controller.js';
 import SearchController from './controllers/search.controller.js';
+import NotificationController from './controllers/notification.controller.js';
 
 export default angular.module('DemoApp', ['openmrs-contrib-uicommons'])
 						.controller('BreadcrumbsController', BreadcrumbsController)
@@ -13,6 +14,7 @@ export default angular.module('DemoApp', ['openmrs-contrib-uicommons'])
 						.controller('ListController', ListController)
 						.controller('HeaderController', HeaderController)
 						.controller('SearchController', SearchController)
+						.controller('NotificationController', NotificationController)
 						.name;
 					
 
