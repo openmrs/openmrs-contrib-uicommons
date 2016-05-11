@@ -21,6 +21,8 @@
   "devDependencies": {
     "angular": "^1.5.5",
     "angular-mocks": "^1.5.3",
+    "angular-translate": "^2.11.0",
+    "angular-translate-loader-static-files": "^2.11.0",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.2",
     "babel-eslint": "^6.0.0-beta.3",
