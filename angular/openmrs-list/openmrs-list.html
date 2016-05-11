@@ -140,5 +140,5 @@
 </div>
 
 <!--RETIRE/DELETE ALERTS-->
-<delete-alert ng-show="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)"></delete-alert>
-<retire-alert ng-show="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)"></retire-alert>
+<delete-alert ng-show="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" item-name="vm.deleteItem.name"></delete-alert>
+<retire-alert ng-show="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" item-name="vm.retireItem.name"></retire-alert>
