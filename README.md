@@ -215,6 +215,32 @@ And insert component in html file, binding variables to it:
 </html>
 ````
 
+#### Notification service
+
+Notification service is wrapper for [angular-toastr](https://github.com/Foxandxss/angular-toastr), with adjusted stylesheets and managed dependencies. To use it, inject it's module to Your module:
+
+````javascript
+angular.module('YourAngularModule',['openmrs-contrib-uicommons.notification']);
+````
+
+inject openmrsNotification service to Your controller:
+
+````javascript
+angular.module('YourAngularModule').controller('controller', controller);
+
+controller.$inject('openmrsNotifiation');
+function controller(openmrsNotification) {
+	var vm = this;
+	//...
+}
+````
+to show toast message, call from Your controller one of methods - `info`, `error`, `warning`, `success`, eg.
+````js
+//shows info message
+openmrsNotification.info(content, title);
+````
+It's allowed to pass only content parameter to show message without title.
+
 ## Production Build
 
 You can compile .css files by yourself. You will need NodeJS 4+ and Compass installed to do this. See the install instructions for [NodeJS](https://nodejs.org/en/download/package-manager/).
