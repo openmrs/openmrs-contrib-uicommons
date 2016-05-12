@@ -176,41 +176,115 @@ And insert component in html file, binding variables to it:
 
 #### List Component
 
-Breadcrumbs component adds Reference Application-styled breadcrumbs to Your web page. To use it, You have to inject it's module in Your module, as follows:
+List Component is used to insert lists and tables filled with specified OpenMRS REST resources.
 
 ````javascript
 angular.module('YourAngularModule',['openmrs-contrib-uicommons.openmrs-list']);
 ````
 
-create variables in Your controller:
+<p>To configure attributes of this components, its recommended
+to pass values from controller to component attributes placed in `<openmrs-list>` tags.</p>
+<p>List Component attributes documentation:</p>
+
+- `resource="<String>"` - Resource name for REST Service.<br>
+Example: "conceptsource" or "conceptclass" (see REST WS API Documentation)
+- `columns="<Object>"` - Object that tells component how to divide columns of table/list and which label/property should it use.<br>
+Example:
+````javascript
+vm.columns= [
+        {
+            "property": "name", // Name of variable that is contained inside all resource objects placed in table
+            "label": "Name" // Label of column header for specified property (its possible to pass translate value here)
+        },
+        {
+            "property": "hl7Code",
+            "label":"HL7 Code"
+        },
+        {
+            "property": "description",
+            "label":"Description"
+        }];
+````
+
+- `type="<String>"` - Default `'table'`, defines if component should look like `'list'` (i.e. like conceptSearch view) or `'table'` (i.e. like referenceSearch view).
+- `actions="<Object>"` - Default `[{"action":"view", "label":"View"}]`, defines which actions can be performed on object via list/table. <br>
+Example:
+````javascript
+vm.actions = [
+        {
+            "action":"edit", //Action name, possible values: 'edit', 'view', 'retire', 'unretire' and 'purge'.
+            "label":"Edit", //Label that is shown when user hovers action button, when not defined it takes action name value.
+            "link":"#/source/{uuid}" //Link pattern that is used to redirect to proper 'edit' or 'view' page ({uuid} is automaticly replaced with specific uuid)
+        },
+        {
+            "action":"retire", //Retire action needs to be implemented along with unretire action
+            "label":"Retire"
+        },
+        {
+            "action":"unretire",
+            "label":"unretire"
+        },
+        {
+            "action":"purge",
+            "label":"Delete",
+            "icon":"icon-trash delete-action" // Icon from OpenMRS CSS (See http://demo.openmrs.org/openmrs/uicommons/icons.page for more). Has default values for all actions, 'delete-action' means that it will be red-colored when hovering button.
+        }
+    ];
+````
+- `enable-search="<boolean>"` - Default `false`, defines if there should be search panel instead of table/list only. <br>
+Example: type `true` for `referenceSearch`-like panel or type `false` for `sourceList`-like panel
+- `limit="<int>"`- Default `10`, defines how many entries should be seen per page of list/table (Note that navigation buttons aren't visible when all entries fits in one page)
+- `list-all="<boolean>"` - Default `false`, defines if there should be retired entries visible on table/list
+
+<br>
+Example controller:
 
 ````javascript
 angular.module('YourAngularModule').controller('controller', controller);
 
 function controller() {
 	var vm= this;
-	vm.resource = "conceptclass"; //name of resource You want to display
-    	vm.redirectionParam = "class"; //link to page where You placed the list, eg. "class" for 'index.html#/class'
-    	vm.limit = 10; //number of results shown on single page
-    	vm.columns= [ //array of columns
-        {
-            "property": "description", //name of property of resource You want to display
-            "label":"Description" //label of column
-        }];
-	 vm.actions = [{ //array of allowed actions
-            "action":"edit", // pick one of [view/edit/retire/unretire/purge]. component will redirect user/send appropriate request to server
-            "label":"Edit", //label of action icon
-            "icon":"icon-pencil edit-action left" //displayed
-        }];
+	vm.resource = "conceptsource";
+        vm.columns= [
+            {
+                "property": "name",
+                "label": "Name"
+            },
+            {
+                "property": "hl7Code",
+                "label":"HL7 Code"
+            },
+            {
+                "property": "description",
+                "label":"Description"
+            }];
+        vm.actions = [
+            {
+                "action":"edit",
+                "label":"Edit",
+                "link":"#/source/{uuid}"
+            },
+            {
+                "action":"retire",
+                "label":"Retire"
+            },
+            {
+                "action":"unretire",
+                "label":"unretire"
+            },
+            {
+                "action":"purge",
+                "label":"Delete",
+                "icon":"icon-thumbs-down delete-action"
+            }
+        ];
 }
 ````
-
-And insert component in html file, binding variables to it:
-
+Passing example values to component:
 ````html
 <html ng-app="YourAngularModule">
   	<div ng-controller="controller as vm">
-		<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" redirection-param="vm.redirectionParam" limit="vm.limit"></openmrs-list>
+				<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" list-all="true"></openmrs-list>
 	</div>
 </html>
 ````
