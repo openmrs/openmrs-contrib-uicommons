@@ -9,6 +9,7 @@
  */
 import toastr from 'angular-toastr';
 import ngAnimate from 'angular-animate';
+import ngRoute from 'angular-route';
 
 import css from './openmrs-notification.css'
 /**
@@ -16,7 +17,7 @@ import css from './openmrs-notification.css'
  * It's basically wrapper for angular-toastr, but with openmrs color palette and already managed dependencies
  * 
  */
-export default angular.module('openmrs-contrib-uicommons.notification', ['ngAnimate', 'toastr'])
+export default angular.module('openmrs-contrib-uicommons.notification', ['ngAnimate', 'toastr', 'ngRoute'])
 						.factory('openmrsNotification', openmrsNotification).name;
 
 openmrsNotification.$inject=['toastr', '$routeParams'];

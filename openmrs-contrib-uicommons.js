@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 import openmrsUicommonsStylesheet from "./src/scss/sass/openmrs-refapp.scss";
 
 import openmrsUicommonsHeader from './angular/openmrs-header/openmrs-header.component.js';
