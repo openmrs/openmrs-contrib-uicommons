@@ -89,10 +89,6 @@ describe('Concept dictionary controllers', function() {
                 }
             );
 
-            component.resolveComplexProperties = function () {
-                return false;
-            };
-
             var listAllTrueResponse =
             {
                 "results": [{
@@ -168,6 +164,74 @@ describe('Concept dictionary controllers', function() {
                 });
             $httpBackend.flush();
             expect(component.data.length > component.limit).toEqualData(true);
+        });
+
+        it('should perform action on button click', function() {
+
+            component = $componentController('openmrsList',
+                {
+                    $scope: scope
+                },
+                {
+                    resource: 'drug',
+                    columns: [
+                        {
+                            "property": "name",
+                            "label": "Concept.name"
+                        },
+                        {
+                            "property": "description",
+                            "label":"Description"
+                        }]
+                }
+            );
+            $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&v=full').respond({results : [{
+                "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
+                "display": "Drug",
+                "name": "Drug",
+                "description": "Drug",
+                "retired": true
+            }]});
+            $httpBackend.flush();
+            var activity = 'unretire';
+            component.performAction(component.data[0], activity);
+            $httpBackend.expectPOST('/ws/rest/v1/drug/c543d951-0201-4e20-94bd-64b44120991e').respond({});
+            component.resolveComplexProperties = function () {
+                return false;
+            };
+            $httpBackend.flush();
+        });
+
+        it('should request response by query', function() {
+
+            component = $componentController('openmrsList',
+                {
+                    $scope: scope
+                },
+                {
+                    enableSearch: true,
+                    resource: 'drug',
+                    columns: [
+                        {
+                            "property": "name",
+                            "label": "Concept.name"
+                        },
+                        {
+                            "property": "description",
+                            "label": "Description"
+                        }]
+                }
+            );
+            component.query = "testquery";
+            component.getData();
+            $httpBackend.expectGET('/ws/rest/v1/drug?includeAll=false&limit=10&q=testquery&v=full').respond({results : [{
+                "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
+                "display": "Drug",
+                "name": "Drug",
+                "description": "Drug",
+                "retired": true
+            }]});
+            $httpBackend.flush();
         });
     });
 });
