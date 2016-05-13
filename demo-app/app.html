@@ -25,18 +25,12 @@
 				<div ng-controller="BreadcrumbsController as vm" style="padding: 20px; border: 1px solid">	
 					<openmrs-breadcrumbs links="vm.links"></openmrs-breadcrumbs>
 				</div>
-				<div class = "info-body">
-					<p>description</p>
-				</div>
 			</div>
 			
 			<div class = "info-section">
 				<div class = "info-header"><h2>Autocomplete</h2></div>
 				<div ng-controller="AutocompleteController as vm" style="padding: 20px; border: 1px solid">
 					<concept-auto-complete required='false' concept='vm.item' limit-to-class='vm.limitToClass' on-update='vm.updateConcept(isCorrect, concept)'></concept-auto-complete>
-				</div>
-				<div class = "info-body">
-					<p>description</p>
 				</div>
 			</div>
 			
@@ -45,9 +39,6 @@
 			<div ng-controller="ListController as vm" style="padding: 20px; border: 1px solid">
 				<openmrs-list resource="vm.resource" columns="vm.columns" actions="vm.actions" list-all="true"></openmrs-list>
 			</div>
-				<div class = "info-body">
-					<p>description</p>
-				</div>
 			</div>
 
 			<div class = "info-section">
@@ -75,10 +66,18 @@
 						<button ng-click="vm.warning()">warning</button>
 					</div>
 				</div>
-				<div class = "info-body">
-					<p>description</p>
-				</div>
 			</div>
 		</div>
+
+
+
+		<div ng-controller="TranslateController as vm">
+			<small>
+				Choose language:
+				<a ng-click="vm.changeLanguage('en')">English</a>,
+				<a ng-click="vm.changeLanguage('es')">Spanish</a>
+			</small>
+		</div>
+
 	</body>
 </html>

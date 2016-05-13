@@ -11,8 +11,9 @@
 var template = require('./openmrs-list.html');
 var openmrs = require('../../src/scss/images/inprogress.gif');
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
+import openmrsNotification from './../openmrs-notification/openmrs-notification.service.js'
 
-export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contrib-uicommons.rest'])
+export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contrib-uicommons.rest', 'openmrs-contrib-uicommons.notification'])
     .component('openmrsList', {
         template: template,
         controller: openmrsList,
@@ -28,9 +29,9 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
         }
     }).name;
 
-openmrsList.$inject = ['openmrsRest', '$scope', '$location'];
+openmrsList.$inject = ['openmrsRest', 'openmrsNotification', '$scope', '$location'];
 
-function openmrsList(openmrsRest, $scope, $location) {
+function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     var vm = this;
 
     //Initial loading logo
@@ -199,19 +200,33 @@ function openmrsList(openmrsRest, $scope, $location) {
 
     //Direct REST calls for actions
     function retire(item) {
-        openmrsRest.retire(vm.resource, {uuid: item.uuid}).then(function(response) {
+        openmrsRest.retire(vm.resource, {uuid: item.uuid}).then(function(success) {
+            var notificationInfo = item.name + ' has been retired';
+            openmrsNotification.success(notificationInfo);
             getData(true);
+        }, function (exception) {
+            var notificationInfo = item.name + ' couldn\'t be retired';
+            openmrsNotification.error(notificationInfo);
         });
     }
     function unretire(item) {
-        
-        openmrsRest.unretire(vm.resource, {uuid: item.uuid}).then(function(response) {
+        openmrsRest.unretire(vm.resource, {uuid: item.uuid}).then(function(success) {
+            var notificationInfo = item.name + ' has been unretired';
+            openmrsNotification.success(notificationInfo);
             getData(true);
+        }, function (exception) {
+            var notificationInfo = item.name + ' couldn\'t be unretired';
+            openmrsNotification.error(notificationInfo);
         });
     }
     function purge(item) {
-        openmrsRest.purge(vm.resource, {uuid: item.uuid}).then(function(response) {
+        openmrsRest.purge(vm.resource, {uuid: item.uuid}).then(function(success) {
+            var notificationInfo = item.name + ' has been deleted forever';
+            openmrsNotification.success(notificationInfo);
             getData(true);
+        }, function (exception) {
+            var notificationInfo = item.name + ' couldn\'t be deleted forever';
+            openmrsNotification.error(notificationInfo);
         });
     }
     function edit(item) {

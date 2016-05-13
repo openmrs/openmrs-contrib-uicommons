@@ -8,11 +8,11 @@ export default function ListController(){
     vm.columns= [
         {
             "property": "name",
-            "label": "Name"
+            "label": "Concept.name"
         },
         {
             "property": "hl7Code",
-            "label":"HL7 Code"
+            "label": "ConceptSource.hl7Code"
         },
         {
             "property": "description",
@@ -30,7 +30,7 @@ export default function ListController(){
         },
         {
             "action":"unretire",
-            "label":"unretire"
+            "label":"Unretire"
         },
         {
             "action":"purge",

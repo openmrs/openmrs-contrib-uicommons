@@ -2,7 +2,7 @@
 	<ul id="breadcrumbs">
 		<li><a href="{{vm.openmrsContextPath}}"><i class="icon-home small"></i></a></li>
 		<li ng-repeat="(key, value) in vm.links">
-			<a href="#/{{value}}"><i class="icon-chevron-right link"></i>{{key}}</a>
+			<a href="#/{{value}}"><i class="icon-chevron-right link"></i>{{key | translate}}</a>
 		</li>
 	</ul>
 </div>

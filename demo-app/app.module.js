@@ -7,8 +7,10 @@ import BreadcrumbsController from './controllers/breadcrumbs.controller.js';
 import ListController from './controllers/list.controller.js';
 import SearchController from './controllers/search.controller.js';
 import NotificationController from './controllers/notification.controller.js';
+import TranslateController from './controllers/translate.controller.js'
 
 export default angular.module('DemoApp', ['openmrs-contrib-uicommons'])
+						.controller('TranslateController', TranslateController)
 						.controller('BreadcrumbsController', BreadcrumbsController)
 						.controller('AutocompleteController', AutocompleteController)
 						.controller('ListController', ListController)

@@ -5,24 +5,24 @@
     <div class="search-input" align="center" ng-show="vm.isSearchPanelVisible()">
         <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
                ng-change="vm.timeoutRefresh()">
-        <button id="searchButton" name="searchButton" ng-click="vm.getData()">Search</button>
+        <button id="searchButton" name="searchButton" ng-click="vm.getData()">{{"Search" | translate}}</button>
     </div>
 
     <!--Empty query notification-->
     <div align="center">
-        <span ng-show="vm.notificationEmptyQuery()">Type query to search data</span>
+        <span ng-show="vm.notificationEmptyQuery()">{{"Search.type" | translate}}</span>
     </div>
 
     <!--No entries found notification-->
     <div align="center">
-        <span ng-show="vm.notificationNoEntriesFound()">No entries found for <b>{{vm.query}}</b></span>
+        <span ng-show="vm.notificationNoEntriesFound()">{{"Search.notfound" | translate}} <b>{{vm.query}}</b></span>
     </div>
 
     <!--Initial loading notification-->
     <div align="center" ng-show="vm.notificationLoading()">
         <img ng-src="{{vm.logo}}" width="64" height="64">
         <br>
-        <span><b>Loading...</b></span>
+        <span><b>{{"Loading" | translate}}</b></span>
     </div>
 
     <!--TABLE TYPE-->
@@ -32,12 +32,12 @@
 
             <!--Main data header-->
             <th ng-repeat="column in vm.columns">
-                {{column.label}}
+                {{column.label | translate}}
             </th>
 
             <!--Actions header-->
             <th ng-show="vm.getActions().length">
-                Actions
+                {{"Actions" | translate}}
             </th>
         </tr>
         </thead>
@@ -106,36 +106,36 @@
 
     <!--Nav buttons-->
     <div ng-show="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible()" align="center">
-        <button ng-disabled="!vm.isFirstPagePossible()" ng-click="vm.firstPage()">First Page</button>
-        <button ng-disabled="!vm.isPrevPagePossible()" ng-click="vm.prevPage()">Previous Page</button>
-        <button ng-disabled="!vm.isNextPagePossible()" ng-click="vm.nextPage()">Next Page</button>
-        <button ng-disabled="!vm.isLastPagePossible()" ng-click="vm.lastPage()">Last Page</button>
+        <button ng-disabled="!vm.isFirstPagePossible()" ng-click="vm.firstPage()">{{"FirstPage" | translate}}</button>
+        <button ng-disabled="!vm.isPrevPagePossible()" ng-click="vm.prevPage()">{{"PreviousPage" | translate}}</button>
+        <button ng-disabled="!vm.isNextPagePossible()" ng-click="vm.nextPage()">{{"NextPage" | translate}}</button>
+        <button ng-disabled="!vm.isLastPagePossible()" ng-click="vm.lastPage()">{{"LastPage" | translate}}</button>
 
         <!--Data info-->
         <div align="center">
-            Page <b>{{vm.page}}/{{vm.totalPages()}}</b>
+            {{"Page" | translate}} <b>{{vm.page}}/{{vm.totalPages()}}</b>
             <br>
-            Found <b>{{vm.data.length}}</b> entries
+            {{"Found" | translate}} <b>{{vm.data.length}}</b> {{"Entries" | translate}}
             <br>
-            Displaying <b>{{vm.entriesPerPage}}</b> entries per page
+            {{"Displaying" | translate}} <b>{{vm.entriesPerPage}}</b> {{"Entries.perPage" | translate}}
         </div>
 
         <!--Entries count selection-->
         <div align="left">
-            Show
+            {{"Show" | translate}}
             <select size="1" ng-model="vm.entriesPerPage" ng-click="vm.firstPage()">
                 <option ng-click="vm.firstPage()" selected="selected" value="5">5</option>
                 <option ng-click="vm.firstPage()" value="10">10</option>
                 <option ng-click="vm.firstPage()" value="25">25</option>
                 <option ng-click="vm.firstPage()" value="50">50</option>
             </select>
-            Entries
+            {{"Entries" | translate}}
         </div>
     </div>
 
     <!--Loading more pages notification-->
     <div align="center" ng-show="vm.isSecondLoaderNotificationVisible()">
-        <b>Loading more pages...</b>
+        <b>{{"Loading.morePages" | translate}}</b>
     </div>
 </div>
 
