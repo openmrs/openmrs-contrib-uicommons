@@ -277,7 +277,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             vm.loadingInitialPage = true;
             var paramsFirst = {
                 limit: vm.getLimit(),
-                includeAll: true
+                includeAll: vm.getListAll()
             };
             if (vm.query.length>0) {
                 paramsFirst['q'] = vm.query;
@@ -295,7 +295,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                     vm.loadingMorePages = true;
 
                     var paramsMore = {
-                        includeAll: true
+                        includeAll: vm.getListAll()
                     };
                     if (vm.query.length>0) {
                         paramsMore['q'] = vm.query;
