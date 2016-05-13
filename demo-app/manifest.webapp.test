@@ -13,7 +13,13 @@
   "default_locale": "en",
   "activities": {
 	"openmrs": {
-        "href": "*"    
+        "href": "*",
+        "testConfig": {
+			"href":"http://localhost:8080/openmrs",
+			"username": "admin",
+			"password": "Admin123",
+			"sessionLocation": "0"
+	     }
 	  }
     }
 }

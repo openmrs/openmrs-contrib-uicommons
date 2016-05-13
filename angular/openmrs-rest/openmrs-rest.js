@@ -211,73 +211,70 @@ function openmrsRest() {
 		}
 
 		function listRef(resource, query) {
-			openmrsApi.add(resource);
 			query = addMode(query, 'ref');
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return new PartialList(response, $document);
-			});
+			return list(resource, query);
 		}
 
 		function get(resource, query) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.get(query).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 
 		function getFull(resource, query) {
-			openmrsApi.add(resource);
 			query = addMode(query, 'full');
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return response;
-			});
+			return get(query);
 		}
 
 		function getRef(resource, query) {
-			openmrsApi.add(resource);
 			query = addMode(query, 'ref');
-			return openmrsApi[resource].get(query).$promise.then(function (response) {
-				return response;
-			});
+			return get(query);
 		}
 
 		function create(resource, model) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].save(model).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.save(model).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 
 		function update(resource, query, model) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].save(query, model).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.save(query, model).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 
 		function remove(resource, query) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].remove(query).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.remove(query).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 
 		function unretire(resource, query) {
-			openmrsApi.add(resource);
-			return openmrsApi[resource].save(query, {retired: false}).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.save(query, {retired: false}).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 
 		function purge(resource, query) {
-			openmrsApi.add(resource);
 			if (query == null) {
 				query = {purge: true};
 			} else {
 				angular.extend(query, {purge: true});
 			}
-			return openmrsApi[resource].remove(query).$promise.then(function (response) {
-				return response;
+			return openmrsApi.add(resource).then(function(resource){
+				return resource.remove(query).$promise.then(function (response) {
+					return response;
+				});
 			});
 		}
 

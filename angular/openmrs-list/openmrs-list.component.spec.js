@@ -37,8 +37,9 @@ describe('Concept dictionary controllers', function() {
         beforeEach(inject(function(_$httpBackend_, $rootScope, _$componentController_, openmrsRest) {
             $httpBackend = _$httpBackend_;
             $httpBackend.whenGET(/translation.*/).respond();
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
             $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
-            $httpBackend.whenGET('/ws/rest/v1/conceptclass?v=full').respond({});
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?v=full').respond({});            
 
 
             scope = $rootScope.$new();
@@ -151,7 +152,7 @@ describe('Concept dictionary controllers', function() {
                         }]
                 }
             );
-
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
             $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=3&v=full').respond(
                 {
                     results:
@@ -185,6 +186,7 @@ describe('Concept dictionary controllers', function() {
                         }]
                 }
             );
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
             $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&v=full').respond({results : [{
                 "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
                 "display": "Drug",
@@ -224,6 +226,7 @@ describe('Concept dictionary controllers', function() {
             );
             component.query = "testquery";
             component.getData();
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
             $httpBackend.expectGET('/ws/rest/v1/drug?includeAll=false&limit=10&q=testquery&v=full').respond({results : [{
                 "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
                 "display": "Drug",

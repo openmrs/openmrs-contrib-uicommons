@@ -70,6 +70,9 @@ if (env === 'production') {
 	  outputDir = `${localOwaFolder}${libraryName}`;
 	  entry = `${__dirname}/demo-app/app.module.js`;
 	  
+	  plugins.push(new CopyWebpackPlugin([{
+		    from: './demo-app/manifest.webapp'
+		}]));
 	  plugins.push(new HtmlWebpackPlugin({
 		    template: './demo-app/app.html',
 		    inject: 'body'
@@ -87,10 +90,6 @@ if (env === 'production') {
 plugins.push(new webpack.DefinePlugin({
   __OPENMRS_CONTRIB_UICOMMONS_VERSION__: JSON.stringify(require('./package.json').version),
 }));
-
-plugins.push(new CopyWebpackPlugin([{
-    from: './demo-app/manifest.webapp'
-}]));
 
 const config = {
   entry: entry,
