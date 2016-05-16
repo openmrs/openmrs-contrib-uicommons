@@ -8,6 +8,7 @@ install:
 - sh -e /etc/init.d/xvfb start
 - tar -xjf /tmp/firefox-43.0.tar.bz2 --directory /tmp
 - export PATH="/tmp/firefox:$PATH"
+- npm config set registry http://registry.npmjs.org/
 - npm install
 script:
 - npm run build:test
