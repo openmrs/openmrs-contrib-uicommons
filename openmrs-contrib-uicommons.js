@@ -10,7 +10,7 @@ import openmrsUicommonsList from './angular/openmrs-list/openmrs-list.component.
 import openmrsUicommonsDeleteAlert from './angular/openmrs-deleteAlert/delete-alert.component.js';
 import openmrsUicommonsRetireAlert from './angular/openmrs-retireAlert/retire-alert.component.js';
 import openmrsUicommonsNotification from './angular/openmrs-notification/openmrs-notification.service.js';
-
+import openmrsUicommonsTransalteApp from './angular/translation/translateApp.module.js';
 
 export default angular.module('openmrs-contrib-uicommons',
 				[
@@ -21,5 +21,6 @@ export default angular.module('openmrs-contrib-uicommons',
 					'openmrs-contrib-uicommons.delete-alert',
 					'openmrs-contrib-uicommons.retire-alert',
 					'openmrs-contrib-uicommons.list',
-					'openmrs-contrib-uicommons.notification'
+					'openmrs-contrib-uicommons.notification',
+					"translateApp"
                 ]);

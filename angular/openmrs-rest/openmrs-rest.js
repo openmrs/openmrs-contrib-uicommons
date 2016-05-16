@@ -225,12 +225,12 @@ function openmrsRest() {
 
 		function getFull(resource, query) {
 			query = addMode(query, 'full');
-			return get(query);
+			return get(resource, query);
 		}
 
 		function getRef(resource, query) {
 			query = addMode(query, 'ref');
-			return get(query);
+			return get(resource, query);
 		}
 
 		function create(resource, model) {
