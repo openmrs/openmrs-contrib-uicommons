@@ -26,7 +26,7 @@ authInterceptor.$inject = ['$q', '$window'];
 function authInterceptor($q, $window){
 	return {
 		responseError: function(response){
-			if(response.status === 401 || response.status === 404){
+			if(response.status === 401 || response.status === 403){
 				if($window.confirm("The operation cannot be completed, because you are no longer logged in. Do you want to go to login page?")){
 					var pathname = $window.location.pathname;
 					pathname = pathname.substring(0, pathname.indexOf('/owa/'));
