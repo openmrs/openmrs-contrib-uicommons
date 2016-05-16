@@ -10,8 +10,8 @@ import NotificationController from './controllers/notification.controller.js';
 import TranslateController from './controllers/translate.controller.js'
 
 export default angular.module('DemoApp', ['openmrs-contrib-uicommons'])
-						.controller('TranslateController', TranslateController)
 						.controller('BreadcrumbsController', BreadcrumbsController)
+						.controller('TranslateController', TranslateController)
 						.controller('AutocompleteController', AutocompleteController)
 						.controller('ListController', ListController)
 						.controller('HeaderController', HeaderController)

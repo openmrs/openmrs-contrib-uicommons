@@ -8,17 +8,17 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 import angularTranslate from 'angular-translate';
-import angularTranslateStaticFiles from 'angular-translate-loader-static-files';
+
+import messagesEn from 'json!./messages_en.json'
+import messagesEs from 'json!./messages_es.json'
 
 export default angular
     .module('translateApp', ['pascalprecht.translate'])
     .config(['$translateProvider', translateAppConfig]);
 
 function translateAppConfig($translateProvider) {
-    $translateProvider.useStaticFilesLoader({
-        prefix: 'translation/messages_',
-        suffix: '.json'
-    });
+    $translateProvider.translations ('en', messagesEn);
+    $translateProvider.translations ('es', messagesEs);
     $translateProvider.fallbackLanguage('en');
     $translateProvider.preferredLanguage('en');
 }

@@ -113,10 +113,7 @@ const config = {
 	}, {
 	    test: /\.html$/,
 	    loader: 'html'
-	},{
-        test: /\.json$/,
-        loader: 'file?name=translation/[name].[ext]'
-    },{
+	}, {
         test: /\.scss$/,
         loader: "style!css!sass?outputStyle=expanded&includePaths[]=" 
         		+ path.resolve(__dirname, "./node_modules/compass-mixins/lib")
