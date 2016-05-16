@@ -36,6 +36,7 @@ describe('OpenmrsRest service', function() {
         beforeEach(inject(function(_$httpBackend_, _openmrsRest_){
         	openmrsRest = _openmrsRest_;
             $httpBackend = _$httpBackend_;
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
 			$httpBackend.whenGET(/translation.*/).respond();
             $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
             $httpBackend.whenGET('/ws/rest/v1/item?v=full').
@@ -70,6 +71,7 @@ describe('OpenmrsRest service', function() {
         beforeEach(inject(function(_$httpBackend_, _openmrsRest_){
         	openmrsRest = _openmrsRest_;
             $httpBackend = _$httpBackend_;
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
 			$httpBackend.whenGET(/translation.*/).respond();
             $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
             $httpBackend.whenGET('/ws/rest/v1/item/6g65dc56-72ec-4ab5-9fa8-d98be91adb5b').
@@ -93,6 +95,7 @@ describe('OpenmrsRest service', function() {
         beforeEach(inject(function(_$httpBackend_, _openmrsRest_){
 	    	openmrsRest = _openmrsRest_;
 	        $httpBackend = _$httpBackend_;
+	        $httpBackend.whenGET('manifest.webapp').respond(500, "");
 			$httpBackend.whenGET(/translation.*/).respond();
 	        $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
 	        $httpBackend.whenPOST('/ws/rest/v1/item').
@@ -117,6 +120,7 @@ describe('OpenmrsRest service', function() {
         beforeEach(inject(function(_$httpBackend_, _openmrsRest_){
 	    	openmrsRest = _openmrsRest_;
 	        $httpBackend = _$httpBackend_;
+	        $httpBackend.whenGET('manifest.webapp').respond(500, "");
 			$httpBackend.whenGET(/translation.*/).respond();
 	        $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
 	        $httpBackend.whenPOST('/ws/rest/v1/item/6g65dc56-72ec-4ab5-9fa8-d98be91adb5b').
@@ -141,6 +145,7 @@ describe('OpenmrsRest service', function() {
         beforeEach(inject(function(_$httpBackend_, _openmrsRest_){
 	    	openmrsRest = _openmrsRest_;
 	        $httpBackend = _$httpBackend_;
+	        $httpBackend.whenGET('manifest.webapp').respond(500, "");
 			$httpBackend.whenGET(/translation.*/).respond();
 	        $httpBackend.whenGET('components/indexMenu/indexMenu.html').respond();
 	        $httpBackend.whenDELETE('/ws/rest/v1/item/6g65dc56-72ec-4ab5-9fa8-d98be91adb5b').

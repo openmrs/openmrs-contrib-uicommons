@@ -9,6 +9,7 @@ const target = require('yargs').argv.target;
 const UglifyPlugin = webpack.optimize.UglifyJsPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const libraryName = 'openmrs-contrib-uicommons';
 const fileName = 'openmrs-contrib-uicommons';
@@ -69,6 +70,9 @@ if (env === 'production') {
 	  outputDir = `${localOwaFolder}${libraryName}`;
 	  entry = `${__dirname}/demo-app/app.module.js`;
 	  
+	  plugins.push(new CopyWebpackPlugin([{
+		    from: './demo-app/manifest.webapp'
+		}]));
 	  plugins.push(new HtmlWebpackPlugin({
 		    template: './demo-app/app.html',
 		    inject: 'body'
