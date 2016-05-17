@@ -3,5 +3,34 @@
 		<a href="../../"> <img ng-src="{{vm.logo}}"/>
 		</a>
 	</div>
-		<span class="app-title">{{vm.title}}</span>	
+	<ul class="user-options">
+		<li class="identifier" style="cursor: pointer;" ng-show="vm.sessionContext">
+			<a dropdown-menu="vm.accountOptions"
+			   dropdown-model="vm.selectedOption"
+			   dropdown-item-label="option" >
+				<i class="icon-user small"></i>
+					{{vm.sessionContext.user.display || sessionContext.user.systemId }}
+				<i class="icon-caret-down appui-icon-caret-down link" style="display: inline-block;"></i>
+			</a>
+		</li>
+		<li class="change-location" ng-show="vm.sessionContext">
+			<a  dropdown-menu="vm.locationList"
+				dropdown-model="vm.selectedLocation"
+				dropdown-item-label="display"
+				dropdown-onchange="vm.changeLocation(selected)"
+				dropdown-disabled="vm.disableLocationDropdown">
+				<i class="icon-map-marker small"></i>
+				<span data-bind="text: text">{{vm.sessionContext.sessionLocation.display}}</span>
+
+				<i class="link icon-caret-down"></i>
+
+			</a>
+		</li>
+		<li class="logout">
+			<a href="/openmrs/logout">
+				Logout
+				<i class="icon-signout small"></i>
+			</a>
+		</li>
+	</ul>
 </header>
