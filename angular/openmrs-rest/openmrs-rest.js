@@ -36,19 +36,13 @@ authInterceptor.$inject = ['$q', '$window', 'openmrsContext'];
 function authInterceptor($q, $window, openmrsContext){
 	return {
 		responseError: function(response){
-			if(response.status === 401 || response.status === 403){
+			if(!openmrsContext.getConfig.test && (response.status === 401 || response.status === 403)){
 				if($window.confirm("The operation cannot be completed, because you are no longer logged in. Do you want to go to login page?")){
-					var pathname;
+					var pathname = $window.location.pathname;
+					pathname = pathname.substring(0, pathname.indexOf('/owa/'));
 					var url = $window.location.href;
-					if(openmrsContext.getConfig().test){
-						pathname = openmrsContext.getConfig().href;
-						
-					} else{
-						pathname = $window.location.pathname;
-						pathname = pathname.substring(0, pathname.indexOf('/owa/'));
-						url = url.slice(url.indexOf("/openmrs"));
-					}
 					url = url.replace('#','_HASHTAG_');
+					url = url.slice(url.indexOf("/openmrs"));
 					url = pathname + '/login.htm?redirect_url=' + url;
 					$window.location.href = url;
 				}
@@ -72,36 +66,33 @@ function openmrsApi($resource, $window, $http, $q, openmrsContext) {
 	function getOpenmrsContextConfig () {
 		var openmrsContextConfig = openmrsContext.getConfig();
 		var deferred = $q.defer();
+		function handleNoTestConfig(){
+			var pathname = $window.location.pathname;
+			openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
+			deferred.resolve(openmrsContextConfig);
+		}
+		/**
+		 * if server adress is undefined yet, try to get test server href. 
+		 * If manifest.webapp doesn't exist, or it doesn't include testConfig,
+		 * then invoke handleNoTestConfig, to get adress from current location.
+		 */
 		if(angular.isUndefined(openmrsContextConfig.href)){
 			$http.get('manifest.webapp').then(
 					function successCallback(response){
 						if(response.data.activities.openmrs.testConfig){
-							var config = response.data.activities.openmrs.testConfig
-						 	openmrsContextConfig.href = config.href;
-						 	openmrsContextConfig.username = config.username;
-						 	openmrsContextConfig.password = config.username;
-						 	openmrsContextConfig.sessionLocation = config.sessionLocation;
+						 	openmrsContextConfig.href = response.data.activities.openmrs.testConfig.href;
 						 	openmrsContextConfig.test = true;
 						 	
-						 	var credentials = "uname="+openmrsContextConfig.username+"&pw="+openmrsContextConfig.password;
-							$http.post(openmrsContextConfig.href+'/login.htm', credentials).then(function(){
-								$http.defaults.withCredentials = true;
-								deferred.resolve(openmrsContextConfig);								
-							})	
+						 	$http.defaults.headers.common['Disable-WWW-Authenticate'] = false;
+							$http.defaults.withCredentials = true;
+							
+							deferred.resolve(openmrsContextConfig);								
 						}
 						else{
-							var pathname = $window.location.pathname;
-							openmrsContextConfig.test = false;
-							openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
-							deferred.resolve(openmrsContextConfig);
+							handleNoTestConfig();
 						}
-					}, 
-					function errorCallback(response){
-							var pathname = $window.location.pathname;
-							openmrsContextConfig.test = false;
-							openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
-							deferred.resolve(openmrsContextConfig);
-					});
+					},
+					handleNoTestConfig);
 		}
 		else{
 			deferred.resolve(openmrsContextConfig);
