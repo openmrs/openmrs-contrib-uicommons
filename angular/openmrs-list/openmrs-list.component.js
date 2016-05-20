@@ -139,11 +139,13 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     //Resolves default redirect links to edit/view pages
     vm.resolveRedirectLinks = resolveRedirectLinks;
     function resolveRedirectLinks(item) {
-        if (vm.link.indexOf('{uuid}') > -1) {
-            return vm.link.replace('{uuid}', item.uuid)
-        }
-        else {
-            return vm.link + item.uuid
+        if (angular.isDefined(vm.link)) {
+            if (vm.link.indexOf('{uuid}') > -1) {
+                return vm.link.replace('{uuid}', item.uuid)
+            }
+            else {
+                return vm.link + item.uuid
+            }
         }
     }
 
