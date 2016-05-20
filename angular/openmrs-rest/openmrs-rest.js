@@ -23,14 +23,6 @@ openmrsContext.$inject = ['$window'];
 function openmrsContext($window){
 	var config = {};
 
-	function construct() {
-		var pathname = $window.location.pathname;
-		pathname = pathname.substring(0, pathname.indexOf('/owa/'));
-		config.href = pathname;
-	}
-
-	construct();
-
 	function getConfig(){
 		return config;
 	}
@@ -51,7 +43,15 @@ function authInterceptor($q, $window, openmrsContext){
 					var url = $window.location.href;
 					url = url.replace('#','_HASHTAG_');
 					url = url.slice(url.indexOf("/openmrs"));
-					var loginUrl = openmrsContext.getConfig().href + '/login.htm?redirect_url=' + url;
+					var loginUrl;
+					if (angular.isDefined(openmrsContext.getConfig().href)) {
+						loginUrl = openmrsContext.getConfig().href;
+					} else {
+						var pathname = $window.location.pathname;
+						pathname = pathname.substring(0, pathname.indexOf('/owa/'));
+						loginUrl = pathname;
+					}
+					var loginUrl = loginUrl + '/login.htm?redirect_url=' + url;
 					$window.location.href = loginUrl;
 				}
 			}
