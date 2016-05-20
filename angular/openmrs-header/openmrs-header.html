@@ -4,16 +4,17 @@
 		</a>
 	</div>
 	<ul class="user-options">
-		<li class="identifier" style="cursor: pointer;" ng-show="vm.sessionContext">
+		<li class="identifier" style="cursor: pointer;" ng-show="vm.sessionContext.user">
 			<a dropdown-menu="vm.accountOptions"
 			   dropdown-model="vm.selectedOption"
-			   dropdown-item-label="option" >
+			   dropdown-item-label="option"
+			   dropdown-onchange="vm.goToUserOption(selected)">
 				<i class="icon-user small"></i>
-					{{vm.sessionContext.user.display || sessionContext.user.systemId }}
+					{{ vm.sessionContext.user.display || sessionContext.user.systemId }}
 				<i class="icon-caret-down appui-icon-caret-down link" style="display: inline-block;"></i>
 			</a>
 		</li>
-		<li class="change-location" ng-show="vm.sessionContext">
+		<li class="change-location" ng-show="vm.sessionContext.sessionLocation">
 			<a  dropdown-menu="vm.locationList"
 				dropdown-model="vm.selectedLocation"
 				dropdown-item-label="display"
@@ -27,7 +28,7 @@
 			</a>
 		</li>
 		<li class="logout">
-			<a href="/openmrs/logout">
+			<a href="" ng-click="vm.redirectTo('/logout')">
 				Logout
 				<i class="icon-signout small"></i>
 			</a>

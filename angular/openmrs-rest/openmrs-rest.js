@@ -153,8 +153,8 @@ function openmrsRest() {
 	return {
 		list: provideList,
 		get: provideGet,
-		$get: ['openmrsApi', '$document', '$window', function(openmrsApi, $document, $window){
-			return provideOpenmrsRest(openmrsApi, $document, $window);
+		$get: ['openmrsApi', '$document', '$q', function(openmrsApi, $document, $q){
+			return provideOpenmrsRest(openmrsApi, $document, $q);
 		}]
 	};
 
@@ -170,7 +170,7 @@ function openmrsRest() {
 		}]
 	}
 
-	function provideOpenmrsRest(openmrsApi, $document, $window, $http) {
+	function provideOpenmrsRest(openmrsApi, $document, $q) {
 		var openmrsRest = {
 			list: list,
 			listFull: listFull,
@@ -183,10 +183,19 @@ function openmrsRest() {
 			remove: remove,
 			retire: remove,
 			unretire: unretire,
-			purge: purge
+			purge: purge,
+			getServerUrl: getServerUrl
 		};
 
 		return openmrsRest;
+
+		function getServerUrl() {
+			var deferred = $q.defer();
+			openmrsApi.getOpenmrsContextConfig().then(function (openmrsContextConfig) {
+				deferred.resolve(openmrsContextConfig.href);
+			});
+			return deferred.promise;
+		}
 
 		function list(resource, query) {
 			return openmrsApi.add(resource).then(function(resource){

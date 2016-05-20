@@ -24,9 +24,9 @@ export default angular.module('openmrs-contrib-uicommons.header', ['openmrs-cont
   }
 }).name;
 
-OpenmrsHeaderController.$inject=['openmrsRest'];
+OpenmrsHeaderController.$inject=['openmrsRest', '$window'];
 
-function OpenmrsHeaderController(openmrsRest) {
+function OpenmrsHeaderController(openmrsRest, $window) {
 	var vm = this;
 
     vm.logo = openmrs;
@@ -38,7 +38,7 @@ function OpenmrsHeaderController(openmrsRest) {
     vm.accountOptions = [
         {
             option: 'My Account',
-            href: '/openmrs/adminui/myaccount/myAccount.page'
+            destPage: '/adminui/myaccount/myAccount.page'
         }
     ];
     vm.selectedOption = {};
@@ -48,6 +48,8 @@ function OpenmrsHeaderController(openmrsRest) {
     vm.activate = activate;
     vm.changeLocation = changeLocation;
     vm.toggleLocationDropdown = toggleLocationDropdown;
+    vm.redirectTo = redirectTo;
+    vm.goToUserOption = goToUserOption;
 
     activate();
 
@@ -68,6 +70,17 @@ function OpenmrsHeaderController(openmrsRest) {
                     vm.toggleLocationDropdown();
                 });
             }
+        });
+
+    }
+
+    function goToUserOption(selected) {
+        redirectTo(selected.destPage);
+    }
+
+    function redirectTo(destinationPage) {
+        openmrsRest.getServerUrl().then(function(url){
+            $window.location.href = url + destinationPage;
         });
     }
 
