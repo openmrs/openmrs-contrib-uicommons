@@ -33,7 +33,7 @@ function OpenmrsHeaderController(openmrsRest) {
     vm.locationList = [];
     vm.selectedLocation = {};
     vm.disableLocationDropdown = false;
-    vm.sessionContext;
+    vm.sessionContext = {};
 
     vm.accountOptions = [
         {
@@ -47,7 +47,7 @@ function OpenmrsHeaderController(openmrsRest) {
 
     vm.activate = activate;
     vm.changeLocation = changeLocation;
-    vm.isLocationListEmpty = isLocationListEmpty;
+    vm.toggleLocationDropdown = toggleLocationDropdown;
 
     activate();
 
@@ -57,12 +57,15 @@ function OpenmrsHeaderController(openmrsRest) {
             if(response.results.length > 0){
                 openmrsRest.get('appui/session').then(function(session) {
                     vm.sessionContext = session;
+                    if(angular.isUndefined(vm.sessionContext.sessionLocation)){
+                        vm.sessionContext.sessionLocation = {display: ''};
+                    }
                     angular.forEach(response.results, function(location){
                         if(location.display !== vm.sessionContext.sessionLocation.display) {
                             vm.locationList.push(location);
                         }
                     });
-                    vm.isLocationListEmpty();
+                    vm.toggleLocationDropdown();
                 });
             }
         });
@@ -74,7 +77,7 @@ function OpenmrsHeaderController(openmrsRest) {
         });
     }
 
-    function isLocationListEmpty() {
+    function toggleLocationDropdown() {
         if(vm.locationList.length < 1){
             vm.disableLocationDropdown = true;
         }else{
