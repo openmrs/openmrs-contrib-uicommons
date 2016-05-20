@@ -59,8 +59,8 @@ function OpenmrsHeaderController(openmrsRest, $window) {
             if(response.results.length > 0){
                 openmrsRest.get('appui/session').then(function(session) {
                     vm.sessionContext = session;
-                    if(angular.isUndefined(vm.sessionContext.sessionLocation)){
-                        vm.sessionContext.sessionLocation = {display: ''};
+                    if(angular.isUndefined(vm.sessionContext.sessionLocation.display)){
+                        vm.sessionContext.sessionLocation.display = '';
                     }
                     angular.forEach(response.results, function(location){
                         if(location.display !== vm.sessionContext.sessionLocation.display) {

@@ -19,8 +19,18 @@ angular.module('openmrsRest', ['ngResource'])
 	.config(httpProviderConfig)
 	.provider('openmrsRest', openmrsRest).name;
 
-function openmrsContext(){
+openmrsContext.$inject = ['$window'];
+function openmrsContext($window){
 	var config = {};
+
+	function construct() {
+		var pathname = $window.location.pathname;
+		pathname = pathname.substring(0, pathname.indexOf('/owa/'));
+		config.href = pathname;
+	}
+
+	construct();
+
 	function getConfig(){
 		return config;
 	}
@@ -38,13 +48,11 @@ function authInterceptor($q, $window, openmrsContext){
 		responseError: function(response){
 			if(!openmrsContext.getConfig.test && (response.status === 401 || response.status === 403)){
 				if($window.confirm("The operation cannot be completed, because you are no longer logged in. Do you want to go to login page?")){
-					var pathname = $window.location.pathname;
-					pathname = pathname.substring(0, pathname.indexOf('/owa/'));
 					var url = $window.location.href;
 					url = url.replace('#','_HASHTAG_');
 					url = url.slice(url.indexOf("/openmrs"));
-					url = pathname + '/login.htm?redirect_url=' + url;
-					$window.location.href = url;
+					var loginUrl = openmrsContext.getConfig().href + '/login.htm?redirect_url=' + url;
+					$window.location.href = loginUrl;
 				}
 			}
 			return $q.reject(response);
