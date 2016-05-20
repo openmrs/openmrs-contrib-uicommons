@@ -8,10 +8,10 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 var template = require('./delete-alert.html');
-import translateModule from './../translation/translateApp.module';
+import translateModule from './../openmrs-translate/openmrs-translate.module.js';
 
 
-export default angular.module('openmrs-contrib-uicommons.delete-alert', ['translateApp']).component('deleteAlert', {
+export default angular.module('openmrs-contrib-uicommons.delete-alert', []).component('deleteAlert', {
 	template: template,
 	controller: DeleteAlertController,
 	controllerAs: 'vm',
@@ -21,9 +21,7 @@ export default angular.module('openmrs-contrib-uicommons.delete-alert', ['transl
 	}
 }).name;
 
-DeleteAlertController.$inject = ['$translate'];
-
-export default function DeleteAlertController($translate){
+export default function DeleteAlertController(){
 	var vm = this;
 
 	vm.isConfirmed = false;
