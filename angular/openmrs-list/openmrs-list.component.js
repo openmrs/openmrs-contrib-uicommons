@@ -7,7 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-
+import css from './list.css';
 var template = require('./openmrs-list.html');
 var openmrs = require('../../src/scss/images/inprogress.gif');
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
@@ -41,7 +41,8 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.data = [];
     vm.query = '';
 
-    vm.entriesPerPage;
+    vm.entriesPerPage = {value : 10};
+    vm.entriesPerPageOptions = [{value : 10}, {value : 25}, {value : 50}];
 
     //Default icon values
     vm.icon =
@@ -92,7 +93,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 return vm.limit;
             }
         }
-        vm.entriesPerPage = vm.getLimit();
+        vm.entriesPerPage.value = vm.getLimit();
 
         vm.getListAll = getListAll;
         function getListAll() {
@@ -289,7 +290,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 vm.isUserTyping = false;
                 vm.data = firstResponse.results;
 
-                vm.isThisOnePageSet = vm.data.length < vm.entriesPerPage;
+                vm.isThisOnePageSet = vm.data.length < vm.entriesPerPage.value;
                 resolveComplexProperties();
 
                 //Check for more data
@@ -305,7 +306,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
 
                     openmrsRest.listFull(vm.resource, paramsMore).then(function (response) {
                         vm.data = response.results;
-                        vm.isThisOnePageSet = vm.data.length === vm.entriesPerPage;
+                        vm.isThisOnePageSet = vm.data.length === vm.entriesPerPage.value;
                         resolveComplexProperties();
                         vm.loadingMorePages = false;
                     });
@@ -361,13 +362,14 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.lastPage = lastPage;
     vm.loadingMorePages = false;
     vm.totalPages = totalPages;
+    vm.pageRange = pageRange;
     vm.loadingInitialPage = false;
 
     function sliceFrom() {
-        return vm.page * vm.entriesPerPage - vm.entriesPerPage;
+        return vm.page * vm.entriesPerPage.value - vm.entriesPerPage.value;
     }
     function sliceTo() {
-        return vm.page * vm.entriesPerPage;
+        return vm.page * vm.entriesPerPage.value;
     }
     function nextPage() {
         vm.page++;
@@ -379,21 +381,30 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         vm.page = 1;
     }
     function lastPage() {
-        if (vm.data.length % vm.entriesPerPage == 0) {
-            vm.page = Math.floor(vm.data.length / vm.entriesPerPage);
+        if (vm.data.length % vm.entriesPerPage.value == 0) {
+            vm.page = Math.floor(vm.data.length / vm.entriesPerPage.value);
         }
         else {
-            vm.page = Math.floor(vm.data.length / vm.entriesPerPage) + 1;
+            vm.page = Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
         }
     }
     function totalPages() {
 
-        if (vm.data.length % vm.entriesPerPage == 0) {
-            return Math.floor(vm.data.length / vm.entriesPerPage);
+        if (vm.data.length % vm.entriesPerPage.value == 0) {
+            return Math.floor(vm.data.length / vm.entriesPerPage.value);
         }
         else {
-            return Math.floor(vm.data.length / vm.entriesPerPage) + 1;
+            return Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
         }
+    }
+    function pageRange(){
+        var range = [];
+        for(var i=vm.page-2;i<vm.page+3;i++){
+            if(i>0 && (i-1)*vm.entriesPerPage.value <= vm.data.length){
+                range.push(i);
+            }
+        }
+        return range;
     }
 
     //ng-disabled logic
@@ -412,11 +423,11 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         return vm.page > 1
     }
     function isLastPagePossible() {
-        if (vm.data.length % vm.entriesPerPage == 0) {
-            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage);
+        if (vm.data.length % vm.entriesPerPage.value == 0) {
+            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage.value);
         }
         else {
-            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage) + 1;
+            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
         }
     }
 
@@ -429,6 +440,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.notificationEmptyQuery = notificationEmptyQuery;
     vm.notificationNoEntriesFound = notificationNoEntriesFound;
     vm.notificationLoading = notificationLoading;
+    vm.showTableContent = showTableContent;
     vm.showTable = showTable;
     vm.showList = showList;
 
@@ -440,7 +452,12 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             && vm.getType() == 'list'
             && vm.data.length > 0;
     }
-    function showTable() {
+    function showTable(){
+        return vm.getType() == 'table'
+            &&(vm.getSearchPanel() == false
+            || vm.data.length > 0);
+    }
+    function showTableContent() {
         return vm.getType() == 'table'
             && vm.data.length > 0
             && vm.query.length > 0
