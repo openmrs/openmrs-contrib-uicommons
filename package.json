@@ -1,6 +1,6 @@
 {
   "name": "openmrs-contrib-uicommons",
-  "version": "0.3.27",
+  "version": "0.3.28",
   "description": "Common CSS, JS, and HTML snippets",
   "repository": {
     "type": "git",
