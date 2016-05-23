@@ -39,6 +39,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
 
     //Initial data and query
     vm.data = [];
+    vm.noResults = false;
     vm.query = '';
 
     vm.entriesPerPage = {value : 10};
@@ -289,6 +290,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 vm.loadingInitialPage = false;
                 vm.isUserTyping = false;
                 vm.data = firstResponse.results;
+                vm.noResults = vm.data.length === 0;
 
                 vm.isThisOnePageSet = vm.data.length < vm.entriesPerPage.value;
                 resolveComplexProperties();

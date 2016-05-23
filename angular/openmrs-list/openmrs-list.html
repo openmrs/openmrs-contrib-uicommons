@@ -4,7 +4,7 @@
     <!--Query field and search button-->
     <div class="search-input" align="center" ng-show="vm.isSearchPanelVisible()">
         <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
-               ng-change="vm.timeoutRefresh()">
+               ng-change="vm.timeoutRefresh()" autocomplete="off">
         <button id="searchButton" name="searchButton" ng-click="vm.getData()">{{"Search" | translate}}</button>
     </div>
 
@@ -41,11 +41,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-if="!vm.showTableContent()">
+        <tr ng-if="!vm.showTableContent()&&!vm.noResults">
             <td colspan="{{vm.columns.length + 1}}" align="center" style="height:300px;background:#fafafa">
                 <img ng-src="{{vm.logo}}" width="64" height="64">
                 <br>
                 <span><b>{{"Loading" | translate}}</b></span>
+            </td>
+        </tr>
+        <tr ng-if="vm.noResults && !vm.enableSearch">
+            <td colspan="{{vm.columns.length + 1}}" align="center" style="height:300px;background:#fafafa">
+                <span>No results found!</span>
             </td>
         </tr>
         <tr ng-if="vm.showTableContent()"
