@@ -1,0 +1,13 @@
+a.nav-button {
+    padding: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+a.nav-button-selected {
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #007fff;
+    pointer-events: none;
+    cursor: default;
+}

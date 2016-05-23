@@ -4,37 +4,20 @@ export default function ListController(){
     var vm = this;
 
     //Properties for list component
-    vm.resource = "conceptsource";
-    vm.columns= [
-        {
-            "property": "name",
-            "label": "Concept.name"
-        },
-        {
-            "property": "hl7Code",
-            "label": "ConceptSource.hl7Code"
-        },
-        {
-            "property": "description",
-            "label":"Description"
+    vm.resource = "conceptstopword";
+        vm.limit = 20; //Default
+        vm.columns= [
+            {
+                "property": "display",
+                "label": "Word"
+            },
+            {
+                "property": "locale",
+                "label":"Locale"
+            }];
+        vm.actions = [{
+                "action":"purge",
+                "label":"Delete",
+                "link":"#/stopword/{uuid}"
         }];
-    vm.actions = [
-        {
-            "action":"edit",
-            "label":"Edit",
-            "link":"#/source/{uuid}"
-        },
-        {
-            "action":"retire",
-            "label":"Retire"
-        },
-        {
-            "action":"unretire",
-            "label":"Unretire"
-        },
-        {
-            "action":"purge",
-            "label":"Delete"
-        }
-    ];
 }
