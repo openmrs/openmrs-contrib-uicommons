@@ -59,7 +59,7 @@ describe('Concept dictionary controllers', function() {
                 }
             );
 
-            $httpBackend.expectGET('/ws/rest/v1/testres?includeAll=false&limit=10&v=full').respond({"results": []});
+            $httpBackend.expectGET('/ws/rest/v1/testres?includeAll=false&limit=10&startIndex=NaN&v=full').respond({"results": []});
             $httpBackend.flush();
 
             expect(component.getType()).toEqualData('table');
@@ -108,7 +108,8 @@ describe('Concept dictionary controllers', function() {
                     "resourceVersion": "1.8"
                 }]
             };
-            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&v=full').respond(listAllTrueResponse);
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&startIndex=NaN&v=full').respond(listAllTrueResponse);
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&startIndex=0&v=full').respond(listAllTrueResponse);
 
             var listAllFalseResponse =
             {
@@ -120,51 +121,18 @@ describe('Concept dictionary controllers', function() {
                     "retired": false
                 }]
             };
-            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&v=full').respond(listAllFalseResponse);
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&startIndex=NaN&v=full').respond(listAllFalseResponse);
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&startIndex=0&v=full').respond(listAllFalseResponse);
+
 
 
             $httpBackend.flush();
             expect(component.data).toEqualData(listAllTrueResponse.results);
 
             component.listAll = false;
-            component.getData();
+            component.getPage();
             $httpBackend.flush();
             expect(component.data).toEqualData(listAllFalseResponse.results);
-        });
-
-        it('should check for more data when first response is equal to limit', function(){
-
-            component = $componentController('openmrsList',
-                {
-                    $scope: scope
-                },
-                {
-                    limit: 3,
-                    resource: 'conceptclass',
-                    columns: [
-                        {
-                            "property": "name",
-                            "label": "Concept.name"
-                        },
-                        {
-                            "property": "description",
-                            "label":"Description"
-                        }]
-                }
-            );
-            $httpBackend.whenGET('manifest.webapp').respond(500, "");
-            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=3&v=full').respond(
-                {
-                    results:
-                        [{"Data1":"Data1"},{"Data2":"Data2"},{"Data3":"Data3"}]
-                });
-            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&v=full').respond(
-                {
-                    results:
-                        [{"Data1":"Data1"},{"Data2":"Data2"},{"Data3":"Data3"}, {"Data4":"Data4"}, {"Data5":"Data5"}]
-                });
-            $httpBackend.flush();
-            expect(component.data.length > component.limit).toEqualData(true);
         });
 
         it('should perform action on button click', function() {
@@ -186,14 +154,19 @@ describe('Concept dictionary controllers', function() {
                         }]
                 }
             );
-            $httpBackend.whenGET('manifest.webapp').respond(500, "");
-            $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&v=full').respond({results : [{
+
+            var response = {results : [{
                 "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
                 "display": "Drug",
                 "name": "Drug",
                 "description": "Drug",
                 "retired": true
-            }]});
+            }]};
+
+
+            $httpBackend.whenGET('manifest.webapp').respond(500, "");
+            $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=NaN&v=full').respond(response);
+            $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=0&v=full').respond(response);
             $httpBackend.flush();
             var activity = 'unretire';
             component.performAction(component.data[0], activity);
@@ -225,9 +198,9 @@ describe('Concept dictionary controllers', function() {
                 }
             );
             component.query = "testquery";
-            component.getData();
+            component.getPage();
             $httpBackend.whenGET('manifest.webapp').respond(500, "");
-            $httpBackend.expectGET('/ws/rest/v1/drug?includeAll=false&limit=10&q=testquery&v=full').respond({results : [{
+            $httpBackend.expectGET('/ws/rest/v1/drug?includeAll=false&limit=10&q=testquery&startIndex=0&v=full').respond({results : [{
                 "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
                 "display": "Drug",
                 "name": "Drug",
