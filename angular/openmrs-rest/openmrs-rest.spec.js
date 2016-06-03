@@ -127,8 +127,7 @@ describe('OpenmrsRest service', function() {
 	        respond({ name: 'item5', 
 	            	uuid: '6g65dc56-72ec-4ab5-9fa8-d98be91adb5b'});
 	        
-	        var updatedItem = angular.toJson({name:'item5',uuid: '6g65dc56-72ec-4ab5-9fa8-d98be91adb5b'})
-	        openmrsRest.update('item',{uuid: '6g65dc56-72ec-4ab5-9fa8-d98be91adb5b'}, updatedItem).then(function(resp){
+	        openmrsRest.update('item', {name:'item5',uuid: '6g65dc56-72ec-4ab5-9fa8-d98be91adb5b'}).then(function(resp){
 	        	UPDATEitem = resp;
 	        });
 	        
