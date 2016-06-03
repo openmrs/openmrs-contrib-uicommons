@@ -249,31 +249,32 @@ function openmrsRest() {
 			});
 		}
 
-		function update(resource, query, model) {
+		function update(resource, model) {
 			return openmrsApi.add(resource).then(function(resource){
-				return resource.save(query, model).$promise.then(function (response) {
+				return resource.save(model).$promise.then(function (response) {
 					return response;
 				});
 			});
 		}
 
-		function remove(resource, query) {
+		function remove(resource, model) {
 			return openmrsApi.add(resource).then(function(resource){
-				return resource.remove(query).$promise.then(function (response) {
+				return resource.remove({uuid: model.uuid}).$promise.then(function (response) {
 					return response;
 				});
 			});
 		}
 
-		function unretire(resource, query) {
+		function unretire(resource, model) {
 			return openmrsApi.add(resource).then(function(resource){
-				return resource.save(query, {retired: false}).$promise.then(function (response) {
+				return resource.save({uuid : model.uuid}, {retired: false}).$promise.then(function (response) {
 					return response;
 				});
 			});
 		}
 
-		function purge(resource, query) {
+		function purge(resource, model) {
+			var query = {uuid: model.uuid};
 			if (query == null) {
 				query = {purge: true};
 			} else {

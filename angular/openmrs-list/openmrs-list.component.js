@@ -204,7 +204,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
 
     //Direct REST calls for actions
     function retire(item) {
-        openmrsRest.retire(vm.resource, {uuid: item.uuid}).then(function(success) {
+        openmrsRest.retire(vm.resource, item).then(function(success) {
             var notificationInfo = item.name + ' has been retired';
             openmrsNotification.success(notificationInfo);
             getData(true);
@@ -214,7 +214,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         });
     }
     function unretire(item) {
-        openmrsRest.unretire(vm.resource, {uuid: item.uuid}).then(function(success) {
+        openmrsRest.unretire(vm.resource, item).then(function(success) {
             var notificationInfo = item.name + ' has been unretired';
             openmrsNotification.success(notificationInfo);
             getData(true);
