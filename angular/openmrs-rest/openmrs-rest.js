@@ -251,7 +251,7 @@ function openmrsRest() {
 
 		function update(resource, model) {
 			return openmrsApi.add(resource).then(function(resource){
-				return resource.save(model).$promise.then(function (response) {
+				return resource.save({uuid: model.uuid}, model).$promise.then(function (response) {
 					return response;
 				});
 			});
