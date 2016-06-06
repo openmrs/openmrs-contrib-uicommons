@@ -57,7 +57,7 @@
             ng-repeat="data in vm.items.slice(vm.sliceFrom(),vm.sliceTo()) | orderBy: 'retired'">
 
             <!--Main data-->
-            <th ng-repeat="column in vm.columns">
+            <td ng-repeat="column in vm.columns">
 
                 <div ng-show="vm.isTextClickable">
                     <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-show="data.retired">
@@ -75,7 +75,7 @@
                         {{data[column.property]}}
                     </div>
                 </div>
-            </th>
+            </td>
 
             <!--Action buttons-->
             <th ng-show="vm.getActions().length">

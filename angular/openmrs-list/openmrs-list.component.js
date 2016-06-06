@@ -25,7 +25,8 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             actions: '<',
             enableSearch: '<',
             limit: '<',
-            listAll: '<'
+            listAll: '<',
+            disableLinks: '<'
         }
     }).name;
 
@@ -113,25 +114,26 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
 
     function resolveDefaultClickLink() {
 
-        var dataSet = vm.getActions();
-
-        for(var i = 0; i < dataSet.length; i++) {
-            if (dataSet[i].action === 'view') {
-                vm.isTextClickable = true;
-                if (angular.isDefined(dataSet[i].link)) {
-                    vm.link = dataSet[i].link;
+        if (!vm.disableLinks) {
+            var dataSet = vm.getActions();
+            for(var i = 0; i < dataSet.length; i++) {
+                if (dataSet[i].action === 'view') {
+                    vm.isTextClickable = true;
+                    if (angular.isDefined(dataSet[i].link)) {
+                        vm.link = dataSet[i].link;
+                    }
+                    else {
+                        vm.link = '#/' + vm.resource + '/';
+                    }
                 }
-                else {
-                    vm.link = '#/' + vm.resource + '/';
-                }
-            }
-            else if (dataSet[i].action === 'edit') {
-                vm.isTextClickable = true;
-                if (angular.isDefined(dataSet[i].link)) {
-                    vm.link = dataSet[i].link;
-                }
-                else {
-                    vm.link = '#/' + vm.resource + '/edit/';
+                else if (dataSet[i].action === 'edit') {
+                    vm.isTextClickable = true;
+                    if (angular.isDefined(dataSet[i].link)) {
+                        vm.link = dataSet[i].link;
+                    }
+                    else {
+                        vm.link = '#/' + vm.resource + '/edit/';
+                    }
                 }
             }
         }
