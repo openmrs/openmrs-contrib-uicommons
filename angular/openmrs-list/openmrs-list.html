@@ -91,26 +91,71 @@
     <!--LIST TYPE-->
     <ul ng-show="vm.showList()">
         <li ng-repeat="data in vm.items.slice(vm.sliceFrom(),vm.sliceTo()) | orderBy:'retired'">
-            <div valign="top" ng-show="vm.isTextClickable">
-                <a ng-href="{{vm.resolveRedirectLinks(data)}}">
+            <div>
+                <div valign="top" ng-show="vm.isTextClickable">
+                    <span ng-repeat="column in vm.columns">
+                        <!-- First column -->
+                       <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-if="$first">
+                        <strong>
+                            <span ng-show="data.retired"><del>{{data[column.property]}}</del></span>
+                            <span ng-show="!data.retired">{{data[column.property]}}</span>
+                        </strong>
+                        <small>
+                               <span ng-show="data.retired" ng-if="!$last"><del> (</del></span>
+                               <span ng-show="!data.retired" ng-if="!$last"> (</span>
+                        </small>
+                       </a>
+                        <!-- Further columns-->
+                       <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-if="!$first">
+                        <small>
+                            <span ng-show="data.retired"><del>{{column.label}}: </del></span>
+                            <span ng-show="!data.retired">{{column.label}}: </span>
+                            <span ng-show="data.retired"><del>{{data[column.property]}}<span ng-if="!$last">, </span></del></span>
+                            <span ng-show="!data.retired">{{data[column.property]}}<span ng-if="!$last">, </span></span>
+                        </small>
+                       </a>
+                        <!-- Last column-->
+                        <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-if="$last">
+                            <small>
+                                <span ng-show="data.retired"><del> )</del></span>
+                                <span ng-show="!data.retired"> )</span>
+                            </small>
+                        </a>
+                    </span>
+                </div>
 
-                    <!--Main data-->
-                    <div ng-repeat="column in vm.columns">
+                <!-- When disable-links is on -->
+                <div valign="top" ng-show="vm.isTextClickable">
+                    <span ng-repeat="column in vm.columns">
+                       <!-- First column -->
+                       <span ng-if="$first">
                         <strong>
                             <span ng-show="data.retired"><del>{{data[column.property]}}</del></span>
                             <span ng-show="!data.retired">{{data[column.property]}}</span>
                         </strong>
-                    </div>
-                </a>
-            </div>
-            <div valign="top" ng-show="!vm.isTextClickable">
-                    <!--Main data-->
-                    <div ng-repeat="column in vm.columns">
-                        <strong>
-                            <span ng-show="data.retired"><del>{{data[column.property]}}</del></span>
-                            <span ng-show="!data.retired">{{data[column.property]}}</span>
-                        </strong>
-                    </div>
+                        <small>
+                               <span ng-show="data.retired" ng-if="!$last"><del> (</del></span>
+                               <span ng-show="!data.retired" ng-if="!$last"> (</span>
+                        </small>
+                       </span>
+                        <!-- Further columns-->
+                       <span ng-if="!$first">
+                        <small>
+                            <span ng-show="data.retired"><del>{{column.label}}: </del></span>
+                            <span ng-show="!data.retired">{{column.label}}: </span>
+                            <span ng-show="data.retired"><del>{{data[column.property]}}<span ng-if="!$last">, </span></del></span>
+                            <span ng-show="!data.retired">{{data[column.property]}}<span ng-if="!$last">, </span></span>
+                        </small>
+                       </span>
+                        <!-- Last column-->
+                        <span ng-if="$last">
+                            <small>
+                                <span ng-show="data.retired"><del> )</del></span>
+                                <span ng-show="!data.retired">)</span>
+                            </small>
+                        </span>
+                    </span>
+                </div>
             </div>
         </li>
     </ul>
