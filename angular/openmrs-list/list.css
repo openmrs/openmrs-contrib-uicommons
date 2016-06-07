@@ -1,13 +1,54 @@
 a.nav-button {
     padding: 5px;
     font-weight: bold;
+    user-select: none;
     cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
 }
 
 a.nav-button-selected {
+    padding: 5px;
+    font-weight: bold;
+    user-select: none;
     border: 1px solid;
     border-radius: 5px;
     border-color: #007fff;
     pointer-events: none;
     cursor: default;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+}
+
+a.nav-button-disabled {
+    color: #cccccc;
+    padding: 5px;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none;
+    cursor: not-allowed;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+a.nav-button-disabled-selected {
+    color: #cccccc;
+    padding: 5px;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none;
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #cccccc;
+    cursor: not-allowed;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }

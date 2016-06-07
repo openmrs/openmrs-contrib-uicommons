@@ -43,8 +43,17 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.noResults = false;
     vm.query = '';
 
-    vm.entriesPerPage = {value : 10};
-    vm.entriesPerPageOptions = [{value : 10}, {value : 25}, {value : 50}];
+    function resolveDefaultEntriesPerPage() {
+        if (angular.isDefined(vm.limit)) {
+            vm.entriesPerPage = {value: vm.limit};
+            vm.entriesPerPageOptions = [{value : vm.limit}, {value : 25}, {value : 50}];
+        }
+        else {
+            vm.entriesPerPage = {value : 10};
+            vm.entriesPerPageOptions = [{value : 10}, {value : 25}, {value : 50}];
+        }
+    }
+    resolveDefaultEntriesPerPage();
 
     //Default icon values
     vm.icon =
@@ -110,6 +119,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     resolveDefaultAttributes();
 
     vm.isTextClickable = false;
+    vm.nextPagePossible = false;
     vm.resolveDefaultClickLink = resolveDefaultClickLink;
 
     function resolveDefaultClickLink() {
@@ -207,31 +217,31 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     //Direct REST calls for actions
     function retire(item) {
         openmrsRest.retire(vm.resource, item).then(function(success) {
-            var notificationInfo = item.name + ' has been retired';
+            var notificationInfo = item.display + ' has been retired';
             openmrsNotification.success(notificationInfo);
-            getData(true);
+            getPage();
         }, function (exception) {
-            var notificationInfo = item.name + ' couldn\'t be retired';
+            var notificationInfo = item.display + ' couldn\'t be retired';
             openmrsNotification.error(notificationInfo);
         });
     }
     function unretire(item) {
         openmrsRest.unretire(vm.resource, item).then(function(success) {
-            var notificationInfo = item.name + ' has been unretired';
+            var notificationInfo = item.display + ' has been unretired';
             openmrsNotification.success(notificationInfo);
-            getData(true);
+            getPage();
         }, function (exception) {
-            var notificationInfo = item.name + ' couldn\'t be unretired';
+            var notificationInfo = item.display + ' couldn\'t be unretired';
             openmrsNotification.error(notificationInfo);
         });
     }
     function purge(item) {
         openmrsRest.purge(vm.resource, {uuid: item.uuid}).then(function(success) {
-            var notificationInfo = item.name + ' has been deleted forever';
+            var notificationInfo = item.display + ' has been deleted forever';
             openmrsNotification.success(notificationInfo);
-            getData(true);
+            getPage();
         }, function (exception) {
-            var notificationInfo = item.name + ' couldn\'t be deleted forever';
+            var notificationInfo = item.display + ' couldn\'t be deleted forever';
             openmrsNotification.error(notificationInfo);
         });
     }
@@ -270,63 +280,59 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         clearTimeout(timeout);
         vm.isUserTyping = true;
         timeout = setTimeout(function () {
-            vm.getData();
+            getPage()
         }, 250);
     }
 
-    //Main REST call
-    vm.getData = getData;
-    function getData() {
-        firstPage();
-        //For search panel
-        if (vm.query.length>0 || vm.getSearchPanel() == false) {
-            vm.loadingInitialPage = true;
-            var paramsFirst = {
-                limit: vm.getLimit(),
-                includeAll: vm.getListAll()
-            };
-            if (vm.query.length>0) {
-                paramsFirst['q'] = vm.query;
-            }
-            openmrsRest.listFull(vm.resource, paramsFirst).then(function (firstResponse) {
-                vm.loadingInitialPage = false;
-                vm.isUserTyping = false;
-                vm.data = firstResponse.results;
-                vm.noResults = vm.data.length === 0;
+    vm.getPage = getPage;
+    
+    function getPage() {
 
-                vm.isThisOnePageSet = vm.data.length < vm.entriesPerPage.value;
+        vm.isLoadingMorePages = true;
+
+        var params = {
+            limit: vm.entriesPerPage.value,
+            includeAll: vm.getListAll(),
+            startIndex: vm.entriesPerPage.value * vm.page - vm.entriesPerPage.value
+        };
+
+        if (vm.query.length > 0) {
+            params['q'] = vm.query;
+        }
+
+        if (vm.query.length > 0 || !vm.getSearchPanel()) {
+            openmrsRest.listFull(vm.resource, params).then(function (firstResp) {
+                vm.data = firstResp.results;
+                vm.pageNotFull = vm.data.length < vm.entriesPerPage.value;
                 resolveComplexProperties();
+                vm.isLoadingInitialPage = false;
 
-                //Check for more data
-                if (!vm.isThisOnePageSet) {
-                    vm.loadingMorePages = true;
-
-                    var paramsMore = {
-                        includeAll: vm.getListAll()
-                    };
-                    if (vm.query.length>0) {
-                        paramsMore['q'] = vm.query;
-                    }
-
-                    openmrsRest.listFull(vm.resource, paramsMore).then(function (response) {
-                        vm.data = response.results;
-                        vm.isThisOnePageSet = vm.data.length === vm.entriesPerPage.value;
-                        resolveComplexProperties();
-                        vm.loadingMorePages = false;
-                    });
+                if (firstResp.hasNext()) {
+                    vm.nextPagePossible = true;
                 }
+                else {
+                    vm.nextPagePossible = false;
+                }
+                vm.isLoadingInitialPage = false;
+                vm.isLoadingMorePages = false;
+                vm.isUserTyping = false;
+            })
+        }
+        else {
+            $scope.$apply(function () {
+                vm.data = '';
+                vm.isUserTyping = false;
             });
         }
-        //Reset status
-        else {
-            if (vm.isUserTyping) {
-                vm.isUserTyping = false;
-                $scope.$apply(function () {
-                    vm.data = '';
-                })
-            }
+    }
+
+
+    function getInitialData() {
+        if (vm.getSearchPanel() == false) {
+            getPage();
         }
     }
+    getInitialData();
 
     /**
      * That method solves problem where column got "property in property" value
@@ -348,63 +354,39 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         }
     }
 
-    //Initial data catch (non-search panel only)
-    function getInitialData() {
-        if (vm.getSearchPanel() == false) {
-            getData();
-        }
-    }
-    getInitialData();
-
     //Paging logic:
-    vm.sliceFrom = sliceFrom;
-    vm.sliceTo = sliceTo;
     vm.page = 1;
     vm.nextPage = nextPage;
     vm.prevPage = prevPage;
     vm.firstPage = firstPage;
-    vm.lastPage = lastPage;
-    vm.loadingMorePages = false;
-    vm.totalPages = totalPages;
     vm.pageRange = pageRange;
-    vm.loadingInitialPage = false;
-
-    function sliceFrom() {
-        return vm.page * vm.entriesPerPage.value - vm.entriesPerPage.value;
-    }
-    function sliceTo() {
-        return vm.page * vm.entriesPerPage.value;
+    vm.goToPage = goToPage;
+    
+    function goToPage(pageNum) {
+        vm.page = pageNum;
+        getPage();
     }
     function nextPage() {
         vm.page++;
+        getPage();
     }
     function prevPage() {
         vm.page--;
+        getPage();
     }
     function firstPage() {
         vm.page = 1;
+        getPage();
     }
-    function lastPage() {
-        if (vm.data.length % vm.entriesPerPage.value == 0) {
-            vm.page = Math.floor(vm.data.length / vm.entriesPerPage.value);
-        }
-        else {
-            vm.page = Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
-        }
-    }
-    function totalPages() {
 
-        if (vm.data.length % vm.entriesPerPage.value == 0) {
-            return Math.floor(vm.data.length / vm.entriesPerPage.value);
-        }
-        else {
-            return Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
-        }
-    }
-    function pageRange(){
+    function pageRange() {
         var range = [];
-        for(var i=vm.page-2;i<vm.page+3;i++){
-            if(i>0 && (i-1)*vm.entriesPerPage.value <= vm.data.length){
+
+        for (var i = vm.page - 1; i < vm.page + 2; i++) {
+            if (i > 0 && vm.isNextPagePossible()) {
+                range.push(i);
+            }
+            else if (i > 0 && !vm.isNextPagePossible() && i <= vm.page) {
                 range.push(i);
             }
         }
@@ -415,30 +397,22 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.isPrevPagePossible = isPrevPagePossible;
     vm.isNextPagePossible = isNextPagePossible;
     vm.isFirstPagePossible = isFirstPagePossible;
-    vm.isLastPagePossible = isLastPagePossible;
 
     function isPrevPagePossible() {
         return vm.page > 1;
     }
     function isNextPagePossible() {
-        return vm.sliceTo() < vm.data.length;
+        return vm.nextPagePossible;
     }
     function isFirstPagePossible() {
         return vm.page > 1
     }
-    function isLastPagePossible() {
-        if (vm.data.length % vm.entriesPerPage.value == 0) {
-            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage.value);
-        }
-        else {
-            return vm.page < Math.floor(vm.data.length / vm.entriesPerPage.value) + 1;
-        }
-    }
 
     //ng-show logic
+    vm.isLoadingInitialPage = true;
+    vm.isLoadingMorePages = false;
     vm.isSearchPanelVisible = isSearchPanelVisible;
     vm.isWholeNavigationPanelVisible = isWholeNavigationPanelVisible;
-    vm.isSecondLoaderNotificationVisible =isSecondLoaderNotificationVisible;
     vm.isInitialLoaderImageNotificationVisible = isInitialLoaderImageNotificationVisible;
     vm.isButtonPanelVisible = isButtonPanelVisible;
     vm.notificationEmptyQuery = notificationEmptyQuery;
@@ -462,12 +436,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             || vm.data.length > 0);
     }
     function showTableContent() {
-        return vm.getType() == 'table'
-            && vm.data.length > 0
-            && vm.query.length > 0
-            || vm.getSearchPanel()
-            == false && vm.getType()
-            == 'table' && vm.data.length > 0;
+        return !vm.isLoadingInitialPage;
     }
     function notificationLoading() {
         return vm.isUserTyping
@@ -480,25 +449,22 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     }
     function notificationEmptyQuery() {
         return vm.query.length == 0
-            && vm.data.length == 0
-            && vm.getSearchPanel() == true
+            && vm.getSearchPanel();
     }
     function isSearchPanelVisible() {
         return vm.getSearchPanel();
     }
     function isWholeNavigationPanelVisible() {
-        return (!vm.isThisOnePageSet && !vm.getSearchPanel())
-            && (!vm.loadingMorePages || !vm.loadingInitialPage);
-    }
-    function isSecondLoaderNotificationVisible() {
-        return vm.loadingMorePages;
+        return !vm.isLoadingInitialPage;
     }
     function isInitialLoaderImageNotificationVisible() {
-        return vm.loadingInitialPage;
+        return vm.isLoadingInitialPage;
     }
     function isButtonPanelVisible() {
-        return !isSecondLoaderNotificationVisible()
-            && !isInitialLoaderImageNotificationVisible()
+        return !isInitialLoaderImageNotificationVisible()
             && vm.data.length > 0;
+    }
+    function isLoadingMorePages() {
+        return vm.isLoadingMorePages;
     }
 }

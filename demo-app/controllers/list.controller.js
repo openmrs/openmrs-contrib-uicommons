@@ -5,7 +5,7 @@ export default function ListController(){
 
     //Properties for list component
     vm.resource = "conceptstopword";
-        vm.limit = 20; //Default
+        vm.limit = 10; //Default
         vm.columns= [
             {
                 "property": "display",
