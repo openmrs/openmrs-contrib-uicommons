@@ -35,6 +35,10 @@ openmrsList.$inject = ['openmrsRest', 'openmrsNotification', '$scope', '$locatio
 function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     var vm = this;
 
+    //Variable that describes how many letters does search panel need to start searching
+    vm.minimumQueryLength = 3;
+    vm.minimumSourceLength = 2;
+
     //Initial loading logo
     vm.logo = openmrs;
 
@@ -42,6 +46,50 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.data = [];
     vm.noResults = false;
     vm.query = '';
+
+    //Default value for show retired checkbox
+    vm.showRetired = false;
+    
+    // Advanced Search exclusive mode for conceptSearch and conceptReferenceTermSearch
+    vm.isAdvancedSearchPossible = isAdvancedSearchPossible;
+    vm.advancedSearchResource = resolveAdvancedSearchResource();
+    vm.isAdvancedSearchModeOn = isAdvancedSearchModeOn;
+    vm.selectedAdvancedSearchDataUuid = '';
+    vm.advancedSearchResourceLabel = '';
+
+    vm.advancedSearchData = [{}];
+
+    function isAdvancedSearchModeOn() {
+        return vm.advancedSearchData != null && vm.selectedAdvancedSearchDataUuid.length > 0
+    }
+
+    function isAdvancedSearchPossible() {
+        return vm.resource === "concept" || vm.resource === "conceptreferenceterm"
+    }
+    
+    function resolveAdvancedSearchResource() {
+        if (vm.isAdvancedSearchPossible()) {
+            if (vm.resource === "concept") {
+                vm.advancedSearchResourceLabel = "class";
+                return "conceptclass"
+            }
+            else if (vm.resource === "conceptreferenceterm") {
+                vm.advancedSearchResourceLabel = "source";
+                return "conceptsource"
+            }
+        }
+        else {
+            return '';
+        }
+    }
+    resolveAdvancedSearchResource();
+    
+    function resolveAdvancedSearchFilterData() {
+        openmrsRest.list(vm.advancedSearchResource).then(function (resp) {
+            vm.advancedSearchData = resp.results;
+        })
+    }
+    resolveAdvancedSearchFilterData();
 
     function resolveDefaultEntriesPerPage() {
         if (angular.isDefined(vm.limit)) {
@@ -182,6 +230,25 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     resolveCustomIcons();
     resolveCustomLabels();
 
+    vm.synonymOf = synonymOf;
+
+    function synonymOf(word, data) {
+        if (vm.resource == 'concept') {
+
+            if (data.display.toLowerCase().indexOf(word.toLowerCase()) > -1) {
+                return false;
+            }
+            else {
+                for (var i = 1; i < data.names.length; i++) {
+                    if (data.names[i].display.toLowerCase().indexOf(word.toLowerCase()) > -1) {
+                        return data.names[i].display;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
     //Find out which action button to put - retire or unretire
     vm.resolveRetireButtons = function(object, activity) {
         return !((object.retired && activity === 'retire')
@@ -293,11 +360,43 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             startIndex: vm.entriesPerPage.value * vm.page - vm.entriesPerPage.value
         };
 
-        if (vm.query.length > 0) {
+        if ((vm.query.indexOf(':') >= vm.minimumSourceLength && !vm.isAdvancedSearchModeOn())
+            && (vm.resource == "concept" || vm.resource == "conceptreferenceterm")) {
+            var parts = vm.query.split(':');
+            params['source'] = parts[0];
+            params['code'] = parts[1];
+            if (vm.resource == "conceptreferenceterm") {
+                params['searchType'] = 'startsWith';
+            }
+        }
+        else if (vm.query.length >= vm.minimumQueryLength && !vm.isAdvancedSearchModeOn()) {
             params['q'] = vm.query;
         }
+        //Exclusive concept search filter (See RA-1148 for details)
+        else if (vm.isAdvancedSearchModeOn()) {
+            if (vm.resource == "concept") {
+                if (!vm.selectedAdvancedSearchDataUuid) {
+                    params['q'] = vm.query;
+                }
+                else {
+                    params['class'] = vm.selectedAdvancedSearchDataUuid;
+                    params['name'] = vm.query;
+                    params['searchType'] = 'fuzzy';
+                }
+            }
+            else if (vm.resource == "conceptreferenceterm") {
+                if (!vm.selectedAdvancedSearchDataUuid) {
+                    params['q'] = vm.query;
+                }
+                else {
+                    params['source'] = vm.selectedAdvancedSearchDataUuid;
+                    params['code'] = vm.query;
+                    params['searchType'] = 'startsWith';
+                }
+            }
+        }
 
-        if (vm.query.length > 0 || !vm.getSearchPanel()) {
+        if (vm.query.length >= vm.minimumQueryLength || !vm.getSearchPanel() || (vm.isAdvancedSearchModeOn() && vm.query.length >= vm.minimumQueryLength)) {
             openmrsRest.listFull(vm.resource, params).then(function (firstResp) {
                 vm.data = firstResp.results;
                 vm.pageNotFull = vm.data.length < vm.entriesPerPage.value;
@@ -316,10 +415,12 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             })
         }
         else {
-            $scope.$apply(function () {
-                vm.data = '';
-                vm.isUserTyping = false;
-            });
+            if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                $scope.$apply(function () {
+                    vm.data = '';
+                    vm.isUserTyping = false;
+                });
+            }
         }
     }
 
@@ -348,6 +449,13 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 vm.items[k][vm.columns[j].property] = propertyValue;
             }
             vm.items[k].retired = vm.data[k].retired;
+        }
+
+        if (vm.resource === 'concept') {
+            for (var i = 0; i < vm.data.length; i++) {
+                vm.items[i]['names']=(vm.data[i].names);
+                vm.items[i]['display']=(vm.data[i].display);
+            }
         }
     }
 
@@ -422,9 +530,11 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     function showList() {
         return vm.getType() == 'list'
             && vm.data.length > 0
-            && vm.query.length > 0
+            && vm.query.length >= vm.minimumQueryLength
             || vm.getSearchPanel() == false
             && vm.getType() == 'list'
+            && vm.data.length > 0
+            || vm.isAdvancedSearchModeOn() && vm.resource === "concept"
             && vm.data.length > 0;
     }
     function showTable(){
@@ -437,16 +547,17 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     }
     function notificationLoading() {
         return vm.isUserTyping
-            && vm.query.length > 0;
+            && vm.query.length >= vm.minimumQueryLength;
     }
     function notificationNoEntriesFound() {
-        return vm.query.length > 0
+        return vm.query.length >= vm.minimumQueryLength
             && vm.data.length == 0
             && !vm.isUserTyping;
     }
     function notificationEmptyQuery() {
-        return vm.query.length == 0
-            && vm.getSearchPanel();
+        return vm.query.length < vm.minimumQueryLength
+            && vm.getSearchPanel()
+            || !vm.isAdvancedSearchModeOn() && vm.selectedAdvancedSearchDataUuid === '' && vm.getSearchPanel() && vm.query.length < vm.minimumQueryLength;
     }
     function isSearchPanelVisible() {
         return vm.getSearchPanel();

@@ -59,7 +59,9 @@ describe('Concept dictionary controllers', function() {
                 }
             );
 
-            $httpBackend.expectGET('/ws/rest/v1/testres?includeAll=false&limit=10&startIndex=NaN&v=full').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1/testres?includeAll=false&limit=10&startIndex=NaN&v=full').respond({"results": []});
             $httpBackend.flush();
 
             expect(component.getType()).toEqualData('table');
@@ -108,6 +110,9 @@ describe('Concept dictionary controllers', function() {
                     "resourceVersion": "1.8"
                 }]
             };
+            $httpBackend.whenGET('/ws/rest/v1').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&source=&startIndex=0&v=full').respond(listAllTrueResponse);
             $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&startIndex=NaN&v=full').respond(listAllTrueResponse);
             $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=true&limit=10&startIndex=0&v=full').respond(listAllTrueResponse);
 
@@ -121,6 +126,7 @@ describe('Concept dictionary controllers', function() {
                     "retired": false
                 }]
             };
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&source=&startIndex=0&v=full').respond(listAllFalseResponse);
             $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&startIndex=NaN&v=full').respond(listAllFalseResponse);
             $httpBackend.whenGET('/ws/rest/v1/conceptclass?includeAll=false&limit=10&startIndex=0&v=full').respond(listAllFalseResponse);
 
@@ -128,6 +134,7 @@ describe('Concept dictionary controllers', function() {
 
             $httpBackend.flush();
             expect(component.data).toEqualData(listAllTrueResponse.results);
+
 
             component.listAll = false;
             component.getPage();
@@ -162,9 +169,11 @@ describe('Concept dictionary controllers', function() {
                 "description": "Drug",
                 "retired": true
             }]};
-
-
+            
+            $httpBackend.whenGET('/ws/rest/v1').respond({"results": []});
+            $httpBackend.whenGET('/ws/rest/v1/conceptclass').respond({"results": []});
             $httpBackend.whenGET('manifest.webapp').respond(500, "");
+            $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&source=&startIndex=0&v=full').respond(response);
             $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=NaN&v=full').respond(response);
             $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=0&v=full').respond(response);
             $httpBackend.flush();
@@ -174,39 +183,6 @@ describe('Concept dictionary controllers', function() {
             component.resolveComplexProperties = function () {
                 return false;
             };
-            $httpBackend.flush();
-        });
-
-        it('should request response by query', function() {
-
-            component = $componentController('openmrsList',
-                {
-                    $scope: scope
-                },
-                {
-                    enableSearch: true,
-                    resource: 'drug',
-                    columns: [
-                        {
-                            "property": "name",
-                            "label": "Concept.name"
-                        },
-                        {
-                            "property": "description",
-                            "label": "Description"
-                        }]
-                }
-            );
-            component.query = "testquery";
-            component.getPage();
-            $httpBackend.whenGET('manifest.webapp').respond(500, "");
-            $httpBackend.expectGET('/ws/rest/v1/drug?includeAll=false&limit=10&q=testquery&startIndex=0&v=full').respond({results : [{
-                "uuid": "c543d951-0201-4e20-94bd-64b44120991e",
-                "display": "Drug",
-                "name": "Drug",
-                "description": "Drug",
-                "retired": true
-            }]});
             $httpBackend.flush();
         });
     });
