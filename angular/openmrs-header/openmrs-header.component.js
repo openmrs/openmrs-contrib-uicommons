@@ -85,7 +85,10 @@ function OpenmrsHeaderController(openmrsRest, $window) {
     }
 
     function changeLocation(selected) {
-        openmrsRest.update('appui/session', {}, {location: selected.uuid}).then(function(response){
+        var sessionObject = {
+            "location": selected.uuid
+        }
+        openmrsRest.update('appui/session', sessionObject).then(function(response){
            activate();
         });
     }
