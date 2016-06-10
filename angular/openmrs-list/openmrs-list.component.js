@@ -123,12 +123,10 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.resolveDefaultClickLink = resolveDefaultClickLink;
 
     function resolveDefaultClickLink() {
-
-        if (!vm.disableLinks) {
-            var dataSet = vm.getActions();
+         var dataSet = vm.getActions();
             for(var i = 0; i < dataSet.length; i++) {
                 if (dataSet[i].action === 'view') {
-                    vm.isTextClickable = true;
+                    vm.isTextClickable = !vm.disableLinks;
                     if (angular.isDefined(dataSet[i].link)) {
                         vm.link = dataSet[i].link;
                     }
@@ -137,7 +135,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                     }
                 }
                 else if (dataSet[i].action === 'edit') {
-                    vm.isTextClickable = true;
+                    vm.isTextClickable = !vm.disableLinks;
                     if (angular.isDefined(dataSet[i].link)) {
                         vm.link = dataSet[i].link;
                     }
@@ -146,7 +144,6 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                     }
                 }
             }
-        }
     }
     resolveDefaultClickLink();
 
