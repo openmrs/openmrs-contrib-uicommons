@@ -1,6 +1,6 @@
 <form name='conceptInput'>
-	<input type="text" placeholder='Enter concept name' ng-model="$ctrl.searchText" 
-			class="form-control" ng-change="$ctrl.search()" bs-options="concept.display for concept in $ctrl.suggestions" 
-			data-watch-options="true" bs-typeahead ng-required='$ctrl.required'>
+	<input class="form-control" type="text" placeholder='Enter concept name' ng-model="$ctrl.searchText"
+		   ng-change="$ctrl.search()" uib-typeahead="concept as $ctrl.display(concept.display, concept.uuid) for concept in $ctrl.suggestions"
+		   ng-required='$ctrl.required' typeahead-wait-ms="250" typeahead-on-select="$ctrl.onSelect($item, $model, $label)">
 	<span ng-show='!$ctrl.isCorrect'>This concept does not exist</span>
 </form>

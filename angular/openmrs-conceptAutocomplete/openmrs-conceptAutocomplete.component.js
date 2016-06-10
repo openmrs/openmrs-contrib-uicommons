@@ -9,9 +9,10 @@
  */
 var template = require('./openmrs-conceptAutocomplete.html');
 import openmrsRest from './../openmrs-rest/openmrs-rest.js';
-import angularStrap from 'template-url-loader?path=../src/!angular-strap';
+import uiBootstrap from 'angular-ui-bootstrap';
+import ngSanitize from 'angular-sanitize';
 
-export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', ['openmrs-contrib-uicommons.rest', 'mgcrea.ngStrap.typeahead'])
+export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', ['openmrs-contrib-uicommons.rest', 'ui.bootstrap', 'ngSanitize'])
 						.component('conceptAutoComplete', {
 							  template: template,
 							  controller: conceptAutoComplete,
@@ -22,10 +23,10 @@ export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', 
 							    onUpdate: '&' 
 							  }}).name;
 
-conceptAutoComplete.$inject = ['openmrsRest']
+conceptAutoComplete.$inject = ['openmrsRest', '$timeout']
 
 	
-function conceptAutoComplete(openmrsRest){
+function conceptAutoComplete(openmrsRest, $timeout){
 	var vm = this;
 	
 	
@@ -40,6 +41,8 @@ function conceptAutoComplete(openmrsRest){
 	
 	vm.search = search;
 	vm.checkInput = checkInput;
+	vm.display = display;
+	vm.onSelect = onSelect;
 	
 	activate();
 	
@@ -48,11 +51,22 @@ function conceptAutoComplete(openmrsRest){
 			vm.isCorrect = true;
 		}
 	}
-	
+
+	function onSelect($item, $model, $label) {
+		if(angular.isDefined($item.display)){
+			vm.searchText = $item.display;
+		}
+		vm.newConcept = $item;
+	}
+
+	function display(display, uuid) {
+		return display +"</br><sub>"+ uuid+"</sub>";
+	}
+
 	function checkInput(){
 		var display = vm.searchText;
 		if(angular.isDefined(vm.searchText)){
-			if(angular.isDefined(vm.searchText.display)){
+			if(angular.isDefined(vm.searchText.display)){ 
 				display = vm.searchText.display;
 			}
 		}
@@ -110,10 +124,9 @@ function conceptAutoComplete(openmrsRest){
 		}else{
 			vm.checkInput();
 			vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
-		}	
-		
+		}
 	}
-	
+
 }
 
 		
