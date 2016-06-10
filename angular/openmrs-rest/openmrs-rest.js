@@ -257,9 +257,9 @@ function openmrsRest() {
 			});
 		}
 
-		function remove(resource, model) {
+		function remove(resource, model, retireReason) {
 			return openmrsApi.add(resource).then(function(resource){
-				return resource.remove({uuid: model.uuid}).$promise.then(function (response) {
+				return resource.remove({uuid: model.uuid, reason: retireReason}).$promise.then(function (response) {
 					return response;
 				});
 			});

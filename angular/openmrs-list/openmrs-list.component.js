@@ -215,8 +215,8 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
 
     //Direct REST calls for actions
-    function retire(item) {
-        openmrsRest.retire(vm.resource, item).then(function(success) {
+    function retire(item, retireReason) {
+        openmrsRest.retire(vm.resource, item, retireReason).then(function(success) {
             var notificationInfo = item.display + ' has been retired';
             openmrsNotification.success(notificationInfo);
             getPage();
@@ -260,7 +260,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
         if (isConfirmed) {
             //TODO: Do something with reason and retire (REST services needs to work)
-            retire(vm.retireItem);
+            retire(vm.retireItem, retireReason);
         }
         vm.retireClicked = false;
     };
