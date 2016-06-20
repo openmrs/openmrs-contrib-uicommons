@@ -18,15 +18,16 @@ export default angular.module('openmrs-contrib-uicommons.concept-autoComplete', 
 							  controller: conceptAutoComplete,
 							  bindings: {
 							    limitToClass: '<',
+								membersOf: '<',
 							    required: '<',
 							    concept: '<',
 							    onUpdate: '&' 
 							  }}).name;
 
-conceptAutoComplete.$inject = ['openmrsRest', '$timeout']
+conceptAutoComplete.$inject = ['openmrsRest']
 
 	
-function conceptAutoComplete(openmrsRest, $timeout){
+function conceptAutoComplete(openmrsRest){
 	var vm = this;
 	
 	
@@ -90,8 +91,7 @@ function conceptAutoComplete(openmrsRest, $timeout){
 			};
 		}
 	}
-	
-	
+
 	function search(){
 		var maxResults = 0;
 		vm.suggestions = [];
@@ -106,21 +106,46 @@ function conceptAutoComplete(openmrsRest, $timeout){
 			display = '';
 		}
 		if(display.length > 1){
-			openmrsRest.listFull('concept',{q: display, includeAll: true}).then(function (response){
-				vm.concepts = response.results;
-				for(var i=0; i<vm.concepts.length; i++){
-					if((!vm.limitToClass) || (vm.concepts[i].conceptClass.display === vm.limitToClass && vm.limitToClass)){
-						vm.suggestions.push(vm.concepts[i]);
-						maxResults +=1;
-						if(maxResults == 5){
-							break;
+			if (angular.isUndefined(vm.membersOf)) {
+				openmrsRest.listFull('concept', {q: display, includeAll: true}).then(function (response) {
+					vm.concepts = response.results;
+					for (var i = 0; i < vm.concepts.length; i++) {
+						if ((!vm.limitToClass) || (vm.concepts[i].conceptClass.display === vm.limitToClass && vm.limitToClass)) {
+							vm.suggestions.push(vm.concepts[i]);
+							maxResults += 1;
+							if (maxResults == 5) {
+								break;
+							}
 						}
-					}				
-				}
-				vm.checkInput();
-				vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
-			});	
-			
+					}
+					vm.checkInput();
+					vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
+				});
+			} else if(vm.membersOf === 'Route') {
+				openmrsRest.listFull('systemsetting', {q: 'conceptDrug.route.conceptClasses'}).then(function (response){
+					if(response.results[0].value === null){
+						var uuid = '162394AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+					}else {
+						var uuid = response.results[0].value;
+					}
+					openmrsRest.getFull('concept', {uuid: uuid}).then(function (success) {
+						vm.concepts = success.setMembers;
+						for (var i = 0; i < vm.concepts.length; i++) {
+							var conceptName = vm.concepts[i].display.toLowerCase();
+							var displayLower = display.toLowerCase();
+							if (conceptName.indexOf(displayLower) > -1) {
+								vm.suggestions.push(vm.concepts[i]);
+								maxResults += 1;
+								if (maxResults == 5) {
+									break;
+								}
+							}
+						}
+						vm.checkInput();
+						vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
+					});
+				});
+			}
 		}else{
 			vm.checkInput();
 			vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
