@@ -63,3 +63,9 @@ table.word-wrapper {
     -ms-hyphens: auto;
     hyphens: auto;
 }
+
+/* Search Panel checkboxes and query field */
+#container{width:100%;} /* Wrapper */
+#left{float:left;width:150px;} /* Show retired checkbox */
+#right{float:right;width:300px;} /* Filter by class dropdown */
+#center{margin:0 auto;width:400px;} /* Search button and query field */

@@ -1,11 +1,31 @@
 <!--MAIN WRAPPER-->
 <div ng-if="!vm.deleteClicked && !vm.retireClicked">
 
-    <!--Query field and search button-->
-    <div class="search-input" align="center" ng-if="vm.isSearchPanelVisible()">
-        <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
-               ng-change="vm.timeoutRefresh()" autocomplete="off">
-        <button id="searchButton" name="searchButton" ng-click="vm.getData()">{{"Search" | translate}}</button>
+    <div id="container">
+
+        <div ng-if="vm.isButtonPanelVisible()" id="left">
+            <input type="checkbox" id="show-retired-checkbox" ng-model="vm.listAll" ng-change="vm.getPage()"><label for="show-retired-checkbox">Show retired</label></input>
+        </div>
+
+        <div ng-if="vm.isAdvancedSearchPossible()" id="right">
+            <div style="display:inline-block">
+                <select ng-model="vm.selectedAdvancedSearchDataUuid" ng-change="vm.getPage()" ng-options="advancedSearchData.uuid as advancedSearchData.display for advancedSearchData in vm.advancedSearchData">
+
+
+                    <option value="">Show All</option>
+
+
+                </select>
+            </div>
+            <label>Filter by {{vm.advancedSearchResourceLabel}}</label>
+        </div>
+
+        <div class="search-input" ng-if="vm.isSearchPanelVisible()" id="center">
+            <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
+                   ng-change="vm.timeoutRefresh()" autocomplete="off">
+            <button id="searchButton" name="searchButton" ng-click="vm.getPage()">{{"Search" | translate}}</button>
+        </div>
+
     </div>
 
     <!--Empty query notification-->
@@ -96,6 +116,8 @@
                     <span ng-repeat="column in vm.columns">
                         <!-- First column -->
                        <a ng-href="{{vm.resolveRedirectLinks(data)}}" ng-if="$first">
+                           <span ng-if="vm.synonymOf(vm.query, data) && !data.retired">{{vm.synonymOf(vm.query, data)}} -> </span>
+                           <span ng-if="vm.synonymOf(vm.query, data) && data.retired"><del>{{vm.synonymOf(vm.query, data)}}</del> -> </span>
                         <strong>
                             <span ng-if="data.retired"><del>{{data[column.property]}}</del></span>
                             <span ng-if="!data.retired">{{data[column.property]}}</span>
@@ -129,6 +151,8 @@
                     <span ng-repeat="column in vm.columns">
                        <!-- First column -->
                        <span ng-if="$first">
+                           <span ng-if="vm.synonymOf(vm.query, data) && !data.retired">{{vm.synonymOf(vm.query, data)}} -> </span>
+                           <span ng-if="vm.synonymOf(vm.query, data) && data.retired"><del>{{vm.synonymOf(vm.query, data)}}</del> -> </span>
                         <strong>
                             <span ng-if="data.retired"><del>{{data[column.property]}}</del></span>
                             <span ng-if="!data.retired">{{data[column.property]}}</span>
@@ -162,7 +186,7 @@
 
     <!--Nav buttons-->
     <div ng-if="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible()" align="center" style="margin-bottom: 20px">
-        
+
         <!--Entries count selection-->
         <div align="left" style="padding: 5px;display:inline-block;float:left;">
             {{"Show" | translate}}

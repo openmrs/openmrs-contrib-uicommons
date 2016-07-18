@@ -2,38 +2,27 @@ ListController.$inject = [];
 
 export default function ListController(){
 	var vm = this;
-    vm.type = "table";
-    vm.resource = "conceptreferenceterm";
-    vm.limit = 5; //Default value
+    vm.type = "list";
+    vm.resource = "concept";
+    vm.limit = 10; //Default value
     vm.columns= [
         {
-            "property": "code",
-            "label": "Code"
+            "property": "name.name",
+            "label": "Concept.name"
         },
         {
-            "property": "name",
-            "label": "Name"
+            "property": "conceptClass.name",
+            "label":"class"
         },
         {
-            "property": "conceptSource.display",
-            "label": "Source"
+            "property": "uuid",
+            "label":"uuid"
         }];
     vm.actions = [
         {
-            "action":"edit",
-            "label":"Edit",
-            "link" : "#/reference/{uuid}"
-        },
-        {
-            "action":"retire",
-            "label":"Retire"
-        },
-        {
-            "action":"unretire",
-            "label":"unretire"
-        },
-        {
-            "action":"purge",
-            "label":"Delete"
-        }];
+            "action":"view",
+            "label":"View",
+            "link" : "#/concept/{uuid}"
+        }
+    ];
 }
