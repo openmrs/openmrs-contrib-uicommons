@@ -54,13 +54,13 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.isAdvancedSearchPossible = isAdvancedSearchPossible;
     vm.advancedSearchResource = resolveAdvancedSearchResource();
     vm.isAdvancedSearchModeOn = isAdvancedSearchModeOn;
-    vm.selectedAdvancedSearchDataUuid = '';
+    vm.selectedAdvancedSearchDataUuid;
     vm.advancedSearchResourceLabel = '';
 
     vm.advancedSearchData = [{}];
 
     function isAdvancedSearchModeOn() {
-        return vm.advancedSearchData != null && vm.selectedAdvancedSearchDataUuid.length > 0
+        return vm.advancedSearchData != null && angular.isDefined(vm.selectedAdvancedSearchDataUuid);
     }
 
     function isAdvancedSearchPossible() {
