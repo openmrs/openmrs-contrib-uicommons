@@ -12,7 +12,7 @@
                 <label>Filter by {{vm.advancedSearchResourceLabel}}</label>
             </div>
             <div align="center">
-                <select ng-model="vm.selectedAdvancedSearchDataUuid" ng-change="vm.getPage()" ng-options="advancedSearchData.uuid as advancedSearchData.display for advancedSearchData in vm.advancedSearchData">
+                <select ng-model="vm.selectedAdvancedSearchDataUuid" ng-change="vm.sendNewQuery()" ng-options="advancedSearchData.uuid as advancedSearchData.display for advancedSearchData in vm.advancedSearchData">
                     <option value="">Show All</option>
                 </select>
             </div>
@@ -21,7 +21,7 @@
         <div class="search-input" ng-if="vm.isSearchPanelVisible()" id="center" style="padding-top: 10px">
             <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
                    ng-change="vm.timeoutRefresh()" autocomplete="off">
-            <button id="searchButton" name="searchButton" ng-click="vm.getPage()">{{"Search" | translate}}</button>
+            <button id="searchButton" name="searchButton" ng-click="vm.sendNewQuery()">{{"Search" | translate}}</button>
         </div>
 
     </div>
