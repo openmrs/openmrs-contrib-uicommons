@@ -58,6 +58,8 @@ function conceptAutoComplete(openmrsRest){
 			vm.searchText = $item.display;
 		}
 		vm.newConcept = $item;
+		vm.isCorrect = true;
+		vm.onUpdate({isCorrect: vm.isCorrect, concept: vm.newConcept});
 	}
 
 	function display(display, uuid) {

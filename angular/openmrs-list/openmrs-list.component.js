@@ -364,7 +364,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             && (vm.resource == "concept" || vm.resource == "conceptreferenceterm")) {
             var parts = vm.query.split(':');
             params['source'] = parts[0];
-            params['code'] = parts[1];
+            params['codeOrName'] = parts[1];
             if (vm.resource == "conceptreferenceterm") {
                 params['searchType'] = 'startsWith';
             }
@@ -390,7 +390,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 }
                 else {
                     params['source'] = vm.selectedAdvancedSearchDataUuid;
-                    params['code'] = vm.query;
+                    params['codeOrName'] = vm.query;
                     params['searchType'] = 'startsWith';
                 }
             }
