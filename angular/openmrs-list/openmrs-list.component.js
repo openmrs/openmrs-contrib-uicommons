@@ -344,7 +344,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         clearTimeout(timeout);
         vm.isUserTyping = true;
         timeout = setTimeout(function () {
-            getPage()
+            sendNewQuery()
         }, 250);
     }
 
@@ -422,6 +422,12 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
                 });
             }
         }
+    }
+
+    vm.sendNewQuery = sendNewQuery;
+    function sendNewQuery() {
+        firstPage();
+        getPage();
     }
 
 
