@@ -532,6 +532,16 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.showTableContent = showTableContent;
     vm.showTable = showTable;
     vm.showList = showList;
+    vm.isThereRetireAction = isThereRetireAction;
+
+    function isThereRetireAction() {
+        for (var i = 0; i < vm.actions.length; i++) {
+            if (vm.actions[i].action === 'retire' || vm.actions[i].action === 'unretire') {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function showList() {
         return vm.getType() == 'list'
