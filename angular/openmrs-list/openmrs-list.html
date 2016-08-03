@@ -3,7 +3,7 @@
 
     <div id="container" style="padding-bottom:25px">
 
-        <div ng-if="vm.isButtonPanelVisible()" id="left" style="padding-top: 17px">
+        <div ng-if="vm.isButtonPanelVisible() && vm.isThereRetireAction()" id="left" style="padding-top: 17px">
             <input type="checkbox" id="show-retired-checkbox" ng-model="vm.listAll" ng-change="vm.getPage()"><label for="show-retired-checkbox">Show retired</label></input>
         </div>
 
