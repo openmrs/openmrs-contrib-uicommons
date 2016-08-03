@@ -26,7 +26,8 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             enableSearch: '<',
             limit: '<',
             listAll: '<',
-            disableLinks: '<'
+            disableLinks: '<',
+            customParams: '<'
         }
     }).name;
 
@@ -359,6 +360,12 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             includeAll: vm.getListAll(),
             startIndex: vm.entriesPerPage.value * vm.page - vm.entriesPerPage.value
         };
+
+        if (angular.isDefined(vm.customParams)) {
+            for (var i = 0; i < vm.customParams.length; i++) {
+                params[vm.customParams[i].property] = vm.customParams[i].value;
+            }
+        }
 
         if ((vm.query.indexOf(':') >= vm.minimumSourceLength && !vm.isAdvancedSearchModeOn())
             && (vm.resource == "concept" || vm.resource == "conceptreferenceterm")) {
