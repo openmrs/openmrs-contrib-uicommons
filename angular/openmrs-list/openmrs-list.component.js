@@ -330,10 +330,27 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
     function showDeleteAlert(item) {
         vm.deleteItem = item;
-        vm.deleteClicked = true;
+        if (angular.isDefined(item.display)) {
+            vm.message = "Are you sure that you want to delete " + item.display + " forever?";
+        }
+        else if (angular.isDefined(item.name)) {
+            vm.message = "Are you sure that you want to delete " + item.name + " forever?";
+        }
+        else {
+            vm.message = "Are you sure that you want to delete this item forever?";
+        }        vm.deleteClicked = true;
     }
     function showRetireAlert(item) {
         vm.retireItem = item;
+        if (angular.isDefined(item.display)) {
+            vm.message = "Are you sure that you want to retire " + item.display + "?";
+        }
+        else if (angular.isDefined(item.name)) {
+            vm.message = "Are you sure that you want to retire " + item.name + "?";
+        }
+        else {
+            vm.message = "Are you sure that you want to retire this item?";
+        }
         vm.retireClicked = true;
     }
 
