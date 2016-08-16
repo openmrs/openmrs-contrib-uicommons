@@ -11,7 +11,7 @@ var template = require('./openmrs-alert-dialog.html');
 import translateModule from './../openmrs-translate/openmrs-translate.module.js';
 
 
-export default angular.module('openmrs-contrib-uicommons.openmrs-alert-dialog', []).component('openmrsAlertDialog', {
+export default angular.module('openmrs-contrib-uicommons.alert-dialog', []).component('openmrsAlertDialog', {
 	template: template,
 	controller: DeleteAlertController,
 	controllerAs: 'vm',
