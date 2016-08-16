@@ -7,11 +7,11 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-var template = require('./alert-dialog.html');
+var template = require('./openmrs-alert-dialog.html');
 import translateModule from './../openmrs-translate/openmrs-translate.module.js';
 
 
-export default angular.module('openmrs-contrib-uicommons.alert-dialog', []).component('alertDialog', {
+export default angular.module('openmrs-contrib-uicommons.openmrs-alert-dialog', []).component('openmrsAlertDialog', {
 	template: template,
 	controller: DeleteAlertController,
 	controllerAs: 'vm',

@@ -19,6 +19,7 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
         controller: openmrsList,
         controllerAs: 'vm',
         bindings: {
+            onUpdate: '&',
             resource: '<',
             columns: '<',
             type: '<',
@@ -257,8 +258,9 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
 
     //Button onClicks
-    vm.performAction = function(object, activity) {
-        switch (activity) {
+    vm.performAction = function(object, action) {
+        vm.clickedObject = object;
+        switch (action.action) {
             case 'edit' :
                 edit(object);
                 break;
@@ -274,8 +276,11 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             case 'purge' :
                 showDeleteAlert(object);
                 break;
+            case 'custom' :
+                showCustomAlert(object, action);
+                break;
             default:
-                console.log('There is no action for activity  \"' + activity + '\"')
+                console.log('There is no action for activity  \"' + action.action + '\"')
         }
     };
 
@@ -324,11 +329,19 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
     vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
         if (isConfirmed) {
-            //TODO: Do something with reason and retire (REST services needs to work)
             retire(vm.retireItem, retireReason);
         }
         vm.retireClicked = false;
     };
+    
+    vm.updateCustomConfirmation = updateCustomConfirmation;
+    function updateCustomConfirmation(isConfirmed) {
+        if (isConfirmed) {
+            vm.onUpdate({selectedItem: vm.selectedItem});
+        }
+        vm.customActionClicked = false;
+    }
+
     function showDeleteAlert(item) {
         vm.deleteItem = item;
         if (angular.isDefined(item.display)) {
@@ -339,7 +352,8 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         }
         else {
             vm.message = "Are you sure that you want to delete this item forever?";
-        }        vm.deleteClicked = true;
+        }        
+        vm.deleteClicked = true;
     }
     function showRetireAlert(item) {
         vm.retireItem = item;
@@ -353,6 +367,27 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             vm.message = "Are you sure that you want to retire this item?";
         }
         vm.retireClicked = true;
+    }
+
+    function showCustomAlert(item, actionObject) {
+        vm.selectedItem = item;
+        var selectedName;
+
+        if (angular.isDefined(item.display)) {
+            selectedName = item.display;
+        }
+        else if (angular.isDefined(item.name)) {
+            selectedName = item.name;
+        }
+
+        if (angular.isDefined(selectedName) && angular.isDefined(actionObject.message)) {
+            vm.message = actionObject.message.replace(/%s/g, selectedName);
+        }
+        else {
+            vm.message = "Are You sure?"
+        }
+
+        vm.customActionClicked = true;
     }
 
     // Method used to prevent app from querying server with every letter input into search query panel

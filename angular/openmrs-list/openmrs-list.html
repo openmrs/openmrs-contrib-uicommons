@@ -1,5 +1,5 @@
 <!--MAIN WRAPPER-->
-<div ng-if="!vm.deleteClicked && !vm.retireClicked" style="padding: 20px">
+<div ng-if="!vm.deleteClicked && !vm.retireClicked && !vm.customActionClicked" style="padding: 20px">
 
     <div id="container" style="padding-bottom:25px">
 
@@ -98,7 +98,7 @@
             <!--Action buttons-->
             <th ng-if="vm.getActions().length">
                 <a ng-repeat="action in vm.actionsBackup" ng-if="vm.resolveRetireButtons(data, action.action)">
-                    <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action.action)">
+                    <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action)">
                     </i>
                 </a>
             </th>
@@ -213,5 +213,6 @@
 </div>
 
 <!--RETIRE/DELETE ALERTS-->
-<alert-dialog ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" message="vm.message"></alert-dialog>
-<alert-dialog ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" message="vm.message" include-text-field="true"></alert-dialog>
+<openmrs-alert-dialog ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" message="vm.message"></openmrs-alert-dialog>
+<openmrs-alert-dialog ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" message="vm.message" include-text-field="true"></openmrs-alert-dialog>
+<openmrs-alert-dialog ng-if="vm.customActionClicked" on-update="vm.updateCustomConfirmation(isConfirmed)" message="vm.message"></openmrs-alert-dialog>
