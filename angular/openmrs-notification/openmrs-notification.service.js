@@ -10,6 +10,7 @@
 import toastr from 'angular-toastr';
 import ngAnimate from 'angular-animate';
 import ngRoute from 'angular-route';
+import uiRouter from 'angular-ui-router';
 
 import css from './openmrs-notification.css'
 /**
@@ -17,19 +18,19 @@ import css from './openmrs-notification.css'
  * It's basically wrapper for angular-toastr, but with openmrs color palette and already managed dependencies
  * 
  */
-export default angular.module('openmrs-contrib-uicommons.notification', ['ngAnimate', 'toastr', 'ngRoute'])
+export default angular.module('openmrs-contrib-uicommons.notification', [uiRouter, 'ngAnimate', 'toastr', 'ngRoute'])
 						.factory('openmrsNotification', openmrsNotification).name;
 
-openmrsNotification.$inject=['toastr', '$routeParams'];
+openmrsNotification.$inject=['toastr', '$routeParams', '$stateParams'];
 
-function openmrsNotification(toastr, $routeParams) {
+function openmrsNotification(toastr, $routeParams, $stateParams) {
 	var service = {
 			success : success,
 			info : info,
 			error : error,
 			warning : warning,
 			routeNotification : routeNotification
-	}	
+	};
 	return service;
 	
 	function success (content, title){
@@ -51,6 +52,10 @@ function openmrsNotification(toastr, $routeParams) {
 			if(angular.isDefined($routeParams[types[i]])){
 				method = types[i].substring(0, types[i].indexOf('Toast'));
 				service[method].call(this, $routeParams[types[i]]);
+			}
+			else if(angular.isDefined($stateParams[types[i]])){
+				method = types[i].substring(0, types[i].indexOf('Toast'));
+				service[method].call(this, $stateParams[types[i]]);
 			}
 		}
 	}

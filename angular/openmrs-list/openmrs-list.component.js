@@ -19,6 +19,7 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
         controller: openmrsList,
         controllerAs: 'vm',
         bindings: {
+            onUpdate: '&',
             resource: '<',
             columns: '<',
             type: '<',
@@ -26,7 +27,8 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             enableSearch: '<',
             limit: '<',
             listAll: '<',
-            disableLinks: '<'
+            disableLinks: '<',
+            customParams: '<'
         }
     }).name;
 
@@ -256,8 +258,9 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
 
     //Button onClicks
-    vm.performAction = function(object, activity) {
-        switch (activity) {
+    vm.performAction = function(object, action) {
+        vm.clickedObject = object;
+        switch (action.action) {
             case 'edit' :
                 edit(object);
                 break;
@@ -273,8 +276,11 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             case 'purge' :
                 showDeleteAlert(object);
                 break;
+            case 'custom' :
+                showCustomAlert(object, action);
+                break;
             default:
-                console.log('There is no action for activity  \"' + activity + '\"')
+                console.log('There is no action for activity  \"' + action.action + '\"')
         }
     };
 
@@ -323,18 +329,65 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     };
     vm.updateRetireConfirmation = function updateDeleteConfirmation(retireReason, isConfirmed) {
         if (isConfirmed) {
-            //TODO: Do something with reason and retire (REST services needs to work)
             retire(vm.retireItem, retireReason);
         }
         vm.retireClicked = false;
     };
+    
+    vm.updateCustomConfirmation = updateCustomConfirmation;
+    function updateCustomConfirmation(isConfirmed) {
+        if (isConfirmed) {
+            vm.onUpdate({selectedItem: vm.selectedItem});
+        }
+        vm.customActionClicked = false;
+    }
+
     function showDeleteAlert(item) {
         vm.deleteItem = item;
+        if (angular.isDefined(item.display)) {
+            vm.message = "Are you sure that you want to delete " + item.display + " forever?";
+        }
+        else if (angular.isDefined(item.name)) {
+            vm.message = "Are you sure that you want to delete " + item.name + " forever?";
+        }
+        else {
+            vm.message = "Are you sure that you want to delete this item forever?";
+        }        
         vm.deleteClicked = true;
     }
     function showRetireAlert(item) {
         vm.retireItem = item;
+        if (angular.isDefined(item.display)) {
+            vm.message = "Are you sure that you want to retire " + item.display + "?";
+        }
+        else if (angular.isDefined(item.name)) {
+            vm.message = "Are you sure that you want to retire " + item.name + "?";
+        }
+        else {
+            vm.message = "Are you sure that you want to retire this item?";
+        }
         vm.retireClicked = true;
+    }
+
+    function showCustomAlert(item, actionObject) {
+        vm.selectedItem = item;
+        var selectedName;
+
+        if (angular.isDefined(item.display)) {
+            selectedName = item.display;
+        }
+        else if (angular.isDefined(item.name)) {
+            selectedName = item.name;
+        }
+
+        if (angular.isDefined(selectedName) && angular.isDefined(actionObject.message)) {
+            vm.message = actionObject.message.replace(/%s/g, selectedName);
+        }
+        else {
+            vm.message = "Are You sure?"
+        }
+
+        vm.customActionClicked = true;
     }
 
     // Method used to prevent app from querying server with every letter input into search query panel
@@ -359,6 +412,12 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
             includeAll: vm.getListAll(),
             startIndex: vm.entriesPerPage.value * vm.page - vm.entriesPerPage.value
         };
+
+        if (angular.isDefined(vm.customParams)) {
+            for (var i = 0; i < vm.customParams.length; i++) {
+                params[vm.customParams[i].property] = vm.customParams[i].value;
+            }
+        }
 
         if ((vm.query.indexOf(':') >= vm.minimumSourceLength && !vm.isAdvancedSearchModeOn())
             && (vm.resource == "concept" || vm.resource == "conceptreferenceterm")) {
@@ -532,6 +591,16 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.showTableContent = showTableContent;
     vm.showTable = showTable;
     vm.showList = showList;
+    vm.isThereRetireAction = isThereRetireAction;
+
+    function isThereRetireAction() {
+        for (var i = 0; i < vm.actions.length; i++) {
+            if (vm.actions[i].action === 'retire' || vm.actions[i].action === 'unretire') {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function showList() {
         return vm.getType() == 'list'

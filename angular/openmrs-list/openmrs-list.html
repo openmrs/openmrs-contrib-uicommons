@@ -1,9 +1,9 @@
 <!--MAIN WRAPPER-->
-<div ng-if="!vm.deleteClicked && !vm.retireClicked" style="padding: 15px">
+<div ng-if="!vm.deleteClicked && !vm.retireClicked && !vm.customActionClicked" style="padding: 20px">
 
-    <div id="container" style="padding-bottom:10px">
+    <div id="container" style="padding-bottom:25px">
 
-        <div ng-if="vm.isButtonPanelVisible()" id="left" style="padding-top: 17px">
+        <div ng-if="vm.isButtonPanelVisible() && vm.isThereRetireAction()" id="left" style="padding-top: 17px">
             <input type="checkbox" id="show-retired-checkbox" ng-model="vm.listAll" ng-change="vm.getPage()"><label for="show-retired-checkbox">Show retired</label></input>
         </div>
 
@@ -98,7 +98,7 @@
             <!--Action buttons-->
             <th ng-if="vm.getActions().length">
                 <a ng-repeat="action in vm.actionsBackup" ng-if="vm.resolveRetireButtons(data, action.action)">
-                    <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action.action)">
+                    <i ng-class="vm.icon[action.action]" titgile="{{action.label}}" ng-click="vm.performAction(data, action)">
                     </i>
                 </a>
             </th>
@@ -213,5 +213,6 @@
 </div>
 
 <!--RETIRE/DELETE ALERTS-->
-<delete-alert ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" item-name="vm.deleteItem.name"></delete-alert>
-<retire-alert ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" item-name="vm.retireItem.name"></retire-alert>
+<openmrs-alert-dialog ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" message="vm.message"></openmrs-alert-dialog>
+<openmrs-alert-dialog ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" message="vm.message" include-text-field="true"></openmrs-alert-dialog>
+<openmrs-alert-dialog ng-if="vm.customActionClicked" on-update="vm.updateCustomConfirmation(isConfirmed)" message="vm.message"></openmrs-alert-dialog>
