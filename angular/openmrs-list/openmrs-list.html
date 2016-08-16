@@ -213,5 +213,5 @@
 </div>
 
 <!--RETIRE/DELETE ALERTS-->
-<delete-alert ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" item-name="vm.deleteItem.name"></delete-alert>
-<retire-alert ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" item-name="vm.retireItem.name"></retire-alert>
+<openmrs-alert-dialog ng-if="vm.deleteClicked" on-update="vm.updateDeleteConfirmation(isConfirmed)" message="vm.message"></openmrs-alert-dialog>
+<openmrs-alert-dialog ng-if="vm.retireClicked" on-update="vm.updateRetireConfirmation(retireReason, isConfirmed)" message="vm.message" include-text-field="true"></openmrs-alert-dialog>
