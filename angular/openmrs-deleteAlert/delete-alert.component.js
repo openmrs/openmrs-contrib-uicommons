@@ -7,44 +7,39 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-var template = require('./openmrs-alert-dialog.html');
+var template = require('./delete-alert.html');
 import translateModule from './../openmrs-translate/openmrs-translate.module.js';
 
 
-export default angular.module('openmrs-contrib-uicommons.alert-dialog', []).component('openmrsAlertDialog', {
+export default angular.module('openmrs-contrib-uicommons.delete-alert', []).component('deleteAlert', {
 	template: template,
 	controller: DeleteAlertController,
 	controllerAs: 'vm',
 	bindings: {
 		onUpdate: '&',
-		message: '<',
-		includeTextField: '<'
+		itemName: '<'
 	}
 }).name;
 
 export default function DeleteAlertController(){
 	var vm = this;
-	
-	vm.inludeFieldText = '';
 
 	vm.isConfirmed = false;
-	vm.confirm = confirm;
-	function confirm(isConfirmed) {
-		vm.isConfirmed = isConfirmed;
-		if (vm.includeTextField) {
-			vm.onUpdate(
-				{
-					isConfirmed : vm.isConfirmed,
-					textField : vm.textField
-				}
-			);
+
+	vm.resolveNotification = resolveNotification;
+	function resolveNotification() {
+		if (angular.isDefined(vm.itemName)) {
+			return "Are you sure that you want to delete " + vm.itemName + " forever?";
 		}
 		else {
-			vm.onUpdate(
-				{
-					isConfirmed : vm.isConfirmed
-				}
-			);
+			return "Are you sure that you want to delete this item forever?"
 		}
+	}
+
+	vm.confirm = confirm;
+
+	function confirm(isConfirmed) {
+		vm.isConfirmed = isConfirmed;
+		vm.onUpdate({isConfirmed : vm.isConfirmed});
 	}
 }

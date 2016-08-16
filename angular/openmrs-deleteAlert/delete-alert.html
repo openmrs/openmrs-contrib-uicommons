@@ -3,20 +3,13 @@
 		<h3>{{"Delete.confirmation" | translate}}</h3>
 	</div>
 	<div class="dialog-content">
-		<p align="center">{{vm.message}}</p>
-
-		<br>
-
-		<div align="center" ng-if="vm.includeTextField">
-			<textarea ng-model="vm.retireReason"></textarea>
-		</div>
-
+		<p align="center">{{vm.resolveNotification()}}</p>
 		<br>
 		<button class="cancel" ng-click="vm.confirm(false)">
 			{{"Cancel" | translate}}
 		</button>
 		<button class="confirm right"ng-click="vm.confirm(true)">
-			Confirm
+			{{"DeleteForever" | translate}}
 		</button>
 	</div>
 </div>
