@@ -15,9 +15,19 @@ export default function ListController(){
                 "property": "locale",
                 "label":"Locale"
             }];
-        vm.actions = [{
+        vm.actions = [
+            {
+                "action":"retire",
+                "label":"Retire"
+            },
+            {
+                "action":"unretire",
+                "label":"unretire"
+            },
+            {
                 "action":"purge",
                 "label":"Delete",
                 "link":"#/stopword/{uuid}"
-        }];
+            }
+        ];
 }

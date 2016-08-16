@@ -177,8 +177,10 @@ describe('Concept dictionary controllers', function() {
             $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=NaN&v=full').respond(response);
             $httpBackend.whenGET('/ws/rest/v1/drug?includeAll=false&limit=10&startIndex=0&v=full').respond(response);
             $httpBackend.flush();
-            var activity = 'unretire';
-            component.performAction(component.data[0], activity);
+            var action = {
+                'action':'unretire'
+            };
+            component.performAction(component.data[0], action);
             $httpBackend.expectPOST('/ws/rest/v1/drug/c543d951-0201-4e20-94bd-64b44120991e').respond({});
             component.resolveComplexProperties = function () {
                 return false;
