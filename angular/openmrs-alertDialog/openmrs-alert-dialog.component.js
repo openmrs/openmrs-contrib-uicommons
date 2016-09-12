@@ -22,7 +22,7 @@ export default angular.module('openmrs-contrib-uicommons.alert-dialog', []).comp
 	}
 }).name;
 
-export default function DeleteAlertController(){
+function DeleteAlertController() {
 	var vm = this;
 	
 	vm.inludeFieldText = '';
