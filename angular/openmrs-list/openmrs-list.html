@@ -3,8 +3,8 @@
 
     <div id="container" style="padding-bottom:25px">
 
-        <div ng-if="vm.isButtonPanelVisible() && vm.isThereRetireAction()" id="left" style="padding-top: 17px">
-            <input type="checkbox" id="show-retired-checkbox" ng-model="vm.listAll" ng-change="vm.getPage()"><label for="show-retired-checkbox">Show retired</label></input>
+        <div ng-if="vm.showRetireCheckbox()" id="left" style="padding-top: 17px">
+            <input type="checkbox" id="show-retired-checkbox" ng-model="vm.listAll" ng-change="vm.getPage()"><label>Show retired</label></input>
         </div>
 
         <div ng-if="vm.isAdvancedSearchPossible()" id="right">
@@ -12,14 +12,14 @@
                 <label>Filter by {{vm.advancedSearchResourceLabel}}</label>
             </div>
             <div align="center">
-                <select ng-model="vm.selectedAdvancedSearchDataUuid" ng-change="vm.sendNewQuery()" ng-options="advancedSearchData.uuid as advancedSearchData.display for advancedSearchData in vm.advancedSearchData">
+                <select ng-model="vm.selectedAdvanceadSearchDataUuid" ng-change="vm.sendNewQuery()" ng-options="advancedSearchData.uuid as advancedSearchData.display for advancedSearchData in vm.advancedSearchData">
                     <option value="">Show All</option>
                 </select>
             </div>
         </div>
 
         <div class="search-input" ng-if="vm.isSearchPanelVisible()" id="center" style="padding-top: 10px">
-            <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query"
+            <input class="field-display ui-autocomplete-input" id="inputNode" type="text" ng-model="vm.query" style="width: 130px"
                    ng-change="vm.timeoutRefresh()" autocomplete="off">
             <button id="searchButton" name="searchButton" ng-click="vm.sendNewQuery()">{{"Search" | translate}}</button>
         </div>
@@ -181,6 +181,13 @@
             </div>
         </li>
     </ul>
+
+    <!--No data notification-->
+    <div align="center" ng-if="vm.showNoDataNotification()">
+        <span>{{vm.noDataNotification}}</span>
+    </div>
+
+    <span>{{showList()}}{{showTable()}}</span>
 
     <!--Nav buttons-->
     <div ng-if="vm.isButtonPanelVisible() && vm.isWholeNavigationPanelVisible()" align="center" style="margin-bottom: 20px">
