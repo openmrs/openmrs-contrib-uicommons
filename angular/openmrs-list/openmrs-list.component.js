@@ -28,7 +28,8 @@ export default angular.module('openmrs-contrib-uicommons.list', ['openmrs-contri
             limit: '<',
             listAll: '<',
             disableLinks: '<',
-            customParams: '<'
+            customParams: '<',
+            noDataNotification: '<'
         }
     }).name;
 
@@ -104,6 +105,13 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
         }
     }
     resolveDefaultEntriesPerPage();
+
+    function resolveNoDataNotification() {
+        if (angular.isUndefined(vm.noDataNotification)) {
+            vm.noDataNotification = 'No data'
+        }
+    }
+    resolveNoDataNotification();
 
     //Default icon values
     vm.icon =
@@ -595,6 +603,8 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     vm.showTable = showTable;
     vm.showList = showList;
     vm.isThereRetireAction = isThereRetireAction;
+    vm.showNoDataNotification = showNoDataNotification;
+    vm.showRetireCheckbox = showRetireCheckbox;
 
     function isThereRetireAction() {
         for (var i = 0; i < vm.actions.length; i++) {
@@ -618,7 +628,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     function showTable(){
         return vm.getType() == 'table'
             &&(vm.getSearchPanel() == false
-            || vm.data.length > 0);
+            && vm.data.length > 0);
     }
     function showTableContent() {
         return !vm.isLoadingInitialPage;
@@ -652,5 +662,11 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     }
     function isLoadingMorePages() {
         return vm.isLoadingMorePages;
+    }
+    function showNoDataNotification() {
+        return vm.data.length == 0 && !vm.getSearchPanel();
+    }
+    function showRetireCheckbox() {
+        return vm.isThereRetireAction() && ((vm.isSearchPanelVisible() && vm.data.length > 0) || (!vm.isSearchPanelVisible()))
     }
 }
