@@ -627,8 +627,7 @@ function openmrsList(openmrsRest, openmrsNotification, $scope, $location) {
     }
     function showTable(){
         return vm.getType() == 'table'
-            &&(vm.getSearchPanel() == false
-            && vm.data.length > 0);
+            && vm.data.length > 0;
     }
     function showTableContent() {
         return !vm.isLoadingInitialPage;
