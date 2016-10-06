@@ -11,14 +11,25 @@ import openmrsUicommonsDeleteAlert from './angular/openmrs-alertDialog/openmrs-a
 import openmrsUicommonsNotification from './angular/openmrs-notification/openmrs-notification.service.js';
 import openmrsUicommonsTransalteApp from './angular/openmrs-translate/openmrs-translate.module.js';
 
-export default angular.module('openmrs-contrib-uicommons',
-				[
-					'openmrs-contrib-uicommons.header',
-					'openmrs-contrib-uicommons.breadcrumbs', 
-					'openmrs-contrib-uicommons.rest',
-					'openmrs-contrib-uicommons.concept-autoComplete',
-					'openmrs-contrib-uicommons.alert-dialog',
-					'openmrs-contrib-uicommons.list',
-					'openmrs-contrib-uicommons.notification',
-					"openmrs-contrib-uicommons.translate"
-                ]);
+let dependencies = [
+	'openmrs-contrib-uicommons.header',
+	'openmrs-contrib-uicommons.breadcrumbs',
+	'openmrs-contrib-uicommons.rest',
+	'openmrs-contrib-uicommons.concept-autoComplete',
+	'openmrs-contrib-uicommons.alert-dialog',
+	'openmrs-contrib-uicommons.list',
+	'openmrs-contrib-uicommons.notification',
+	'openmrs-contrib-uicommons.translate',
+	'openmrs-contrib-uicommons.list2',
+	'openmrs-contrib-uicommons.search'
+];
+
+try {
+	 let customUicommons = angular.module('openmrs-contrib-uicommons-customized').name;
+	dependencies.push(customUicommons);
+} catch(err) {
+	console.log('openmrs-contrib-uicommons-customized is not available');
+}
+
+
+export default angular.module('openmrs-contrib-uicommons', dependencies);
