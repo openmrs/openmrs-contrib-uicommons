@@ -19,8 +19,7 @@ let dependencies = [
 	'openmrs-contrib-uicommons.alert-dialog',
 	'openmrs-contrib-uicommons.list',
 	'openmrs-contrib-uicommons.notification',
-	'openmrs-contrib-uicommons.translate',
-	'openmrs-contrib-uicommons.search'
+	'openmrs-contrib-uicommons.translate'
 ];
 
 try {
