@@ -20,7 +20,6 @@ let dependencies = [
 	'openmrs-contrib-uicommons.list',
 	'openmrs-contrib-uicommons.notification',
 	'openmrs-contrib-uicommons.translate',
-	'openmrs-contrib-uicommons.list2',
 	'openmrs-contrib-uicommons.search'
 ];
 
