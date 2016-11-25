@@ -21,9 +21,9 @@ import css from './openmrs-notification.css'
 export default angular.module('openmrs-contrib-uicommons.notification', [uiRouter, 'ngAnimate', 'toastr', 'ngRoute'])
 						.factory('openmrsNotification', openmrsNotification).name;
 
-openmrsNotification.$inject=['toastr', '$routeParams', '$stateParams'];
+openmrsNotification.$inject=['toastr', '$routeParams', '$stateParams', '$location'];
 
-function openmrsNotification(toastr, $routeParams, $stateParams) {
+function openmrsNotification(toastr, $routeParams, $stateParams, $location) {
 	var service = {
 			success : success,
 			info : info,
@@ -56,6 +56,10 @@ function openmrsNotification(toastr, $routeParams, $stateParams) {
 			else if(angular.isDefined($stateParams[types[i]])){
 				method = types[i].substring(0, types[i].indexOf('Toast'));
 				service[method].call(this, $stateParams[types[i]]);
+			}
+			else if(angular.isDefined($location.search()[types[i]])){
+				method = types[i].substring(0, types[i].indexOf('Toast'));
+				service[method].call(this, $location.search()[types[i]]);
 			}
 		}
 	}
