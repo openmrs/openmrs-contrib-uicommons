@@ -6,6 +6,10 @@
     "type": "git",
     "url": "https://github.com/PawelGutkowski/openmrs-contrib-uicommons.git"
   },
+  "engines" : { 
+    "node": "^5.3.0",
+    "npm": "^3.9.6"
+  },
   "main": "./lib/openmrs-contrib-refapp-ui.bundle.min.js",
   "sass": "./src/scss/sass/openmrs-refapp.scss",
   "dependencies": {
