@@ -1,4 +1,9 @@
 {
+  "en": "English",
+  "es": "Español",
+  "fr": "Français",
+  "it": "Italiano",
+  "pt": "Português",
   "Concept.add":"Agregar nuevo Concepto",
   "Concept.answers":"Respuestas",
   "Concept.boolean.add.answer":"Añadir otra respuesta",

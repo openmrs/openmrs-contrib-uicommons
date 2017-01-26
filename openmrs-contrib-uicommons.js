@@ -10,6 +10,7 @@ import openmrsUicommonsList from './angular/openmrs-list/openmrs-list.component.
 import openmrsUicommonsDeleteAlert from './angular/openmrs-alertDialog/openmrs-alert-dialog.component.js';
 import openmrsUicommonsNotification from './angular/openmrs-notification/openmrs-notification.service.js';
 import openmrsUicommonsTransalteApp from './angular/openmrs-translate/openmrs-translate.module.js';
+import openmrsUicommonsChooseLanguage from './angular/openmrs-chooseLangage/openmrs-chooseLanguage';
 
 let dependencies = [
 	'openmrs-contrib-uicommons.header',
@@ -19,7 +20,8 @@ let dependencies = [
 	'openmrs-contrib-uicommons.alert-dialog',
 	'openmrs-contrib-uicommons.list',
 	'openmrs-contrib-uicommons.notification',
-	'openmrs-contrib-uicommons.translate'
+	'openmrs-contrib-uicommons.translate',
+	'openmrs-contrib-uicommons.choose-language'
 ];
 
 try {

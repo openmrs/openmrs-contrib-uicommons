@@ -1,4 +1,9 @@
 {
+  "en": "English",
+  "es": "Español",
+  "fr": "Français",
+  "it": "Italiano",
+  "pt": "Português",
   "Name": "Name",
   "Description": "Description",
   "Display": "Display",
