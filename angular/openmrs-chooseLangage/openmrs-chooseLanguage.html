@@ -1,0 +1,8 @@
+<div>
+    <small>
+        Choose language:
+        <span ng-repeat="locales in vm.allowedLocales">
+            <a ng-click="vm.changeLanguage(locales)">{{ locales | translate }}</a>,&nbsp
+        </span>
+    </small>
+</div>
