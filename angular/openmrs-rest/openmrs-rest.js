@@ -48,7 +48,7 @@ function authInterceptor($q, $window, openmrsContext){
 						loginUrl = openmrsContext.getConfig().href;
 					} else {
 						var pathname = $window.location.pathname;
-						pathname = pathname.substring(0, pathname.indexOf('/owa/'));
+						pathname = getBasePath(pathname);
 						loginUrl = pathname;
 					}
 					var loginUrl = loginUrl + '/login.htm?redirect_url=' + url;
@@ -67,6 +67,15 @@ function httpProviderConfig($httpProvider){
 	$httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = 'true';
 }
 
+function getBasePath(pathname) {
+    if (pathname.indexOf('/coreapps/') !== -1) {
+        return pathname.substring(0, pathname.indexOf('/coreapps/'));
+    } else {
+        return pathname.substring(0, pathname.indexOf('/owa/'));
+    }
+
+}
+
 openmrsApi.$inject = ['$resource', '$window', '$http', '$q', 'openmrsContext'];
 
 
@@ -76,7 +85,7 @@ function openmrsApi($resource, $window, $http, $q, openmrsContext) {
 		var deferred = $q.defer();
 		function handleNoTestConfig(){
 			var pathname = $window.location.pathname;
-			openmrsContextConfig.href = pathname.substring(0, pathname.indexOf('/owa/'));
+			openmrsContextConfig.href = getBasePath(pathname);
 			deferred.resolve(openmrsContextConfig);
 		}
 		/**
