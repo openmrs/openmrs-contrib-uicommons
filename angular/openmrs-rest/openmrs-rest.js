@@ -68,12 +68,7 @@ function httpProviderConfig($httpProvider){
 }
 
 function getBasePath(pathname) {
-    if (pathname.indexOf('/coreapps/') !== -1) {
-        return pathname.substring(0, pathname.indexOf('/coreapps/'));
-    } else {
-        return pathname.substring(0, pathname.indexOf('/owa/'));
-    }
-
+	return pathname.substring(0, pathname.indexOf('/owa/'));
 }
 
 openmrsApi.$inject = ['$resource', '$window', '$http', '$q', 'openmrsContext'];
@@ -117,13 +112,26 @@ function openmrsApi($resource, $window, $http, $q, openmrsContext) {
 		return deferred.promise;
 
 	}
+
+	function setBaseAppPath(url) {
+		var path = url;
+		path = $window.location.pathname;
+		path = path.substring(0, path.indexOf(url));
+		if (path.endsWith("/")) {
+			path = path.substring(0, path.length - 1);
+		}
+
+        var openmrsContextConfig = openmrsContext.getConfig();
+        openmrsContextConfig.href = path;
+	}
 	
 	var openmrsApi = {
 		defaultConfig: {
 			uuid: '@uuid'
 		},
 		add: add,
-		getOpenmrsContextConfig: getOpenmrsContextConfig
+		getOpenmrsContextConfig: getOpenmrsContextConfig,
+        setBaseAppPath: setBaseAppPath
 	};
 
 	return openmrsApi;
@@ -201,7 +209,8 @@ function openmrsRest() {
 			retire: remove,
 			unretire: unretire,
 			purge: purge,
-			getServerUrl: getServerUrl
+			getServerUrl: getServerUrl,
+            setBaseAppPath: setBaseAppPath
 		};
 
 		return openmrsRest;
@@ -213,6 +222,10 @@ function openmrsRest() {
 			});
 			return deferred.promise;
 		}
+
+		function setBaseAppPath(url) {
+			openmrsApi.setBaseAppPath(url);
+        }
 
 		function list(resource, query) {
 			return openmrsApi.add(resource).then(function(resource){
