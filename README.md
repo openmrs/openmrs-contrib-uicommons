@@ -386,7 +386,7 @@ To unlink openmrs-contrib uicommons, in its directory run
 npm unlink
 ````
 
-##Release Procedure
+## Release Procedure
 
 To release new version of Openmrs-contrib-uicommons, run from master branch:
 ````sh
