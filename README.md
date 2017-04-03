@@ -333,9 +333,9 @@ npm run build
 
 This will create a `lib` directory, which will contain Your bundled library files.
 
-##Development
+## Development
 
-###Demo Application
+### Demo Application
 
 To create development environment, first You have to install dependencies as described in [Production Build](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#production-build). Project contains demo app, where You can see components and modules in action. To use it, You have to run OpenMRS server locally with Open Web Apps and Webservices modules. You can find how to do that [here](https://github.com/rkorytkowski/openmrs-owa-conceptdictionary#setup-openmrs-server).
 
@@ -364,7 +364,7 @@ npm run watch
 
 While it runs, it watches all files for changes and automatically updates your browser.
 
-###External Client Application
+### External Client Application
 
 You can develop and test Openmrs-contrib-uicommons in other application, using npm [link feature](https://docs.npmjs.com/cli/link). In order to do this, You just need to run  
 ````sh
