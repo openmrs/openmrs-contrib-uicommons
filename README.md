@@ -317,7 +317,7 @@ It's allowed to pass only content parameter to show message without title.
 
 ## Production Build
 
-You can compile .css files by yourself. You will need NodeJS 4+ and Compass installed to do this. See the install instructions for [NodeJS](https://nodejs.org/en/download/package-manager/).
+You need to have NodeJS in version 5.3.x installed. We recommend using [nvm](https://github.com/creationix/nvm#installation) or [nvm-windows](https://github.com/coreybutler/nvm-windows) to install and manage different versions of Node.
 
 Once you have NodeJS installed, install the dependencies (first time only):
 
@@ -336,6 +336,8 @@ This will create a `lib` directory, which will contain Your bundled library file
 ## Development
 
 ### Demo Application
+
+The easiest way to develop components is to use the demo application. 
 
 To create development environment, first You have to install dependencies as described in [Production Build](https://github.com/PawelGutkowski/openmrs-contrib-uicommons#production-build). Project contains demo app, where You can see components and modules in action. To use it, You have to run OpenMRS server locally with Open Web Apps and Webservices modules. You can find how to do that [here](https://github.com/rkorytkowski/openmrs-owa-conceptdictionary#setup-openmrs-server).
 
