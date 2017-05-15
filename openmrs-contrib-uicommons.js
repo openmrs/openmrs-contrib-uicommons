@@ -32,4 +32,4 @@ try {
 }
 
 
-export default angular.module('openmrs-contrib-uicommons', dependencies);
+export default angular.module('openmrs-contrib-uicommons', dependencies).name;

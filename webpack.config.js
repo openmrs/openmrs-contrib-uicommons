@@ -11,6 +11,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 
+var nodeExternals = require('webpack-node-externals');
+
 const libraryName = 'openmrs-contrib-uicommons';
 const fileName = 'openmrs-contrib-uicommons';
 
@@ -43,11 +45,6 @@ if (target === 'web') {
 if (env === 'production') {
 	
   plugins.push(new UglifyPlugin({
-    output: {
-      comments: false,
-    },
-    minimize: true,
-    sourceMap: false,
     compress: {
         warnings: false
     }
@@ -132,7 +129,7 @@ const config = {
     extensions: ['', '.js'],
   },
   plugins,
-  externals: nodeModules,
+  externals: [nodeExternals()],
 };
 
 module.exports = config;
