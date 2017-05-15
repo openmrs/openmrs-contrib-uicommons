@@ -4,7 +4,7 @@
   "description": "Common CSS, JS, and HTML snippets",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PawelGutkowski/openmrs-contrib-uicommons.git"
+    "url": "https://github.com/openmrs/openmrs-contrib-uicommons.git"
   },
   "engines": {
     "node": "^5.3.0",
