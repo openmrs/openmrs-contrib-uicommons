@@ -17,6 +17,6 @@ deploy:
   provider: npm
   on: 
     tags: true
-  email : pawel.gutkowski.1993@gmail.com
+  email : rafal@openmrs.org
   api_key:
     secure: $API_KEY
