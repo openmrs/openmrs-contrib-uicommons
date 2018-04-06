@@ -162,7 +162,30 @@ function controller() {
 	 };
 }
 ````
+*Note* If you are using angular 1.5+ you have to put the initialization code in $onInit function as shown below due to [these breaking changes](https://github.com/angular/angular.js/blob/master/CHANGELOG.md#breaking-changes)
+````javascript
+angular.module('YourAngularModule').controller('controller', controller);
 
+function controller() {
+	var vm = this;
+	vm.$onInit = function() {
+		vm.required = false; //if truthy, input box will be required
+		vm.limitToClass = 'Drug'; //component will search only drug concepts
+		vm.isConceptCorrect;	//flag, if current query matches any concept name
+		vm.updateConcept = updateConcept;
+		//item is object with property "display", which is passed to component at activation (make it empty if there has to be no initial state)
+		vm.item = {
+				display: 'ItemName'
+		}
+	}
+	
+	//function, which will be invoked at any change of component model, in this example it
+	function updateConcept(isCorrect, concept) {
+	    vm.isConceptCorrect = isCorrect;
+	    vm.item = concept;
+	 };
+}
+````
 And insert component in html file, binding variables to it:
 
 ````html
